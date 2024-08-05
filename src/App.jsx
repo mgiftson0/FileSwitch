@@ -2,7 +2,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GlobalStyles from './styles/GlobalStyles';
 import theme from './styles/theme';
-import Home from './pages/Home';
+import UploadForm from './components/UploadForm';
 import TextEditorPage from './pages/TextEditorPage';
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
       <GlobalStyles />
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<UploadForm />} />
           <Route path="/edit-text" element={<TextEditorPage />} />
         </Routes>
       </Router>

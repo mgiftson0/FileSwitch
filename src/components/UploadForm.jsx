@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Button, Grid, MenuItem, Select, CircularProgress } from '@mui/material';
+import { Button, Grid, MenuItem, Select, IconButton, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { GitHub, Email, LinkedIn, Instagram } from '@mui/icons-material';
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -74,7 +74,7 @@ const UploadForm = () => {
         <div
           style={{
             border: '2px dashed blue',
-            padding: '50px',
+            padding: '20px',
             borderRadius: '10px',
             textAlign: 'center',
             marginBottom: '20px',
@@ -134,7 +134,34 @@ const UploadForm = () => {
         </Grid>
       </div>
 
-      <Footer />
+      <footer style={{
+        backgroundColor: '#f5f5f5',
+        padding: '10px',
+        textAlign: 'center',
+        borderTop: '1px solid #ddd',
+        fontFamily: 'gil-sans, arial',
+      }}>
+        <p>© 2024 manuel. All rights reserved.</p>
+        <div style={{ margin: '10px 0' }}>
+          <IconButton component="a" href="https://github.com/mgiftson0" target="_blank" rel="noopener noreferrer">
+            <GitHub />
+          </IconButton>
+          <IconButton component="a" href="mailto:mgfiton00@gmail.com" target="_blank" rel="noopener noreferrer">
+            <Email />
+          </IconButton>
+          <IconButton component="a" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+            <LinkedIn />
+          </IconButton>
+          <IconButton component="a" href="https://www.instagram.com/msabali_" target="_blank" rel="noopener noreferrer">
+            <Instagram />
+          </IconButton>
+        </div>
+        <div>
+          <a href="https://www.example.com" target="_blank" rel="noopener noreferrer" style={{ color: '#000', textDecoration: 'underline' }}>
+            manuel &#9794;
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
