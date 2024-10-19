@@ -40,7 +40,7 @@ const UploadForm = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Upload successful:', result); // Log the response
+        console.log('Upload successful:', result); 
         setDownloadLinks({
           original: `http://localhost:5000/download/${result.original_id}`,
           converted: `http://localhost:5000/download/${result.converted_id}`,
