@@ -45,10 +45,9 @@ const modules = {
       [{ 'script': 'sub' }, { 'script': 'super' }],
       [{ 'direction': 'rtl' }],
       ['blockquote', 'code-block'],
-      ['clean'], // Remove formatting button
-      ['page-break'], // Custom page break button
-      ['footer'], // Custom footer button
-      // Add any additional custom buttons
+      ['clean'], 
+      ['page-break'], 
+      ['footer'], 
     ],
     handlers: {
       'page-break': function () {
