@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button, Container } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import Header from "../components/Header";
-import { Button, Grid, MenuItem, Select, IconButton, CircularProgress } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { GitHub, Email, LinkedIn, Instagram } from '@mui/icons-material';
+import FileUploadArea from "./FileUploadArea";
+import ConversionControls from "./ConversionControls";
+import DownloadLinks from "./DownloadLinks";
+import Footer from "./Footer";
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -60,109 +63,88 @@ const UploadForm = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh',
+        backgroundColor: '#0a1625',
+        backgroundImage: `
+          radial-gradient(circle at 20% 80%, rgba(100, 181, 246, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(187, 222, 251, 0.03) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(144, 202, 249, 0.04) 0%, transparent 50%)
+        `
+      }}
+    >
       <Header />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+      
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          padding: { xs: '20px 16px', sm: '40px 24px' },
+          marginTop: { xs: '80px', sm: '100px' }
+        }}
+      >
         <Button
-          variant="contained"
-          color="primary"
+          variant="outlined"
           onClick={handleNavigate}
-          style={{ marginTop: '70px' }}
+          startIcon={<EditIcon />}
+          sx={{
+            color: '#ffffff',
+            borderColor: 'rgba(255, 255, 255, 0.3)',
+            backgroundColor: 'rgba(255, 255, 255, 0.02)',
+            borderRadius: '12px',
+            padding: '12px 24px',
+            textTransform: 'none',
+            fontWeight: 500,
+            marginBottom: 4,
+            backdropFilter: 'blur(10px)',
+            fontSize: '0.95rem',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              borderColor: 'rgba(255, 255, 255, 0.5)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+            }
+          }}
         >
           Go to Text Editor
         </Button>
-        <div
-          style={{
-            border: '2px dashed blue',
-            padding: '20px',
-            borderRadius: '10px',
-            textAlign: 'center',
-            marginBottom: '20px',
+
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            gap: 4,
             width: '100%',
-            maxWidth: '500px',
-            marginTop: '100px',
+            maxWidth: '800px'
           }}
         >
-          <input
-            type="file"
-            onChange={handleFileChange}
-            accept=".pdf,.docx"
-            style={{ marginBottom: '10px' }}
+          <FileUploadArea 
+            file={file} 
+            onFileChange={handleFileChange} 
           />
-          <p>{file ? file.name : 'Drag & drop a file here, or click to select one'}</p>
-        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-          <Select
-            value={conversionType}
-            onChange={handleConversionTypeChange}
-            style={{ marginRight: '10px', marginBottom: '10px' }}
-          >
-            <MenuItem value="pdf_to_word">PDF to Word</MenuItem>
-            <MenuItem value="word_to_pdf">Word to PDF</MenuItem>
-          </Select>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleUpload}
-            startIcon={loading ? <CircularProgress size={24} color="inherit" /> : <CloudUploadIcon />}
-            disabled={loading}
-          >
-            {loading ? 'Uploading...' : 'Upload and Convert'}
-          </Button>
-        </div>
+          <ConversionControls
+            conversionType={conversionType}
+            onConversionTypeChange={handleConversionTypeChange}
+            onUpload={handleUpload}
+            loading={loading}
+            disabled={!file}
+          />
 
-        <Grid container spacing={2} justifyContent="center">
-          {downloadLinks.original && (
-            <Grid item xs={12} sm={6} md={4}>
-              <a href={downloadLinks.original} download>
-                <Button variant="contained" color="primary" fullWidth>
-                  Download Original File
-                </Button>
-              </a>
-            </Grid>
-          )}
-          {downloadLinks.converted && (
-            <Grid item xs={12} sm={6} md={4}>
-              <a href={downloadLinks.converted} download>
-                <Button variant="contained" color="primary" fullWidth>
-                  Download Converted File
-                </Button>
-              </a>
-            </Grid>
-          )}
-        </Grid>
-      </div>
+          <DownloadLinks downloadLinks={downloadLinks} />
+        </Box>
+      </Container>
 
-      <footer style={{
-        backgroundColor: '#f5f5f5',
-        padding: '10px',
-        textAlign: 'center',
-        borderTop: '1px solid #ddd',
-        fontFamily: 'gil-sans, arial',
-      }}>
-        <p>© 2024 manuel. All rights reserved.</p>
-        <div style={{ margin: '10px 0' }}>
-          <IconButton component="a" href="https://github.com/mgiftson0" target="_blank" rel="noopener noreferrer">
-            <GitHub />
-          </IconButton>
-          <IconButton component="a" href="mailto:mgfiton00@gmail.com" target="_blank" rel="noopener noreferrer">
-            <Email />
-          </IconButton>
-          <IconButton component="a" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-            <LinkedIn />
-          </IconButton>
-          <IconButton component="a" href="https://www.instagram.com/msabali_" target="_blank" rel="noopener noreferrer">
-            <Instagram />
-          </IconButton>
-        </div>
-        <div>
-          <a href="https://www.example.com" target="_blank" rel="noopener noreferrer" style={{ color: '#000', textDecoration: 'underline' }}>
-            manuel &#9794;
-          </a>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+    </Box>
   );
 };
 
