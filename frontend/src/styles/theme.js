@@ -1,18 +1,36 @@
+// styles/theme.js
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+const darkTheme = createTheme({
   palette: {
+    mode: 'dark',
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
     primary: {
-      main: '#1976d2',
+      main: '#90caf9',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#f48fb1',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: 'rgba(255, 255, 255, 0.7)',
     },
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#121212',
+        },
+      },
+    },
   },
 });
 
-export default theme;
-
+export default darkTheme;
