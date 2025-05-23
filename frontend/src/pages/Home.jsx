@@ -1,16 +1,33 @@
 import Header from '../components/Header';
 import UploadForm from '../components/UploadForm';
-// import ConvertButton from '../components/ConvertButton';
-// import DownloadLink from '../components/DownloadLink';
+import { Box } from '@mui/material';
 
 const Home = () => {
   return (
-    <div>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundColor: '#121212', // Pure dark background
+        color: 'rgba(255, 255, 255, 0.87)', // Default dark theme text color
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        pt: 2 // Padding top
+      }}
+    >
       <Header />
-      <UploadForm />
-      {/* <ConvertButton /> */}
-      {/* <DownloadLink /> */}
-    </div>
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 'md', // Matches MUI's breakpoint (around 900px)
+          px: 2, // Horizontal padding
+          py: 4, // Vertical padding
+          flex: 1 // Takes remaining space
+        }}
+      >
+        <UploadForm />
+      </Box>
+    </Box>
   );
 };
 
