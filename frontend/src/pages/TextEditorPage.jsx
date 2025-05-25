@@ -290,7 +290,6 @@ const TextEditorPage = () => {
         </Box>
       </Container>
 
-      {/* Footer */}
       <Box
         component="footer"
         sx={{
