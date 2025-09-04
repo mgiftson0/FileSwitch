@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, send_file
 import os
 from werkzeug.utils import secure_filename
 from pdf2docx import Converter as PdfToDocxConverter
-from docx2pdf import convert as DocxToPdfConverter
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -20,7 +19,7 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
-        # 'pdf_to_word' or 'word_to_pdf'
+    # 'pdf_to_word' or 'word_to_pdf'
     file_type = request.form.get('type', 'pdf_to_word')  
 
     # Check file extension and type
@@ -56,9 +55,79 @@ def convert_pdf_to_word(file_path):
 def convert_word_to_pdf(file_path):
     pdf_file = file_path.replace('.docx', '.pdf')
     
-    # Specify the output file
-    DocxToPdfConverter(file_path, pdf_file)  
-    return pdf_file
+    # Try different methods
+    try:
+        # Method 1: Try subprocess with LibreOffice (if installed)
+        import subprocess
+        
+        # Get directory
+        output_dir = os.path.dirname(file_path)
+        
+        # Try LibreOffice command
+        cmd = ['soffice', '--headless', '--convert-to', 'pdf', '--outdir', output_dir, file_path]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+        
+        if result.returncode == 0 and os.path.exists(pdf_file):
+            return pdf_file
+        else:
+            raise Exception("LibreOffice conversion failed")
+            
+    except:
+        # Method 2: Try python-docx + reportlab (basic conversion)
+        try:
+            from docx import Document
+            from reportlab.pdfgen import canvas
+            from reportlab.lib.pagesizes import letter
+            
+            # Read docx
+            doc = Document(file_path)
+            
+            # Create PDF
+            c = canvas.Canvas(pdf_file, pagesize=letter)
+            width, height = letter
+            y_position = height - 50
+            
+            for paragraph in doc.paragraphs:
+                if paragraph.text.strip():
+                    # Simple text wrapping
+                    text = paragraph.text
+                    if len(text) > 80:
+                        words = text.split()
+                        line = ""
+                        for word in words:
+                            if len(line + word) < 80:
+                                line += word + " "
+                            else:
+                                c.drawString(50, y_position, line.strip())
+                                y_position -= 20
+                                line = word + " "
+                                if y_position < 50:
+                                    c.showPage()
+                                    y_position = height - 50
+                        if line.strip():
+                            c.drawString(50, y_position, line.strip())
+                            y_position -= 20
+                    else:
+                        c.drawString(50, y_position, text)
+                        y_position -= 20
+                    
+                    if y_position < 50:
+                        c.showPage()
+                        y_position = height - 50
+            
+            c.save()
+            
+            if os.path.exists(pdf_file):
+                return pdf_file
+            else:
+                raise Exception("PDF creation failed")
+                
+        except ImportError:
+            return jsonify({'error': 'Word to PDF conversion requires additional libraries. Please install: pip install python-docx reportlab'}), 500
+        except Exception as e:
+            raise Exception(f"Word to PDF conversion failed: {str(e)}")
+    
+    raise Exception("All conversion methods failed")
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
