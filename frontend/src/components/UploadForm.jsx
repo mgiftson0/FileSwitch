@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Container } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { Box,  Container } from '@mui/material';
 import Header from "../components/Header";
 import FileUploadArea from "./FileUploadArea";
 import ConversionControls from "./ConversionControls";
@@ -13,7 +11,7 @@ const UploadForm = () => {
   const [conversionType, setConversionType] = useState('pdf_to_word');
   const [downloadLinks, setDownloadLinks] = useState({ original: '', converted: '' });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -58,9 +56,6 @@ const UploadForm = () => {
     }
   };
 
-  const handleNavigate = () => {
-    navigate('/edit-text');
-  };
 
   return (
     <Box 
@@ -89,32 +84,7 @@ const UploadForm = () => {
           marginTop: { xs: '80px', sm: '100px' }
         }}
       >
-        <Button
-          variant="outlined"
-          onClick={handleNavigate}
-          startIcon={<EditIcon />}
-          sx={{
-            color: '#ffffff',
-            borderColor: 'rgba(255, 255, 255, 0.3)',
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            borderRadius: '12px',
-            padding: '12px 24px',
-            textTransform: 'none',
-            fontWeight: 500,
-            marginBottom: 4,
-            backdropFilter: 'blur(10px)',
-            fontSize: '0.95rem',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              borderColor: 'rgba(255, 255, 255, 0.5)',
-              transform: 'translateY(-2px)',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
-            }
-          }}
-        >
-          Go to Text Editor
-        </Button>
+   
 
         <Box 
           sx={{ 
