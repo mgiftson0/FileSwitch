@@ -6,3 +6,4 @@ beautifulsoup4==4.12.2
 reportlab==4.0.4
 weasyprint==60.2
 werkzeug==2.3.7
+gunicorn==21.2.0
