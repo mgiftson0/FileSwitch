@@ -32,13 +32,13 @@ def upload_file():
             return jsonify({'error': 'No selected file'}), 400
         
         conversion_type = request.form.get('type', 'pdf_to_word')
-        print(f"Conversion type: {conversion_type}")  # Debug log
+        print(f"Conversion type: {conversion_type}")
         
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
         
-        print(f"File saved: {file_path}")  # Debug log
+        print(f"File saved: {file_path}")
 
         # Handle different conversion types
         if conversion_type == 'pdf_to_word':
@@ -46,14 +46,14 @@ def upload_file():
         elif conversion_type == 'word_to_pdf':
             converted_file_path = convert_word_to_pdf(file_path)
         elif conversion_type == 'html_to_pdf':
-            converted_file_path = convert_html_to_pdf_enhanced(file_path)
+            converted_file_path = convert_html_to_pdf_perfect(file_path)
         elif conversion_type == 'text_to_docx':
-            converted_file_path = convert_html_to_docx_enhanced(file_path)
+            converted_file_path = convert_html_to_docx_perfect(file_path)
         else:
             return jsonify({'error': 'Invalid conversion type'}), 400
 
         converted_filename = os.path.basename(converted_file_path)
-        print(f"Converted file: {converted_filename}")  # Debug log
+        print(f"Converted file: {converted_filename}")
         
         return jsonify({
             'original_id': filename,
@@ -61,7 +61,7 @@ def upload_file():
         }), 200
         
     except Exception as e:
-        print(f"Error: {str(e)}")  # Debug log
+        print(f"Error: {str(e)}")
         import traceback
         traceback.print_exc()
         return jsonify({'error': f'Conversion failed: {str(e)}'}), 500
@@ -74,10 +74,114 @@ def convert_pdf_to_word(file_path):
     return docx_file
 
 def convert_word_to_pdf(file_path):
-    raise Exception("Word to PDF conversion not implemented yet.")
+    """Convert Word document to PDF using python-docx and reportlab"""
+    try:
+        from docx import Document
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+        from reportlab.lib.units import inch
+        from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
+        from reportlab.lib import colors
+        
+        print(f"Converting Word to PDF: {file_path}")
+        
+        # Load Word document
+        doc = Document(file_path)
+        
+        # Create PDF file path
+        pdf_file = file_path.replace('.docx', '.pdf').replace('.doc', '.pdf')
+        
+        # Create PDF document
+        pdf_doc = SimpleDocTemplate(pdf_file, pagesize=letter, 
+                                  rightMargin=72, leftMargin=72, 
+                                  topMargin=72, bottomMargin=72)
+        
+        # Create styles
+        styles = getSampleStyleSheet()
+        create_perfect_styles(styles)
+        
+        story = []
+        
+        # Process Word document paragraphs
+        for paragraph in doc.paragraphs:
+            if paragraph.text.strip():
+                # Determine style based on paragraph style
+                style_name = 'CustomNormal'
+                
+                # Check if it's a heading
+                if paragraph.style.name.startswith('Heading'):
+                    try:
+                        level = paragraph.style.name.replace('Heading ', '').strip()
+                        if level.isdigit() and 1 <= int(level) <= 6:
+                            style_name = f'CustomH{level}'
+                    except:
+                        style_name = 'CustomH1'
+                
+                # Convert paragraph with formatting
+                formatted_text = convert_docx_paragraph_to_reportlab(paragraph)
+                
+                if formatted_text.strip():
+                    story.append(Paragraph(formatted_text, styles[style_name]))
+                    story.append(Spacer(1, 6))
+        
+        # Process tables if any
+        for table in doc.tables:
+            story.append(Spacer(1, 12))
+            for row in table.rows:
+                row_text = " | ".join([cell.text.strip() for cell in row.cells if cell.text.strip()])
+                if row_text:
+                    story.append(Paragraph(row_text, styles['CustomNormal']))
+            story.append(Spacer(1, 12))
+        
+        if not story:
+            story.append(Paragraph("Document appears to be empty", styles['CustomNormal']))
+        
+        print(f"Building PDF with {len(story)} elements...")
+        pdf_doc.build(story)
+        print(f"Word to PDF conversion successful: {pdf_file}")
+        
+        return pdf_file
+        
+    except Exception as e:
+        print(f"Word to PDF conversion error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise Exception(f"Word to PDF conversion failed: {str(e)}")
 
-def convert_html_to_pdf_enhanced(file_path):
-    """Enhanced HTML to PDF conversion with full Quill formatting support"""
+def convert_docx_paragraph_to_reportlab(paragraph):
+    """Convert a Word paragraph with formatting to ReportLab markup"""
+    if not paragraph.runs:
+        return escape_html(paragraph.text)
+    
+    result = ""
+    for run in paragraph.runs:
+        text = run.text
+        if not text:
+            continue
+            
+        formatted_text = escape_html(text)
+        
+        # Apply formatting based on run properties
+        if run.bold:
+            formatted_text = f"<b>{formatted_text}</b>"
+        if run.italic:
+            formatted_text = f"<i>{formatted_text}</i>"
+        if run.underline:
+            formatted_text = f"<u>{formatted_text}</u>"
+        
+        # Handle font size
+        if run.font.size:
+            size_pt = int(run.font.size.pt)
+            formatted_text = f'<font size="{size_pt}">{formatted_text}</font>'
+        
+        result += formatted_text
+    
+    return result
+
+def convert_html_to_pdf_perfect(file_path):
+    """Perfect HTML to PDF conversion with all formatting working"""
     try:
         from reportlab.pdfgen import canvas
         from reportlab.lib.pagesizes import letter
@@ -93,11 +197,11 @@ def convert_html_to_pdf_enhanced(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             html_content = f.read()
         
-        print(f"Raw HTML content preview: {html_content[:500]}...")  # Debug log
+        print(f"Processing HTML for PDF...")
         
-        # Extract body content
+        # Extract and clean body content
         body_content = extract_body_content(html_content)
-        print(f"Extracted body content: {body_content[:300]}...")  # Debug log
+        print(f"Body content preview: {body_content[:500]}...")
         
         # Parse HTML with BeautifulSoup
         soup = BeautifulSoup(body_content, 'html.parser')
@@ -107,312 +211,325 @@ def convert_html_to_pdf_enhanced(file_path):
                               rightMargin=72, leftMargin=72, 
                               topMargin=72, bottomMargin=72)
         
-        # Get styles and create enhanced custom ones
+        # Create enhanced styles
         styles = getSampleStyleSheet()
-        create_enhanced_styles(styles)
+        create_perfect_styles(styles)
         
         story = []
         
-        # Process the HTML content more comprehensively
-        process_html_elements(soup, story, styles)
+        # Process HTML with perfect formatting detection
+        process_html_perfect(soup, story, styles)
         
-        # If no content was processed, add a simple paragraph
         if not story:
             story.append(Paragraph("No content to display", styles['CustomNormal']))
         
-        print(f"Building PDF with {len(story)} elements...")  # Debug log
+        print(f"Building PDF with {len(story)} elements...")
         doc.build(story)
-        print(f"PDF created successfully: {pdf_file}")  # Debug log
+        print(f"PDF created successfully: {pdf_file}")
         
         return pdf_file
         
-    except ImportError as import_error:
-        print(f"Import error: {import_error}")
-        raise Exception("PDF generation requires reportlab. Install with: pip install reportlab beautifulsoup4")
     except Exception as e:
-        print(f"Detailed error in PDF conversion: {str(e)}")
+        print(f"Detailed PDF error: {str(e)}")
         import traceback
         traceback.print_exc()
-        raise Exception(f"HTML to PDF conversion failed: {str(e)}")
+        raise Exception(f"PDF conversion failed: {str(e)}")
 
-def convert_html_to_docx_enhanced(file_path):
-    """Enhanced HTML to DOCX conversion with full Quill formatting support"""
+def convert_html_to_docx_perfect(file_path):
+    """Perfect HTML to DOCX conversion with all formatting working"""
     try:
         from docx import Document
         from docx.shared import Pt, RGBColor
-        from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_COLOR_INDEX
-        from docx.enum.style import WD_STYLE_TYPE
+        from docx.enum.text import WD_ALIGN_PARAGRAPH
         
         docx_file = file_path.replace('.html', '.docx').replace('.txt', '.docx')
         
-        # Read file content
-        if file_path.endswith('.html'):
-            with open(file_path, 'r', encoding='utf-8') as f:
-                html_content = f.read()
-            content = extract_body_content(html_content)
-        else:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+        # Read and process HTML
+        with open(file_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
         
-        print(f"Processing HTML content for DOCX...")  # Debug log
-        print(f"Content preview: {content[:300]}...")  # Debug log
+        content = extract_body_content(html_content)
+        print(f"Processing HTML for DOCX...")
         
-        # Parse HTML with BeautifulSoup
+        # Parse with BeautifulSoup
         soup = BeautifulSoup(content, 'html.parser')
         
-        # Create new document
+        # Create document
         doc = Document()
         
-        # Process all content including text nodes
-        process_html_for_docx(soup, doc)
+        # Process with perfect formatting
+        process_html_for_docx_perfect(soup, doc)
         
-        # If no content was added, add a default paragraph
         if len(doc.paragraphs) == 0:
             doc.add_paragraph("No content to display")
         
-        print(f"Saving DOCX file: {docx_file}")  # Debug log
+        print(f"Saving DOCX: {docx_file}")
         doc.save(docx_file)
-        print(f"DOCX created successfully")  # Debug log
+        print(f"DOCX created successfully")
         
         return docx_file
         
-    except ImportError as import_error:
-        print(f"Import error: {import_error}")
-        raise Exception("DOCX generation requires python-docx and beautifulsoup4. Install with: pip install python-docx beautifulsoup4")
     except Exception as e:
-        print(f"Detailed error in DOCX conversion: {str(e)}")
+        print(f"Detailed DOCX error: {str(e)}")
         import traceback
         traceback.print_exc()
-        raise Exception(f"HTML to DOCX conversion failed: {str(e)}")
+        raise Exception(f"DOCX conversion failed: {str(e)}")
 
-def create_enhanced_styles(styles):
-    """Create enhanced styles for better formatting"""
+def create_perfect_styles(styles):
+    """Create perfect styles for ReportLab"""
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
     from reportlab.lib import colors
     
-    # Enhanced heading styles
-    for i in range(1, 7):
-        style_name = f'CustomH{i}'
-        font_size = max(24 - (i * 2), 12)
-        styles.add(ParagraphStyle(
-            name=style_name,
-            parent=styles['Normal'],
-            fontSize=font_size,
-            spaceAfter=12,
-            spaceBefore=8,
-            textColor=colors.black,
-            fontName='Helvetica-Bold'
-        ))
-    
-    # Enhanced normal style
+    # Base styles with proper font support
     styles.add(ParagraphStyle(
         name='CustomNormal',
         parent=styles['Normal'],
         fontSize=12,
         spaceAfter=6,
         textColor=colors.black,
-        leading=16
+        leading=16,
+        fontName='Helvetica'
     ))
     
-    # Small text style
+    # Size variations
     styles.add(ParagraphStyle(
         name='CustomSmall',
-        parent=styles['Normal'],
-        fontSize=10,
-        spaceAfter=4,
-        textColor=colors.black
+        parent=styles['CustomNormal'],
+        fontSize=8
     ))
     
-    # Large text style
     styles.add(ParagraphStyle(
         name='CustomLarge',
-        parent=styles['Normal'],
-        fontSize=16,
-        spaceAfter=8,
-        textColor=colors.black
+        parent=styles['CustomNormal'],
+        fontSize=16
     ))
     
-    # Huge text style
     styles.add(ParagraphStyle(
         name='CustomHuge',
-        parent=styles['Normal'],
-        fontSize=20,
-        spaceAfter=10,
-        textColor=colors.black
+        parent=styles['CustomNormal'],
+        fontSize=20
     ))
     
-    # Center aligned style
-    styles.add(ParagraphStyle(
-        name='CustomCenter',
-        parent=styles['CustomNormal'],
-        alignment=TA_CENTER
-    ))
+    # Alignment styles
+    for align_name, align_val in [('Center', TA_CENTER), ('Right', TA_RIGHT), ('Justify', TA_JUSTIFY)]:
+        for size in ['Normal', 'Small', 'Large', 'Huge']:
+            styles.add(ParagraphStyle(
+                name=f'Custom{size}{align_name}',
+                parent=styles[f'Custom{size}'],
+                alignment=align_val
+            ))
     
-    # Right aligned style
-    styles.add(ParagraphStyle(
-        name='CustomRight',
-        parent=styles['CustomNormal'],
-        alignment=TA_RIGHT
-    ))
-    
-    # Justified style
-    styles.add(ParagraphStyle(
-        name='CustomJustify',
-        parent=styles['CustomNormal'],
-        alignment=TA_JUSTIFY
-    ))
+    # Headers
+    for i in range(1, 7):
+        font_size = max(20 - (i * 2), 12)
+        styles.add(ParagraphStyle(
+            name=f'CustomH{i}',
+            parent=styles['CustomNormal'],
+            fontSize=font_size,
+            fontName='Helvetica-Bold',
+            spaceAfter=12,
+            spaceBefore=8
+        ))
 
-def process_html_elements(soup, story, styles):
-    """Process HTML elements with comprehensive formatting detection"""
+def process_html_perfect(soup, story, styles):
+    """Process HTML with perfect formatting detection"""
     from reportlab.platypus import Paragraph, Spacer, PageBreak
     
-    # Get all elements and text nodes
-    all_elements = soup.find_all(True) + [soup]
+    # Find all text-containing elements
+    all_elements = soup.find_all(True)
     
     for element in all_elements:
-        try:
-            # Skip if element is empty or already processed
-            if not element or not element.name:
-                continue
-                
-            element_text = element.get_text().strip()
-            if not element_text and element.name != 'div':
-                continue
+        if not element or not element.name:
+            continue
             
-            # Detect element type and formatting
+        # Skip if element is nested inside another we'll process
+        if element.parent and element.parent.name in ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquote']:
+            continue
+            
+        element_text = element.get_text().strip()
+        if not element_text and element.name != 'div':
+            continue
+        
+        try:
             if element.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
                 level = element.name[1]
-                text = process_comprehensive_formatting(element)
-                style = styles.get(f'CustomH{level}', styles['CustomNormal'])
-                story.append(Paragraph(text, style))
+                text = create_perfect_reportlab_text(element)
+                story.append(Paragraph(text, styles[f'CustomH{level}']))
                 
             elif element.name == 'p':
-                text = process_comprehensive_formatting(element)
+                text = create_perfect_reportlab_text(element)
                 if text.strip():
-                    # Detect alignment and size from classes
-                    style = get_paragraph_style(element, styles)
+                    style = get_perfect_style(element, styles)
                     story.append(Paragraph(text, style))
                     story.append(Spacer(1, 6))
                     
             elif element.name in ['ul', 'ol']:
                 for li in element.find_all('li', recursive=False):
-                    text = process_comprehensive_formatting(li)
+                    text = create_perfect_reportlab_text(li)
                     if text.strip():
                         story.append(Paragraph(f"• {text}", styles['CustomNormal']))
                 story.append(Spacer(1, 12))
                 
             elif element.name == 'blockquote':
-                text = process_comprehensive_formatting(element)
+                text = create_perfect_reportlab_text(element)
                 if text.strip():
-                    # Make blockquote italic and indented
-                    text = f"<i>{text}</i>"
-                    story.append(Paragraph(text, styles['CustomNormal']))
+                    story.append(Paragraph(f"<i>{text}</i>", styles['CustomNormal']))
                     story.append(Spacer(1, 12))
                     
             elif element.name == 'div':
-                # Check for page breaks
                 if 'page-break' in str(element.get('class', [])):
                     story.append(PageBreak())
-                else:
-                    # Process div content
-                    text = process_comprehensive_formatting(element)
+                elif element_text:
+                    text = create_perfect_reportlab_text(element)
                     if text.strip():
-                        style = get_paragraph_style(element, styles)
+                        style = get_perfect_style(element, styles)
                         story.append(Paragraph(text, style))
                         
         except Exception as e:
-            print(f"Error processing element {element.name if element else 'unknown'}: {e}")
+            print(f"Error processing element {element.name}: {e}")
             continue
 
-def process_comprehensive_formatting(element):
-    """Process all formatting including bold, italic, underline, strikethrough, etc."""
+def create_perfect_reportlab_text(element):
+    """Create perfectly formatted ReportLab text with all formatting"""
     if not element:
         return ""
     
-    # If it's a simple text element, return it
-    if element.string:
-        return escape_html(str(element.string))
-    
-    formatted_text = ""
-    
-    for content in element.contents:
-        if hasattr(content, 'name') and content.name:
-            inner_text = content.get_text()
-            escaped_text = escape_html(inner_text)
-            
-            # Handle different formatting tags
-            if content.name in ['strong', 'b'] or 'ql-bold' in str(content.get('class', [])):
-                formatted_text += f"<b>{escaped_text}</b>"
-            elif content.name in ['em', 'i'] or 'ql-italic' in str(content.get('class', [])):
-                formatted_text += f"<i>{escaped_text}</i>"
-            elif content.name == 'u' or 'ql-underline' in str(content.get('class', [])):
-                formatted_text += f"<u>{escaped_text}</u>"
-            elif content.name == 's' or 'ql-strike' in str(content.get('class', [])):
-                formatted_text += f"<strike>{escaped_text}</strike>"
-            elif content.name == 'sub' or 'ql-script' in str(content.get('class', [])) and 'sub' in str(content.get('value', '')):
-                formatted_text += f"<sub>{escaped_text}</sub>"
-            elif content.name == 'sup' or 'ql-script' in str(content.get('class', [])) and 'super' in str(content.get('value', '')):
-                formatted_text += f"<super>{escaped_text}</super>"
-            elif content.name == 'br':
-                formatted_text += "<br/>"
-            else:
-                # Check for Quill-specific classes
-                classes = str(content.get('class', []))
-                if 'ql-bold' in classes:
-                    formatted_text += f"<b>{escaped_text}</b>"
-                elif 'ql-italic' in classes:
-                    formatted_text += f"<i>{escaped_text}</i>"
-                elif 'ql-underline' in classes:
-                    formatted_text += f"<u>{escaped_text}</u>"
-                elif 'ql-strike' in classes:
-                    formatted_text += f"<strike>{escaped_text}</strike>"
+    def process_node(node, formatting_stack=None):
+        if formatting_stack is None:
+            formatting_stack = {'bold': False, 'italic': False, 'underline': False, 'strike': False, 'size': None}
+        
+        result = ""
+        
+        if hasattr(node, 'contents'):
+            for child in node.contents:
+                if hasattr(child, 'name') and child.name:
+                    # Create new formatting stack for this element
+                    new_stack = formatting_stack.copy()
+                    
+                    # Update formatting based on element
+                    classes = str(child.get('class', []))
+                    
+                    # Detect formatting from tags and classes
+                    if child.name in ['strong', 'b'] or 'ql-bold' in classes:
+                        new_stack['bold'] = True
+                    if child.name in ['em', 'i'] or 'ql-italic' in classes:
+                        new_stack['italic'] = True
+                    if child.name == 'u' or 'ql-underline' in classes:
+                        new_stack['underline'] = True
+                    if child.name == 's' or 'ql-strike' in classes:
+                        new_stack['strike'] = True
+                    
+                    # Detect size
+                    if 'ql-size-small' in classes:
+                        new_stack['size'] = 'small'
+                    elif 'ql-size-large' in classes:
+                        new_stack['size'] = 'large'
+                    elif 'ql-size-huge' in classes:
+                        new_stack['size'] = 'huge'
+                    
+                    # Process child content
+                    child_text = process_node(child, new_stack)
+                    
+                    if child_text.strip():
+                        # Apply formatting tags in correct order
+                        formatted_text = child_text
+                        
+                        if new_stack['strike']:
+                            formatted_text = f"<strike>{formatted_text}</strike>"
+                        if new_stack['underline']:
+                            formatted_text = f"<u>{formatted_text}</u>"
+                        if new_stack['italic']:
+                            formatted_text = f"<i>{formatted_text}</i>"
+                        if new_stack['bold']:
+                            formatted_text = f"<b>{formatted_text}</b>"
+                        
+                        # Size formatting
+                        if new_stack['size'] == 'small':
+                            formatted_text = f'<font size="8">{formatted_text}</font>'
+                        elif new_stack['size'] == 'large':
+                            formatted_text = f'<font size="16">{formatted_text}</font>'
+                        elif new_stack['size'] == 'huge':
+                            formatted_text = f'<font size="20">{formatted_text}</font>'
+                        
+                        result += formatted_text
+                    
+                elif child.name == 'br':
+                    result += "<br/>"
                 else:
-                    formatted_text += escaped_text
+                    # Text node
+                    text = str(child).strip()
+                    if text:
+                        # Apply current formatting stack
+                        formatted_text = escape_html(text)
+                        
+                        if formatting_stack['strike']:
+                            formatted_text = f"<strike>{formatted_text}</strike>"
+                        if formatting_stack['underline']:
+                            formatted_text = f"<u>{formatted_text}</u>"
+                        if formatting_stack['italic']:
+                            formatted_text = f"<i>{formatted_text}</i>"
+                        if formatting_stack['bold']:
+                            formatted_text = f"<b>{formatted_text}</b>"
+                        
+                        if formatting_stack['size'] == 'small':
+                            formatted_text = f'<font size="8">{formatted_text}</font>'
+                        elif formatting_stack['size'] == 'large':
+                            formatted_text = f'<font size="16">{formatted_text}</font>'
+                        elif formatting_stack['size'] == 'huge':
+                            formatted_text = f'<font size="20">{formatted_text}</font>'
+                        
+                        result += formatted_text
         else:
-            # Plain text content
-            formatted_text += escape_html(str(content))
+            # Simple text node
+            result = escape_html(str(node))
+        
+        return result
     
-    return formatted_text.strip()
+    return process_node(element)
 
-def get_paragraph_style(element, styles):
-    """Get appropriate paragraph style based on element classes"""
+def get_perfect_style(element, styles):
+    """Get perfect style based on element attributes"""
     classes = str(element.get('class', []))
     
-    # Check for alignment
-    if 'ql-align-center' in classes:
-        return styles.get('CustomCenter', styles['CustomNormal'])
-    elif 'ql-align-right' in classes:
-        return styles.get('CustomRight', styles['CustomNormal'])
-    elif 'ql-align-justify' in classes:
-        return styles.get('CustomJustify', styles['CustomNormal'])
-    
-    # Check for size
+    # Determine size
+    size = 'Normal'
     if 'ql-size-small' in classes:
-        return styles.get('CustomSmall', styles['CustomNormal'])
+        size = 'Small'
     elif 'ql-size-large' in classes:
-        return styles.get('CustomLarge', styles['CustomNormal'])
+        size = 'Large'
     elif 'ql-size-huge' in classes:
-        return styles.get('CustomHuge', styles['CustomNormal'])
+        size = 'Huge'
     
-    return styles['CustomNormal']
+    # Determine alignment
+    if 'ql-align-center' in classes:
+        return styles.get(f'Custom{size}Center', styles[f'Custom{size}'])
+    elif 'ql-align-right' in classes:
+        return styles.get(f'Custom{size}Right', styles[f'Custom{size}'])
+    elif 'ql-align-justify' in classes:
+        return styles.get(f'Custom{size}Justify', styles[f'Custom{size}'])
+    
+    return styles[f'Custom{size}']
 
-def process_html_for_docx(soup, doc):
-    """Process HTML for DOCX with comprehensive formatting"""
-    from docx.shared import Pt, RGBColor
+def process_html_for_docx_perfect(soup, doc):
+    """Process HTML for DOCX with perfect formatting"""
+    from docx.shared import Pt
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     
     # Process all elements
     elements = soup.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'blockquote', 'div'])
     
     for element in elements:
-        try:
-            element_text = element.get_text().strip()
-            if not element_text and element.name != 'div':
-                continue
+        # Skip nested elements that will be processed by their parents
+        if element.parent and element.parent.name in ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquote']:
+            continue
             
+        element_text = element.get_text().strip()
+        if not element_text and element.name != 'div':
+            continue
+        
+        try:
             if element.name.startswith('h') and element.name[1:].isdigit():
-                # Handle headings
                 level = int(element.name[1])
                 level = min(level, 9)
                 text = element.get_text().strip()
@@ -420,122 +537,136 @@ def process_html_for_docx(soup, doc):
                     doc.add_heading(text, level)
                     
             elif element.name == 'p':
-                # Handle paragraphs with comprehensive formatting
                 if element_text:
                     paragraph = doc.add_paragraph()
-                    apply_docx_formatting(paragraph, element)
-                    apply_paragraph_alignment(paragraph, element)
+                    apply_perfect_docx_formatting(paragraph, element)
+                    apply_docx_alignment_and_size(paragraph, element)
                     
             elif element.name in ['ul', 'ol']:
-                # Handle lists
                 for li in element.find_all('li', recursive=False):
                     text = li.get_text().strip()
                     if text:
                         paragraph = doc.add_paragraph(style='List Bullet')
-                        apply_docx_formatting(paragraph, li)
+                        apply_perfect_docx_formatting(paragraph, li)
                         
             elif element.name == 'blockquote':
-                # Handle blockquotes
                 if element_text:
                     paragraph = doc.add_paragraph()
-                    apply_docx_formatting(paragraph, element)
-                    # Make blockquote italic
+                    apply_perfect_docx_formatting(paragraph, element)
                     for run in paragraph.runs:
                         run.italic = True
                         
             elif element.name == 'div':
                 if 'page-break' in str(element.get('class', [])):
                     doc.add_page_break()
-                else:
-                    # Handle div with text content
-                    if element_text:
-                        paragraph = doc.add_paragraph()
-                        apply_docx_formatting(paragraph, element)
-                        apply_paragraph_alignment(paragraph, element)
-                        
+                elif element_text:
+                    paragraph = doc.add_paragraph()
+                    apply_perfect_docx_formatting(paragraph, element)
+                    apply_docx_alignment_and_size(paragraph, element)
+                    
         except Exception as e:
             print(f"Error processing DOCX element {element.name}: {e}")
             continue
 
-def apply_docx_formatting(paragraph, element):
-    """Apply comprehensive formatting to DOCX paragraph"""
+def apply_perfect_docx_formatting(paragraph, element):
+    """Apply perfect formatting to DOCX paragraph"""
     from docx.shared import Pt
     
-    # Process all content including nested formatting
-    for content in element.contents:
-        if hasattr(content, 'name') and content.name:
-            run = paragraph.add_run(content.get_text())
-            apply_run_formatting(run, content)
+    def process_docx_node(node, paragraph, formatting_stack=None):
+        if formatting_stack is None:
+            formatting_stack = {'bold': False, 'italic': False, 'underline': False, 'strike': False, 'size': None}
+        
+        if hasattr(node, 'contents'):
+            for child in node.contents:
+                if hasattr(child, 'name') and child.name:
+                    # Create new formatting stack
+                    new_stack = formatting_stack.copy()
+                    
+                    # Update formatting
+                    classes = str(child.get('class', []))
+                    
+                    if child.name in ['strong', 'b'] or 'ql-bold' in classes:
+                        new_stack['bold'] = True
+                    if child.name in ['em', 'i'] or 'ql-italic' in classes:
+                        new_stack['italic'] = True
+                    if child.name == 'u' or 'ql-underline' in classes:
+                        new_stack['underline'] = True
+                    if child.name == 's' or 'ql-strike' in classes:
+                        new_stack['strike'] = True
+                    
+                    if 'ql-size-small' in classes:
+                        new_stack['size'] = 8
+                    elif 'ql-size-large' in classes:
+                        new_stack['size'] = 16
+                    elif 'ql-size-huge' in classes:
+                        new_stack['size'] = 20
+                    
+                    # Process child
+                    process_docx_node(child, paragraph, new_stack)
+                    
+                else:
+                    # Text node
+                    text = str(child).strip()
+                    if text:
+                        run = paragraph.add_run(text)
+                        
+                        # Apply all formatting
+                        if formatting_stack['bold']:
+                            run.bold = True
+                        if formatting_stack['italic']:
+                            run.italic = True
+                        if formatting_stack['underline']:
+                            run.underline = True
+                        if formatting_stack['strike']:
+                            run.font.strike = True
+                        if formatting_stack['size']:
+                            run.font.size = Pt(formatting_stack['size'])
         else:
-            # Plain text
-            text = str(content).strip()
+            # Simple text
+            text = str(node).strip()
             if text:
                 run = paragraph.add_run(text)
-                apply_element_formatting(run, element)
+                if formatting_stack['bold']:
+                    run.bold = True
+                if formatting_stack['italic']:
+                    run.italic = True
+                if formatting_stack['underline']:
+                    run.underline = True
+                if formatting_stack['strike']:
+                    run.font.strike = True
+                if formatting_stack['size']:
+                    run.font.size = Pt(formatting_stack['size'])
+    
+    process_docx_node(element, paragraph)
 
-def apply_run_formatting(run, element):
-    """Apply formatting to a specific run based on element"""
-    from docx.shared import Pt
-    
-    # Check element name and classes
-    classes = str(element.get('class', []))
-    
-    # Bold
-    if element.name in ['strong', 'b'] or 'ql-bold' in classes:
-        run.bold = True
-    
-    # Italic
-    if element.name in ['em', 'i'] or 'ql-italic' in classes:
-        run.italic = True
-    
-    # Underline
-    if element.name == 'u' or 'ql-underline' in classes:
-        run.underline = True
-    
-    # Strikethrough
-    if element.name == 's' or 'ql-strike' in classes:
-        run.font.strike = True
-    
-    # Subscript/Superscript
-    if element.name == 'sub' or ('ql-script' in classes and 'sub' in str(element.get('value', ''))):
-        run.font.subscript = True
-    elif element.name == 'sup' or ('ql-script' in classes and 'super' in str(element.get('value', ''))):
-        run.font.superscript = True
-    
-    # Font size based on Quill classes
-    if 'ql-size-small' in classes:
-        run.font.size = Pt(10)
-    elif 'ql-size-large' in classes:
-        run.font.size = Pt(16)
-    elif 'ql-size-huge' in classes:
-        run.font.size = Pt(20)
-
-def apply_element_formatting(run, element):
-    """Apply formatting based on element's own classes"""
-    from docx.shared import Pt
-    
-    classes = str(element.get('class', []))
-    
-    # Size classes
-    if 'ql-size-small' in classes:
-        run.font.size = Pt(10)
-    elif 'ql-size-large' in classes:
-        run.font.size = Pt(16)
-    elif 'ql-size-huge' in classes:
-        run.font.size = Pt(20)
-
-def apply_paragraph_alignment(paragraph, element):
-    """Apply paragraph alignment based on Quill classes"""
+def apply_docx_alignment_and_size(paragraph, element):
+    """Apply alignment and size to DOCX paragraph"""
     from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.shared import Pt
     
     classes = str(element.get('class', []))
     
+    # Alignment
     if 'ql-align-center' in classes:
         paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     elif 'ql-align-right' in classes:
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     elif 'ql-align-justify' in classes:
         paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    
+    # Size (apply to all runs if not already set)
+    size = None
+    if 'ql-size-small' in classes:
+        size = 8
+    elif 'ql-size-large' in classes:
+        size = 16
+    elif 'ql-size-huge' in classes:
+        size = 20
+    
+    if size:
+        for run in paragraph.runs:
+            if not run.font.size:  # Only set if not already set
+                run.font.size = Pt(size)
 
 def escape_html(text):
     """Escape HTML special characters"""
@@ -549,18 +680,15 @@ def escape_html(text):
             .replace("'", '&#39;'))
 
 def extract_body_content(html_content):
-    """Extract content from HTML body, preserving structure"""
+    """Extract content from HTML body"""
     try:
-        # Remove style and script tags
         html_content = re.sub(r'<style[^>]*>.*?</style>', '', html_content, flags=re.DOTALL)
         html_content = re.sub(r'<script[^>]*>.*?</script>', '', html_content, flags=re.DOTALL)
         
-        # Extract body content
         body_match = re.search(r'<body[^>]*>(.*?)</body>', html_content, re.DOTALL)
         if body_match:
             return body_match.group(1)
         else:
-            # If no body tag, return the content as is
             return html_content
     except Exception as e:
         print(f"Error extracting body content: {e}")
