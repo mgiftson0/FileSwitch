@@ -91,7 +91,7 @@ const Footer = () => {
         
         <IconButton 
           component="a" 
-          href="https://www.instagram.com/msabali_" 
+          href="/" 
           target="_blank" 
           rel="noopener noreferrer"
           sx={{
@@ -114,7 +114,7 @@ const Footer = () => {
       <Box>
         <Typography
           component="a"
-          href="https://www.example.com"
+          href="https://sabali-mu.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           sx={{
