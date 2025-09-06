@@ -12,6 +12,9 @@ const TextEditorPage = () => {
   const [quillInstance, setQuillInstance] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // API base URL - updated to your Render backend
+  const API_BASE_URL = 'https://fileswitch-8zjy.onrender.com';
+
   // Function to get raw HTML from Quill editor preserving all formatting
   const getFormattedHTML = () => {
     if (quillInstance) {
@@ -170,7 +173,8 @@ ${html}
         formData.append('type', 'text_to_docx');
       }
 
-      const response = await fetch('http://127.0.0.1:5000/upload', {
+      // Updated API URL
+      const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -182,8 +186,8 @@ ${html}
       const result = await response.json();
 
       if (result.converted_id) {
-        // Download the converted file
-        const downloadResponse = await fetch(`http://127.0.0.1:5000/download/${result.converted_id}`);
+        // Updated download URL
+        const downloadResponse = await fetch(`${API_BASE_URL}/download/${result.converted_id}`);
 
         if (downloadResponse.ok) {
           const blob = await downloadResponse.blob();
