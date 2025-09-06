@@ -114,7 +114,7 @@ const Footer = () => {
       <Box>
         <Typography
           component="a"
-          href="https://sabali-mu.vercel.app/"
+          href="/"
           target="_blank"
           rel="noopener noreferrer"
           sx={{
