@@ -3,6 +3,18 @@ import 'react-quill/dist/quill.snow.css';
 import Quill from 'quill';
 import { useRef, useEffect, useCallback, useMemo } from 'react';
 
+// Suppress findDOMNode warning from ReactQuill
+const originalError = console.error;
+console.error = (...args) => {
+  if (
+    typeof args[0] === 'string' &&
+    args[0].includes('findDOMNode is deprecated')
+  ) {
+    return;
+  }
+  originalError.apply(console, args);
+};
+
 // Define custom Blots for page breaks (only register once)
 let PageBreakRegistered = false;
 
@@ -24,10 +36,9 @@ const registerPageBreak = () => {
   PageBreak.tagName = 'div';
   
   try {
-    Quill.register(PageBreak, true); // true to suppress overwrite warnings
+    Quill.register(PageBreak, true);
     PageBreakRegistered = true;
   } catch (error) {
-    // Already registered, ignore
     PageBreakRegistered = true;
   }
 };
@@ -38,7 +49,7 @@ registerPageBreak();
 const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
   const quillRef = useRef(null);
 
-  // Memoize modules to prevent recreation on every render
+  // Memoize modules - don't include undo/redo as toolbar handlers since they're not valid formats
   const modules = useMemo(() => ({
     toolbar: {
       container: '#toolbar',
@@ -55,14 +66,12 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
           const pageBreak = { insert: '\n', attributes: { 'page-break': true } };
           const newPageContent = { insert: '\n\n\n' };
           
-          // Insert page break and new content
           this.quill.updateContents([
             ...currentContent.ops,
             pageBreak,
             newPageContent
           ]);
           
-          // Move cursor to the new page
           const length = this.quill.getLength();
           this.quill.setSelection(length - 1);
           this.quill.focus();
@@ -76,7 +85,7 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
     }
   }), []);
 
-  // Memoize formats array
+  // Memoize formats array - exclude undo/redo since they cause warnings
   const formats = useMemo(() => [
     'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike',
     'color', 'background', 'script', 'align', 'direction', 'indent',
@@ -84,37 +93,31 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
     'clean', 'page-break'
   ], []);
 
-  // Use ref callback to get the quill instance
-  const quillRefCallback = useCallback((ref) => {
-    if (ref) {
-      quillRef.current = ref;
-      const editor = ref.getEditor();
+  // Use callback ref
+  const handleQuillRef = useCallback((reactQuillComponent) => {
+    if (reactQuillComponent) {
+      quillRef.current = reactQuillComponent;
+      const editor = reactQuillComponent.getEditor();
       setQuillInstance(editor);
     }
   }, [setQuillInstance]);
 
-  // Add custom toolbar handlers after component mounts
+  // Add handlers for undo/redo buttons
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
       
-      // Add undo/redo button handlers
       const addButtonHandler = (selector, action) => {
         const button = document.querySelector(selector);
-        if (button) {
-          // Remove existing listeners to prevent duplicates
-          button.replaceWith(button.cloneNode(true));
-          const newButton = document.querySelector(selector);
-          if (newButton) {
-            newButton.addEventListener('click', (e) => {
-              e.preventDefault();
-              action(editor);
-            });
-          }
+        if (button && !button.dataset.listenerAdded) {
+          button.dataset.listenerAdded = 'true';
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            action(editor);
+          });
         }
       };
 
-      // Add handlers with a small delay to ensure toolbar is rendered
       const timer = setTimeout(() => {
         addButtonHandler('.ql-undo', (editor) => {
           editor.history.undo();
@@ -142,7 +145,7 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
         }}
       >
         <ReactQuill
-          ref={quillRefCallback}
+          ref={handleQuillRef}
           theme="snow"
           value={text}
           onChange={setText}
@@ -155,89 +158,91 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
         />
       </div>
       
-      <style jsx>{`
-        .editor-container :global(.ql-container) {
-          border: none !important;
-          font-size: 14px;
-          font-family: 'Inter', system-ui, sans-serif;
-        }
-        
-        .editor-container :global(.ql-editor) {
-          min-height: 70vh;
-          padding: 40px;
-          line-height: 1.6;
-          color: #1f2937;
-          font-size: 14px;
-          max-width: ${pageWidth}px;
-          margin: 0 auto;
-          box-shadow: 0 0 0 1px #e5e7eb;
-          background: #ffffff;
-          border-radius: 4px;
-        }
-        
-        .editor-container :global(.ql-editor.ql-blank::before) {
-          color: #9ca3af;
-          font-style: italic;
-          font-size: 14px;
-        }
-        
-        .editor-container :global(.ql-editor h1) {
-          font-size: 1.875rem;
-          font-weight: 700;
-          margin-bottom: 1rem;
-          color: #111827;
-        }
-        
-        .editor-container :global(.ql-editor h2) {
-          font-size: 1.5rem;
-          font-weight: 600;
-          margin-bottom: 0.75rem;
-          color: #1f2937;
-        }
-        
-        .editor-container :global(.ql-editor h3) {
-          font-size: 1.25rem;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-          color: #374151;
-        }
-        
-        .editor-container :global(.ql-editor p) {
-          margin-bottom: 0.75rem;
-        }
-        
-        .editor-container :global(.ql-editor blockquote) {
-          border-left: 4px solid #e5e7eb;
-          padding-left: 1rem;
-          margin: 1rem 0;
-          font-style: italic;
-          color: #6b7280;
-        }
-        
-        .editor-container :global(.ql-editor ul),
-        .editor-container :global(.ql-editor ol) {
-          padding-left: 1.5rem;
-          margin-bottom: 0.75rem;
-        }
-        
-        .editor-container :global(.ql-editor li) {
-          margin-bottom: 0.25rem;
-        }
-        
-        .editor-container :global(.ql-toolbar) {
-          display: none !important;
-        }
-        
-        .editor-container :global(.page-break) {
-          page-break-after: always;
-          border-top: 2px dashed #ccc;
-          margin: 20px 0;
-          text-align: center;
-          color: #666;
-          font-size: 12px;
-          padding: 10px 0;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .editor-container .ql-container {
+            border: none !important;
+            font-size: 14px;
+            font-family: 'Inter', system-ui, sans-serif;
+          }
+          
+          .editor-container .ql-editor {
+            min-height: 70vh;
+            padding: 40px;
+            line-height: 1.6;
+            color: #1f2937;
+            font-size: 14px;
+            max-width: ${pageWidth}px;
+            margin: 0 auto;
+            box-shadow: 0 0 0 1px #e5e7eb;
+            background: #ffffff;
+            border-radius: 4px;
+          }
+          
+          .editor-container .ql-editor.ql-blank::before {
+            color: #9ca3af;
+            font-style: italic;
+            font-size: 14px;
+          }
+          
+          .editor-container .ql-editor h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #111827;
+          }
+          
+          .editor-container .ql-editor h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+          }
+          
+          .editor-container .ql-editor h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #374151;
+          }
+          
+          .editor-container .ql-editor p {
+            margin-bottom: 0.75rem;
+          }
+          
+          .editor-container .ql-editor blockquote {
+            border-left: 4px solid #e5e7eb;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #6b7280;
+          }
+          
+          .editor-container .ql-editor ul,
+          .editor-container .ql-editor ol {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+          }
+          
+          .editor-container .ql-editor li {
+            margin-bottom: 0.25rem;
+          }
+          
+          .editor-container .ql-toolbar {
+            display: none !important;
+          }
+          
+          .editor-container .page-break {
+            page-break-after: always;
+            border-top: 2px dashed #ccc;
+            margin: 20px 0;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            padding: 10px 0;
+          }
+        `
+      }} />
     </div>
   );
 };
