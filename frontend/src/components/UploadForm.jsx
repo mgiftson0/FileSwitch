@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box,  Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import Header from "../components/Header";
 import FileUploadArea from "./FileUploadArea";
 import ConversionControls from "./ConversionControls";
@@ -11,7 +11,9 @@ const UploadForm = () => {
   const [conversionType, setConversionType] = useState('pdf_to_word');
   const [downloadLinks, setDownloadLinks] = useState({ original: '', converted: '' });
   const [loading, setLoading] = useState(false);
-  // const navigate = useNavigate();
+  
+  // API base URL - updated to your Render backend
+  const API_BASE_URL = 'https://fileswitch-8zjy.onrender.com';
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -34,7 +36,8 @@ const UploadForm = () => {
     formData.append('type', conversionType);
 
     try {
-      const response = await fetch('http://localhost:5000/upload', {
+      // Updated API URL
+      const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -43,19 +46,21 @@ const UploadForm = () => {
         const result = await response.json();
         console.log('Upload successful:', result); 
         setDownloadLinks({
-          original: `http://localhost:5000/download/${result.original_id}`,
-          converted: `http://localhost:5000/download/${result.converted_id}`,
+          // Updated download URLs
+          original: `${API_BASE_URL}/download/${result.original_id}`,
+          converted: `${API_BASE_URL}/download/${result.converted_id}`,
         });
       } else {
         console.error('Upload failed:', response.statusText);
+        alert('Upload failed. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('An error occurred. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <Box 
@@ -84,8 +89,6 @@ const UploadForm = () => {
           marginTop: { xs: '80px', sm: '100px' }
         }}
       >
-   
-
         <Box 
           sx={{ 
             display: 'flex', 

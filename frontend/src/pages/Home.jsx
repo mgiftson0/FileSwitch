@@ -7,8 +7,8 @@ const Home = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundColor: '#121212', // Pure dark background
-        color: 'rgba(255, 255, 255, 0.87)', // Default dark theme text color
+        backgroundColor: '#121212', 
+        color: 'rgba(255, 255, 255, 0.87)', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
