@@ -15,7 +15,7 @@ console.error = (...args) => {
   originalError.apply(console, args);
 };
 
-// Define custom Blots for page breaks (only register once)
+// Define custom Blots for page breaks 
 let PageBreakRegistered = false;
 
 const registerPageBreak = () => {
