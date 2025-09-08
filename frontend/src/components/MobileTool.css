@@ -1,0 +1,177 @@
+/* Mobile Toolbar Bottom Styles - Add this to your existing CSS */
+
+/* Mobile Quick Toolbar at Bottom */
+.mobile-toolbar-bottom {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 8px 12px;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .mobile-toolbar-bottom .mobile-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  
+  .mobile-toolbar-bottom .mobile-toolbar-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .mobile-toolbar-bottom button {
+    flex: 1;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+  }
+  
+  .mobile-toolbar-bottom button:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+  }
+  
+  .mobile-toolbar-bottom button:active {
+    background: #d1d5db;
+    transform: scale(0.98);
+  }
+  
+  .mobile-toolbar-bottom button.active {
+    background: #3b82f6;
+    color: #ffffff;
+    border-color: #2563eb;
+  }
+  
+  .mobile-toolbar-bottom select {
+    flex: 1;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0 8px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-toolbar-bottom select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Font family select - slightly wider */
+  .mobile-toolbar-bottom .mobile-font {
+    min-width: 60px;
+  }
+  
+  /* Size select - smaller */
+  .mobile-toolbar-bottom .mobile-size {
+    min-width: 45px;
+  }
+  
+  /* Align select - medium width */
+  .mobile-toolbar-bottom .mobile-align {
+    min-width: 65px;
+  }
+  
+  /* Animation for toolbar appearance */
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    .mobile-toolbar-bottom {
+      display: block;
+    }
+    
+    /* Add padding to body to prevent content from being hidden behind toolbar */
+    body {
+      padding-bottom: 100px;
+    }
+    
+    /* Adjust editor container for mobile with both toolbars */
+    .editor-wrapper {
+      padding-bottom: 100px;
+    }
+    
+    /* Keep main toolbar exactly as desktop - no scrolling changes */
+    .toolbar-container {
+      /* Remove any mobile-specific modifications - keep it as desktop */
+    }
+    
+    /* Make editor more touch-friendly */
+    .editor-container .ql-editor {
+      padding: 20px;
+      font-size: 16px; /* Prevent zoom on iOS */
+      line-height: 1.5;
+    }
+  }
+  
+  /* Dark theme support */
+  @media (prefers-color-scheme: dark) {
+    .mobile-toolbar-bottom {
+      background: #1f2937;
+      border-top-color: #374151;
+    }
+    
+    .mobile-toolbar-bottom button,
+    .mobile-toolbar-bottom select {
+      background: #374151;
+      color: #f9fafb;
+      border-color: #4b5563;
+    }
+    
+    .mobile-toolbar-bottom button:hover,
+    .mobile-toolbar-bottom select:focus {
+      background: #4b5563;
+      border-color: #6b7280;
+    }
+    
+    .mobile-toolbar-bottom button.active {
+      background: #3b82f6;
+      border-color: #2563eb;
+    }
+  }
+  
+  /* Ensure mobile toolbar doesn't show on desktop */
+  @media (min-width: 769px) {
+    .mobile-toolbar-bottom {
+      display: none !important;
+    }
+    
+    body {
+      padding-bottom: 0;
+    }
+    
+    .editor-wrapper {
+      padding-bottom: 0;
+    }
+  }
