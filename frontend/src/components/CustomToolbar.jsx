@@ -87,11 +87,11 @@ const CustomToolbar = ({
         }
 
         // Mobile toolbar buttons
-        const mobileBoldBtn = document.querySelector('.mobile-toolbar-top .mobile-bold');
-        const mobileItalicBtn = document.querySelector('.mobile-toolbar-top .mobile-italic');
-        const mobileUnderlineBtn = document.querySelector('.mobile-toolbar-top .mobile-underline');
-        const mobileUndoBtn = document.querySelector('.mobile-toolbar-top .mobile-undo');
-        const mobileRedoBtn = document.querySelector('.mobile-toolbar-top .mobile-redo');
+        const mobileBoldBtn = document.querySelector('.mobile-toolbar-bottom .mobile-bold');
+        const mobileItalicBtn = document.querySelector('.mobile-toolbar-bottom .mobile-italic');
+        const mobileUnderlineBtn = document.querySelector('.mobile-toolbar-bottom .mobile-underline');
+        const mobileUndoBtn = document.querySelector('.mobile-toolbar-bottom .mobile-undo');
+        const mobileRedoBtn = document.querySelector('.mobile-toolbar-bottom .mobile-redo');
 
         if (mobileBoldBtn) mobileBoldBtn.addEventListener('click', handleMobileBoldClick);
         if (mobileItalicBtn) mobileItalicBtn.addEventListener('click', handleMobileItalicClick);
@@ -114,7 +114,7 @@ const CustomToolbar = ({
         }
 
         // Clean up mobile toolbar listeners
-        const mobileButtons = document.querySelectorAll('.mobile-toolbar-top button');
+        const mobileButtons = document.querySelectorAll('.mobile-toolbar-bottom button');
         mobileButtons.forEach(btn => {
           btn.removeEventListener('click', handleMobileBoldClick);
           btn.removeEventListener('click', handleMobileItalicClick);
@@ -150,7 +150,7 @@ const CustomToolbar = ({
 
   return (
     <>
-      {/* Main Desktop Toolbar */}
+      {/* Main Desktop Toolbar - KEEP ORIGINAL STYLING */}
       <div className="toolbar-wrapper">
         <div className="toolbar-container">
           <div id="toolbar" className="ql-toolbar ql-snow">
@@ -230,98 +230,109 @@ const CustomToolbar = ({
         </div>
       </div>
 
-      {/* Mobile Toolbar - Top */}
-    {/* Mobile Toolbar - Bottom */}
-    <div className="mobile-toolbar-bottom">
-      <div className="mobile-controls-row">
-        <input
-          className="mobile-doc-name"
-          type="text"
-          value={documentName}
-          onChange={(e) => setDocumentName(e.target.value)}
-          placeholder="Document Name"
-        />
+      {/* Mobile Toolbar - Bottom (ONLY SHOWS ON MOBILE) */}
+      <div className="mobile-toolbar-bottom">
+        <div className="mobile-controls-row">
+          <input
+            className="mobile-doc-name"
+            type="text"
+            value={documentName}
+            onChange={(e) => setDocumentName(e.target.value)}
+            placeholder="Document Name"
+          />
+          
+          <select
+            className="mobile-page-width"
+            value={pageWidth}
+            onChange={(e) => setPageWidth(Number(e.target.value))}
+          >
+            <option value={612}>Letter</option>
+            <option value={595}>A4</option>
+            <option value={816}>Wide</option>
+            <option value={1056}>Legal</option>
+          </select>
+          
+          <select
+            className="mobile-save-format"
+            value={outputFormat}
+            onChange={(e) => setOutputFormat(e.target.value)}
+          >
+            <option value="pdf">PDF</option>
+            <option value="docx">Word</option>
+          </select>
+          
+          <button 
+            className="mobile-download-button"
+            onClick={onDownload}
+            disabled={isDownloading}
+          >
+            {isDownloading ? '...' : 'Save'}
+          </button>
+        </div>
         
-        <select
-          className="mobile-page-width"
-          value={pageWidth}
-          onChange={(e) => setPageWidth(Number(e.target.value))}
-        >
-          <option value={612}>Letter</option>
-          <option value={595}>A4</option>
-          <option value={816}>Wide</option>
-          <option value={1056}>Legal</option>
-        </select>
-        
-        <select
-          className="mobile-save-format"
-          value={outputFormat}
-          onChange={(e) => setOutputFormat(e.target.value)}
-        >
-          <option value="pdf">PDF</option>
-          <option value="docx">Word</option>
-        </select>
-        
-        <button 
-          className="mobile-download-button"
-          onClick={onDownload}
-          disabled={isDownloading}
-        >
-          {isDownloading ? '...' : 'Save'}
-        </button>
+        <div className="mobile-editing-row">
+          <button className="mobile-undo" type="button" title="Undo">↶</button>
+          <button className="mobile-redo" type="button" title="Redo">↷</button>
+          <button 
+            className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
+            type="button" 
+            title="Bold"
+          >
+            B
+          </button>
+          <button 
+            className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
+            type="button" 
+            title="Italic"
+          >
+            I
+          </button>
+          <button 
+            className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
+            type="button" 
+            title="Underline"
+          >
+            U
+          </button>
+          
+          <select 
+            className="mobile-font" 
+            onChange={handleMobileFontChange} 
+            value={activeFormats.font || ''}
+            title="Font"
+          >
+            <option value="">Sans</option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Mono</option>
+          </select>
+          
+          <select 
+            className="mobile-size" 
+            onChange={handleMobileSizeChange} 
+            value={activeFormats.size || ''}
+            title="Size"
+          >
+            <option value="small">S</option>
+            <option value="">M</option>
+            <option value="large">L</option>
+            <option value="huge">XL</option>
+          </select>
+          
+          <select 
+            className="mobile-align" 
+            onChange={handleMobileAlignChange} 
+            value={activeFormats.align || ''}
+            title="Align"
+          >
+            <option value="">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+            <option value="justify">Justify</option>
+          </select>
+        </div>
       </div>
-      
-      <div className="mobile-editing-row">
-        <button className="mobile-undo" type="button" title="Undo">↶</button>
-        <button className="mobile-redo" type="button" title="Redo">↷</button>
-        <button 
-          className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
-          type="button" 
-          title="Bold"
-        >
-          B
-        </button>
-        <button 
-          className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
-          type="button" 
-          title="Italic"
-        >
-          I
-        </button>
-        <button 
-          className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
-          type="button" 
-          title="Underline"
-        >
-          U
-        </button>
-        
-        <select 
-          className="mobile-font" 
-          onChange={handleMobileFontChange} 
-          value={activeFormats.font || ''}
-          title="Font"
-        >
-          <option value="">Sans</option>
-          <option value="serif">Serif</option>
-          <option value="monospace">Mono</option>
-        </select>
-        
-        <select 
-          className="mobile-size" 
-          onChange={handleMobileSizeChange} 
-          value={activeFormats.size || ''}
-          title="Size"
-        >
-          <option value="small">S</option>
-          <option value="">M</option>
-          <option value="large">L</option>
-          <option value="huge">XL</option>
-        </select>
-      </div>
-    </div>
-  </>
-);
+    </>
+  );
 };
 
 export default CustomToolbar;
