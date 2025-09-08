@@ -285,8 +285,20 @@ ${html}
         </button>
       </div>
 
-      <CustomToolbar quillInstance={quillInstance} />
+      <CustomToolbar 
+        quillInstance={quillInstance}
+        documentName={documentName}
+        setDocumentName={setDocumentName}
+        pageWidth={pageWidth}
+        setPageWidth={setPageWidth}
+        outputFormat={outputFormat}
+        setOutputFormat={setOutputFormat}
+        onDownload={handleDownload}
+        isDownloading={isDownloading}
+        // onBack={handleBack} 
+       />
 
+       
       <EditorContainer
         text={text}
         setText={setText}
