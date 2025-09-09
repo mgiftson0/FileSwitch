@@ -15,7 +15,7 @@ import {
   Quote, 
   List, 
   ListOrdered, 
-  FileDown, 
+  Save, 
   ChevronUp, 
   ChevronDown, 
   Palette 
@@ -124,7 +124,7 @@ const CustomToolbar = ({
         if (mobileBoldBtn) mobileBoldBtn.addEventListener('click', handleBoldClick);
         if (mobileItalicBtn) mobileItalicBtn.addEventListener('click', handleItalicClick);
         if (mobileUnderlineBtn) mobileUnderlineBtn.addEventListener('click', handleUnderlineClick);
-      }, 200); // Increased timeout to ensure DOM is ready
+      }, 200);
 
       return () => {
         clearTimeout(timer);
@@ -334,7 +334,7 @@ const CustomToolbar = ({
               disabled={isDownloading}
               title="Save Document"
             >
-              {isDownloading ? '⏳' : '💾'}
+              {isDownloading ? '⏳' : <Save size={20} />}
             </button>
             
             <button 
@@ -347,10 +347,10 @@ const CustomToolbar = ({
           </div>
         </div>
 
-        {/* Advanced Tools Card - Expandable */}
+        {/* Advanced Tools - Expandable */}
         {showAdvancedTools && (
-          <div className="mobile-advanced-card">
-            <div className="advanced-card-header">
+          <div className="mobile-advanced-tools">
+            <div className="advanced-tools-header">
               <h3>Advanced Tools</h3>
               <button 
                 className="close-advanced"
@@ -361,159 +361,230 @@ const CustomToolbar = ({
               </button>
             </div>
             
-            <div className="advanced-tools-grid">
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Undo"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  e.stopPropagation(); 
-                  quillInstance.history.undo(); 
-                }}
-              >
-                <Undo2 size={16} />
-              </button>
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Redo"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  e.stopPropagation(); 
-                  quillInstance.history.redo(); 
-                }}
-              >
-                <Redo2 size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.bold ? 'active' : ''}`} 
-                type="button" 
-                title="Bold"
-                onClick={handleBoldClick}
-              >
-                <Bold size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.italic ? 'active' : ''}`} 
-                type="button" 
-                title="Italic"
-                onClick={handleItalicClick}
-              >
-                <Italic size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.underline ? 'active' : ''}`} 
-                type="button" 
-                title="Underline"
-                onClick={handleUnderlineClick}
-              >
-                <Underline size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
-                type="button" 
-                title="Align Left"
-                onClick={() => quillInstance.format('align', false)}
-              >
-                <AlignLeft size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
-                type="button" 
-                title="Align Center"
-                onClick={() => quillInstance.format('align', 'center')}
-              >
-                <AlignCenter size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
-                type="button" 
-                title="Align Right"
-                onClick={() => quillInstance.format('align', 'right')}
-              >
-                <AlignRight size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
-                type="button" 
-                title="Align Justify"
-                onClick={() => quillInstance.format('align', 'justify')}
-              >
-                <AlignJustify size={16} />
-              </button>
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Header"
-                onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
-              >
-                <Rows3 size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
-                type="button" 
-                title="Strike Through"
-                onClick={handleStrikeClick}
-              >
-                <Strikethrough size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
-                type="button" 
-                title="Quote"
-                onClick={handleQuoteClick}
-              >
-                <Quote size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`} 
-                type="button" 
-                title="Bullet List"
-                onClick={handleListClick('bullet')}
-              >
-                <List size={16} />
-              </button>
-              <button 
-                className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
-                type="button" 
-                title="Numbered List"
-                onClick={handleListClick('ordered')}
-              >
-                <ListOrdered size={16} />
-              </button>
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Save Document"
-                onClick={onDownload}
-                disabled={isDownloading}
-              >
-                <FileDown size={16} />
-              </button>
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Show Advanced Tools"
-                onClick={() => setShowAdvancedTools(true)}
-              >
-                <ChevronUp size={16} />
-              </button>
-              <button 
-                className="tool-button" 
-                type="button" 
-                title="Hide Advanced Tools"
-                onClick={() => setShowAdvancedTools(false)}
-              >
-                <ChevronDown size={16} />
-              </button>
-              <input
-                type="color"
-                onChange={handleColorChange}
-                value={activeFormats.color || '#000000'}
-                className="color-input"
-                title="Text Color"
-              />
+            <div className="advanced-tools-row">
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Undo"
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                    quillInstance.history.undo(); 
+                  }}
+                >
+                  <Undo2 size={16} />
+                </button>
+                <span className="tool-label">Undo</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Redo"
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                    quillInstance.history.redo(); 
+                  }}
+                >
+                  <Redo2 size={16} />
+                </button>
+                <span className="tool-label">Redo</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.bold ? 'active' : ''}`} 
+                  type="button" 
+                  title="Bold"
+                  onClick={handleBoldClick}
+                >
+                  <Bold size={16} />
+                </button>
+                <span className="tool-label">Bold</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.italic ? 'active' : ''}`} 
+                  type="button" 
+                  title="Italic"
+                  onClick={handleItalicClick}
+                >
+                  <Italic size={16} />
+                </button>
+                <span className="tool-label">Italic</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.underline ? 'active' : ''}`} 
+                  type="button" 
+                  title="Underline"
+                  onClick={handleUnderlineClick}
+                >
+                  <Underline size={16} />
+                </button>
+                <span className="tool-label">Underline</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Left"
+                  onClick={() => quillInstance.format('align', false)}
+                >
+                  <AlignLeft size={16} />
+                </button>
+                <span className="tool-label">Left</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Center"
+                  onClick={() => quillInstance.format('align', 'center')}
+                >
+                  <AlignCenter size={16} />
+                </button>
+                <span className="tool-label">Center</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Right"
+                  onClick={() => quillInstance.format('align', 'right')}
+                >
+                  <AlignRight size={16} />
+                </button>
+                <span className="tool-label">Right</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Justify"
+                  onClick={() => quillInstance.format('align', 'justify')}
+                >
+                  <AlignJustify size={16} />
+                </button>
+                <span className="tool-label">Justify</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Header"
+                  onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
+                >
+                  <Rows3 size={16} />
+                </button>
+                <span className="tool-label">Header</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
+                  type="button" 
+                  title="Strike Through"
+                  onClick={handleStrikeClick}
+                >
+                  <Strikethrough size={16} />
+                </button>
+                <span className="tool-label">Strike</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
+                  type="button" 
+                  title="Quote"
+                  onClick={handleQuoteClick}
+                >
+                  <Quote size={16} />
+                </button>
+                <span className="tool-label">Quote</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Bullet List"
+                  onClick={handleListClick('bullet')}
+                >
+                  <List size={16} />
+                </button>
+                <span className="tool-label">Bullet</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Numbered List"
+                  onClick={handleListClick('ordered')}
+                >
+                  <ListOrdered size={16} />
+                </button>
+                <span className="tool-label">Numbered</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Save Document"
+                  onClick={onDownload}
+                  disabled={isDownloading}
+                >
+                  <Save size={16} />
+                </button>
+                <span className="tool-label">Save</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Show Advanced Tools"
+                  onClick={() => setShowAdvancedTools(true)}
+                >
+                  <ChevronUp size={16} />
+                </button>
+                <span className="tool-label">Show</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Hide Advanced Tools"
+                  onClick={() => setShowAdvancedTools(false)}
+                >
+                  <ChevronDown size={16} />
+                </button>
+                <span className="tool-label">Hide</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <input
+                  type="color"
+                  onChange={handleColorChange}
+                  value={activeFormats.color || '#000000'}
+                  className="color-input"
+                  title="Text Color"
+                />
+                <span className="tool-label">Color</span>
+              </div>
             </div>
           </div>
         )}

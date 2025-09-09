@@ -1,10 +1,10 @@
-/* ---------------- Dark Glass Base ---------------- */
-.toolbar-wrapper,
-.mobile-toolbar-container,
-.mobile-advanced-card {
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  color: #e9ecef;
+/* ---------------- Dark Theme Base ---------------- */
+:root {
+  --dark-bg: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%); /* Modern gradient background */
+  --dark-glass: rgba(40, 40, 40, 0.75); /* Slightly more opaque glass effect */
+  --text-color: #e9ecef; /* Light text for contrast */
+  --accent-color: #007bff; /* Blue accent for active states */
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
 }
 
 /* Hide/Show per device */
@@ -17,9 +17,9 @@
 
 /* ---------------- Desktop Toolbar ---------------- */
 .toolbar-wrapper {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 4px 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow);
+  background: var(--dark-glass);
 }
 
 .toolbar-container .ql-toolbar {
@@ -30,21 +30,15 @@
   font-size: 13px;
 }
 
-.ql-formats {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
 .ql-toolbar button,
 .ql-toolbar select {
   height: 28px;
   min-width: 28px;
   border-radius: 8px;
   border: none;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   font-size: 12px;
-  color: #e9ecef;
+  color: var(--text-color);
   cursor: pointer;
   padding: 0 6px;
   transition: all 0.2s ease;
@@ -52,23 +46,28 @@
 
 .ql-toolbar button:hover,
 .ql-toolbar select:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .ql-toolbar button.ql-active,
 .ql-toolbar select:focus {
-  background: #007bff;
+  background: var(--accent-color);
   color: #fff;
 }
 
 /* ---------------- Mobile Essential Toolbar ---------------- */
 .mobile-toolbar-container {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   margin-bottom: 15px;
-  border-top: 1px solid rgba(255,255,255,0.1);
   font-size: 13px;
+  background: var(--dark-bg); /* Modern gradient background */
+  box-shadow: var(--shadow); /* Subtle shadow for depth */
+  border-radius: 15px 15px 0 0; /* Rounded top corners */
+  padding: 10px;
 }
 
 .mobile-essential {
@@ -77,26 +76,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  gap: 10px;
-  border-radius: 15px;
-  background: rgba(40,40,40,0.55);
+  padding: 10px;
+  gap: 8px;
+  border-radius: 12px;
+  background: var(--dark-glass);
   backdrop-filter: blur(14px) saturate(180%);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
-
 
 /* Essential Buttons */
 .mobile-essential button {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border: none;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.08);
-  font-size: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 18px;
   font-weight: 600;
-  color: #e9ecef;
+  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -105,12 +102,12 @@
 }
 
 .mobile-essential button:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
 }
 
 .mobile-essential button.active {
-  background: #007bff;
+  background: var(--accent-color);
   color: #fff;
 }
 
@@ -118,29 +115,30 @@
 .mobile-save-button {
   background: #61936d !important;
   color: #fff !important;
-  padding: 0 14px;
-  border-radius: 8px;
+  padding: 0 12px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
 }
 
 .mobile-expand-button {
-  background: rgba(255,255,255,0.12) !important;
-  color: #e9ecef !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-color) !important;
 }
 
 .mobile-expand-button.active {
-  background: rgba(255,255,255,0.25) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
 }
 
-/* ---------------- Advanced Tools Card ---------------- */
-.mobile-advanced-card {
-  border-top: 1px solid rgba(255,255,255,0.1);
+/* ---------------- Advanced Tools ---------------- */
+.mobile-advanced-tools {
+  padding: 12px;
+  background: var(--dark-bg); /* Modern gradient background */
+  border-radius: 12px 12px 0 0;
+  box-shadow: var(--shadow);
   max-height: 50vh;
   overflow-y: auto;
   animation: slideUp 0.25s ease-out;
-  padding: 12px;
-  border-radius: 12px 12px 0 0;
 }
 
 @keyframes slideUp {
@@ -148,20 +146,20 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-.advanced-card-header {
+.advanced-tools-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 6px 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  background: rgba(40,40,40,0.65);
+  background: var(--dark-glass);
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-.advanced-card-header h3 {
+.advanced-tools-header h3 {
   font-size: 12px;
   margin: 0;
-  color: #ccc;
+  color: var(--text-color);
   font-weight: 600;
 }
 
@@ -176,72 +174,98 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.close-advanced:hover { background: #c82333; }
 
-/* ---------------- Advanced Grid ---------------- */
-.advanced-tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+.close-advanced:hover {
+  background: #c82333;
+}
+
+/* ---------------- Advanced Tools Row ---------------- */
+.advanced-tools-row {
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
+  justify-content: center;
 }
 
-.tool-group {
-  background: rgba(40,40,40,0.55);
-  border-radius: 10px;
-  padding: 10px;
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
 }
-
-.tool-group label {
-  font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  display: block;
-  color: #bbb;
-}
-
-/* Inputs & Selects */
-.mobile-input,
-.mobile-select,
-.color-input {
-  width: 100%;
-  height: 30px;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  padding: 0 6px;
-  margin-bottom: 4px;
-  background: rgba(255,255,255,0.08);
-  color: #e9ecef;
-}
-
-.mobile-select { cursor: pointer; }
-.color-input { padding: 0; cursor: pointer; }
-
-/* Button Rows */
-.button-row { display: flex; gap: 6px; }
 
 .tool-button {
-  flex: 1;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 8px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.1);
   font-size: 12px;
-  font-weight: 500;
-  color: #e9ecef;
+  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.tool-button:hover { background: rgba(255,255,255,0.18); }
-.tool-button.active { background: #007bff; color: #fff; }
+
+.tool-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tool-button.active {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.tool-label {
+  font-size: 10px;
+  color: var(--text-color);
+  margin-top: 4px;
+  text-align: center;
+}
+
+.tool-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  margin: 0 5px;
+}
+
+.color-input {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+}
 
 /* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
-  .mobile-essential { gap: 4px; padding: 4px; }
-  .mobile-essential button { width: 28px; height: 28px; font-size: 12px; }
-  .mobile-input, .mobile-select, .tool-button { height: 28px; font-size: 11px; }
-  .color-input { height: 28px; }
+  .mobile-essential {
+    gap: 4px;
+    padding: 4px;
+  }
+  .mobile-essential button {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+  }
+  .tool-item {
+    min-width: 50px;
+  }
+  .tool-button,
+  .color-input {
+    width: 36px;
+    height: 36px;
+  }
+  .tool-label {
+    font-size: 9px;
+  }
+  .tool-divider {
+    height: 36px;
+  }
 }
