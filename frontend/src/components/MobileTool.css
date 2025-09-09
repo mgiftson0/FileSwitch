@@ -1,10 +1,14 @@
 /* ---------------- Dark Theme Base ---------------- */
 :root {
   --dark-bg: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%); /* Modern gradient background */
-  --dark-glass: rgba(40, 40, 40, 0.75); /* Slightly more opaque glass effect */
+  --dark-glass: rgba(40, 40, 40, 0.85); /* Stronger glass effect for essential toolbar */
+  --dark-glass-light: rgba(50, 50, 50, 0.75); /* Lighter glass effect for advanced section */
   --text-color: #e9ecef; /* Light text for contrast */
   --accent-color: #007bff; /* Blue accent for active states */
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+  --save-gradient: linear-gradient(45deg, #28a745, #34c759); /* Vibrant green for Save */
+  --show-gradient: linear-gradient(45deg, #007bff, #00c4ff); /* Blue gradient for Show */
+  --close-gradient: linear-gradient(45deg, #dc3545, #ff4560); /* Red gradient for Close */
 }
 
 /* Hide/Show per device */
@@ -62,12 +66,16 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-size: 13px;
-  background: var(--dark-bg); /* Modern gradient background */
-  box-shadow: var(--shadow); /* Subtle shadow for depth */
-  border-radius: 15px 15px 0 0; /* Rounded top corners */
-  padding: 10px;
+  background: var(--dark-bg);
+  border-radius: 15px 15px 0 0;
+  padding: 8px;
+  box-shadow: var(--shadow);
+}
+
+.mobile-essential-toolbar {
+  margin-bottom: 8px; /* Reduced for tighter layout */
 }
 
 .mobile-essential {
@@ -76,8 +84,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  gap: 8px;
+  padding: 8px;
+  gap: 4px; /* Reduced gap */
   border-radius: 12px;
   background: var(--dark-glass);
   backdrop-filter: blur(14px) saturate(180%);
@@ -86,12 +94,12 @@
 
 /* Essential Buttons */
 .mobile-essential button {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 40px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.1);
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-color);
   cursor: pointer;
@@ -111,31 +119,49 @@
   color: #fff;
 }
 
-/* Save & Expand buttons */
+/* Save & Show buttons */
 .mobile-save-button {
-  background: #61936d !important;
-  color: #fff !important;
-  padding: 0 12px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
+  background: var(--save-gradient);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 10px;
+  transition: all 0.3s ease;
 }
 
-.mobile-expand-button {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: var(--text-color) !important;
+.mobile-save-button:hover {
+  background: linear-gradient(45deg, #218838, #28a745);
+  transform: scale(1.05);
 }
 
-.mobile-expand-button.active {
-  background: rgba(255, 255, 255, 0.3) !important;
+.mobile-save-button:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
 }
 
-/* ---------------- Advanced Tools ---------------- */
-.mobile-advanced-tools {
-  padding: 12px;
-  background: var(--dark-bg); /* Modern gradient background */
+.modern-show-button {
+  background: var(--show-gradient);
+  color: #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.modern-show-button:hover {
+  background: linear-gradient(45deg, #0056b3, #007bff);
+  transform: scale(1.05);
+}
+
+.modern-show-button.active {
+  background: linear-gradient(45deg, #003087, #0056b3);
+}
+
+/* ---------------- Advanced Tools Section ---------------- */
+.mobile-advanced-section {
+  padding: 8px;
+  background: var(--dark-glass-light);
   border-radius: 12px 12px 0 0;
-  box-shadow: var(--shadow);
   max-height: 50vh;
   overflow-y: auto;
   animation: slideUp 0.25s ease-out;
@@ -153,7 +179,7 @@
   padding: 6px 8px;
   background: var(--dark-glass);
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .advanced-tools-header h3 {
@@ -163,27 +189,28 @@
   font-weight: 600;
 }
 
-.close-advanced {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: #dc3545;
+.modern-close-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--close-gradient);
   color: #fff;
   font-size: 12px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-.close-advanced:hover {
-  background: #c82333;
+.modern-close-button:hover {
+  background: linear-gradient(45deg, #b02a37, #dc3545);
+  transform: scale(1.05);
 }
 
 /* ---------------- Advanced Tools Row ---------------- */
 .advanced-tools-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 4px; /* Reduced gap */
   justify-content: center;
 }
 
@@ -191,7 +218,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 60px;
+  min-width: 40px;
 }
 
 .tool-button {
@@ -219,18 +246,18 @@
 }
 
 .tool-label {
-  font-size: 10px;
+  font-size: 8px; /* Smaller than tool */
   color: var(--text-color);
-  margin-top: 4px;
+  margin-top: 2px;
   text-align: center;
 }
 
 .tool-divider {
   width: 1px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   border: none;
-  margin: 0 5px;
+  margin: 0 6px; /* Reduced margin */
 }
 
 .color-input {
@@ -246,16 +273,16 @@
 /* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
   .mobile-essential {
-    gap: 4px;
-    padding: 4px;
+    gap: 3px;
+    padding: 6px;
   }
   .mobile-essential button {
-    width: 50px;
-    height: 50px;
-    font-size: 16px;
+    width: 45px;
+    height: 36px;
+    font-size: 11px;
   }
   .tool-item {
-    min-width: 50px;
+    min-width: 36px;
   }
   .tool-button,
   .color-input {
@@ -263,9 +290,20 @@
     height: 36px;
   }
   .tool-label {
-    font-size: 9px;
+    font-size: 7px;
   }
   .tool-divider {
     height: 36px;
+    margin: 0 5px;
+  }
+  .mobile-save-button,
+  .modern-show-button {
+    width: 45px;
+    height: 36px;
+    padding: 0;
+  }
+  .modern-close-button {
+    width: 28px;
+    height: 28px;
   }
 }
