@@ -1,5 +1,25 @@
 import { useEffect, useState } from 'react';
 import '../components/MobileTool.css';
+import { 
+  Undo2, 
+  Redo2, 
+  Bold, 
+  Italic, 
+  Underline, 
+  AlignLeft, 
+  AlignCenter, 
+  AlignRight, 
+  AlignJustify, 
+  Rows3, 
+  Strikethrough, 
+  Quote, 
+  List, 
+  ListOrdered, 
+  FileDown, 
+  ChevronUp, 
+  ChevronDown, 
+  Palette 
+} from 'lucide-react';
 
 const CustomToolbar = ({ 
   quillInstance, 
@@ -14,6 +34,34 @@ const CustomToolbar = ({
 }) => {
   const [activeFormats, setActiveFormats] = useState({});
   const [showAdvancedTools, setShowAdvancedTools] = useState(false);
+
+  // Essential formatting handlers
+  const handleBoldClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const isBold = quillInstance.getFormat().bold;
+      quillInstance.format('bold', !isBold);
+    }
+  };
+
+  const handleItalicClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const isItalic = quillInstance.getFormat().italic;
+      quillInstance.format('italic', !isItalic);
+    }
+  };
+
+  const handleUnderlineClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const isUnderline = quillInstance.getFormat().underline;
+      quillInstance.format('underline', !isUnderline);
+    }
+  };
 
   // Update active formats when selection changes
   useEffect(() => {
@@ -48,28 +96,6 @@ const CustomToolbar = ({
         quillInstance.history.redo();
       };
 
-      // Essential formatting handlers
-      const handleBoldClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isBold = quillInstance.getFormat().bold;
-        quillInstance.format('bold', !isBold);
-      };
-
-      const handleItalicClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isItalic = quillInstance.getFormat().italic;
-        quillInstance.format('italic', !isItalic);
-      };
-
-      const handleUnderlineClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isUnderline = quillInstance.getFormat().underline;
-        quillInstance.format('underline', !isUnderline);
-      };
-
       // Wait for toolbar to be rendered
       const timer = setTimeout(() => {
         // Desktop toolbar buttons
@@ -98,7 +124,7 @@ const CustomToolbar = ({
         if (mobileBoldBtn) mobileBoldBtn.addEventListener('click', handleBoldClick);
         if (mobileItalicBtn) mobileItalicBtn.addEventListener('click', handleItalicClick);
         if (mobileUnderlineBtn) mobileUnderlineBtn.addEventListener('click', handleUnderlineClick);
-      }, 100);
+      }, 200); // Increased timeout to ensure DOM is ready
 
       return () => {
         clearTimeout(timer);
@@ -281,6 +307,7 @@ const CustomToolbar = ({
               className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
               type="button" 
               title="Bold"
+              onClick={handleBoldClick}
             >
               <span>B</span>
             </button>
@@ -288,6 +315,7 @@ const CustomToolbar = ({
               className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
               type="button" 
               title="Italic"
+              onClick={handleItalicClick}
             >
               <span>I</span>
             </button>
@@ -295,6 +323,7 @@ const CustomToolbar = ({
               className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
               type="button" 
               title="Underline"
+              onClick={handleUnderlineClick}
             >
               <span>U</span>
             </button>
@@ -333,128 +362,158 @@ const CustomToolbar = ({
             </div>
             
             <div className="advanced-tools-grid">
-              {/* Document Settings */}
-              <div className="tool-group">
-                <label>📄</label>
-                <input
-                  type="text"
-                  value={documentName}
-                  onChange={(e) => setDocumentName(e.target.value)}
-                  placeholder="📄"
-                  className="mobile-input"
-                />
-                <select
-                  value={pageWidth}
-                  onChange={(e) => setPageWidth(Number(e.target.value))}
-                  className="mobile-select"
-                >
-                  <option value={612}>📋</option>
-                  <option value={595}>🅰4</option>
-                  <option value={816}>📏</option>
-                  <option value={1056}>⚖️</option>
-                </select>
-                <select
-                  value={outputFormat}
-                  onChange={(e) => setOutputFormat(e.target.value)}
-                  className="mobile-select"
-                >
-                  <option value="pdf">📕</option>
-                  <option value="docx">📘</option>
-                </select>
-              </div>
-
-              {/* Text Formatting */}
-              <div className="tool-group">
-                <label>🔤</label>
-                <select 
-                  onChange={handleFontChange} 
-                  value={activeFormats.font || ''}
-                  className="mobile-select"
-                >
-                  <option value="">Aa</option>
-                  <option value="serif">𝐀𝐚</option>
-                  <option value="monospace">𝙰𝚊</option>
-                </select>
-                <select 
-                  onChange={handleSizeChange} 
-                  value={activeFormats.size || ''}
-                  className="mobile-select"
-                >
-                  <option value="small">ᵃ</option>
-                  <option value="">A</option>
-                  <option value="large">𝐀</option>
-                  <option value="huge">𝗔</option>
-                </select>
-                <select 
-                  onChange={handleHeaderChange} 
-                  value={activeFormats.header || ''}
-                  className="mobile-select"
-                >
-                  <option value="">¶</option>
-                  <option value="1">H₁</option>
-                  <option value="2">H₂</option>
-                  <option value="3">H₃</option>
-                </select>
-              </div>
-
-              {/* Style Options */}
-              <div className="tool-group">
-                <label>🎨</label>
-                <div className="button-row">
-                  <button 
-                    className={`tool-button ${activeFormats.strike ? 'active' : ''}`}
-                    onClick={handleStrikeClick}
-                    title="Strike Through"
-                  >
-                    <span style={{textDecoration: 'line-through'}}>S</span>
-                  </button>
-                  <button 
-                    className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`}
-                    onClick={handleQuoteClick}
-                    title="Quote"
-                  >
-                    "
-                  </button>
-                </div>
-                <select 
-                  onChange={handleAlignChange} 
-                  value={activeFormats.align || ''}
-                  className="mobile-select"
-                >
-                  <option value="">⬅</option>
-                  <option value="center">↔</option>
-                  <option value="right">➡</option>
-                  <option value="justify">⫴</option>
-                </select>
-                <input
-                  type="color"
-                  onChange={handleColorChange}
-                  value={activeFormats.color || '#000000'}
-                  className="color-input"
-                  title="Text Color"
-                />
-              </div>
-
-              {/* Lists */}
-              <div className="tool-group">
-                <label>📋</label>
-                <div className="button-row">
-                  <button 
-                    className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`}
-                    onClick={handleListClick('bullet')}
-                    title="Bullet List"
-                  >
-                    •
-                  </button>
-                  <button 
-                    className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`}
-                    onClick={handleListClick('ordered')}
-                    title="Numbered List"
-                  >
-                    1.
-                  </button>
-                </div>
-              </div>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Undo"
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  e.stopPropagation(); 
+                  quillInstance.history.undo(); 
+                }}
+              >
+                <Undo2 size={16} />
+              </button>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Redo"
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  e.stopPropagation(); 
+                  quillInstance.history.redo(); 
+                }}
+              >
+                <Redo2 size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.bold ? 'active' : ''}`} 
+                type="button" 
+                title="Bold"
+                onClick={handleBoldClick}
+              >
+                <Bold size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.italic ? 'active' : ''}`} 
+                type="button" 
+                title="Italic"
+                onClick={handleItalicClick}
+              >
+                <Italic size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.underline ? 'active' : ''}`} 
+                type="button" 
+                title="Underline"
+                onClick={handleUnderlineClick}
+              >
+                <Underline size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
+                type="button" 
+                title="Align Left"
+                onClick={() => quillInstance.format('align', false)}
+              >
+                <AlignLeft size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
+                type="button" 
+                title="Align Center"
+                onClick={() => quillInstance.format('align', 'center')}
+              >
+                <AlignCenter size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
+                type="button" 
+                title="Align Right"
+                onClick={() => quillInstance.format('align', 'right')}
+              >
+                <AlignRight size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
+                type="button" 
+                title="Align Justify"
+                onClick={() => quillInstance.format('align', 'justify')}
+              >
+                <AlignJustify size={16} />
+              </button>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Header"
+                onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
+              >
+                <Rows3 size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
+                type="button" 
+                title="Strike Through"
+                onClick={handleStrikeClick}
+              >
+                <Strikethrough size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
+                type="button" 
+                title="Quote"
+                onClick={handleQuoteClick}
+              >
+                <Quote size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`} 
+                type="button" 
+                title="Bullet List"
+                onClick={handleListClick('bullet')}
+              >
+                <List size={16} />
+              </button>
+              <button 
+                className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
+                type="button" 
+                title="Numbered List"
+                onClick={handleListClick('ordered')}
+              >
+                <ListOrdered size={16} />
+              </button>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Save Document"
+                onClick={onDownload}
+                disabled={isDownloading}
+              >
+                <FileDown size={16} />
+              </button>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Show Advanced Tools"
+                onClick={() => setShowAdvancedTools(true)}
+              >
+                <ChevronUp size={16} />
+              </button>
+              <button 
+                className="tool-button" 
+                type="button" 
+                title="Hide Advanced Tools"
+                onClick={() => setShowAdvancedTools(false)}
+              >
+                <ChevronDown size={16} />
+              </button>
+              <input
+                type="color"
+                onChange={handleColorChange}
+                value={activeFormats.color || '#000000'}
+                className="color-input"
+                title="Text Color"
+              />
             </div>
           </div>
         )}
