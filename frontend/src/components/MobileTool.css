@@ -94,7 +94,8 @@
   border: none;
   border-radius: 8px;
   background: rgba(255,255,255,0.08);
-  font-size: 14px;
+  font-size: 20px;
+  font-weight: 600;
   color: #e9ecef;
   cursor: pointer;
   transition: all 0.2s ease;
