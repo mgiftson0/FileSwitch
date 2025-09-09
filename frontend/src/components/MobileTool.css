@@ -2,7 +2,6 @@
 .toolbar-wrapper,
 .mobile-toolbar-container,
 .mobile-advanced-card {
-  background: rgba(30, 30, 30, 0.6);
   backdrop-filter: blur(12px) saturate(160%);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   color: #e9ecef;
@@ -67,16 +66,11 @@
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 1000;
+  margin-bottom: 15px;
   border-top: 1px solid rgba(255,255,255,0.1);
   font-size: 13px;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
 }
 
-.mobile-essential-toolbar {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-/* Essential Row */
 .mobile-essential {
   width: fit-content;
   margin: 0 auto;
@@ -95,8 +89,8 @@
 
 /* Essential Buttons */
 .mobile-essential button {
-  width: 38px;
-  height: 38px;
+  width: 50px;
+  height: 50px;
   border: none;
   border-radius: 8px;
   background: rgba(255,255,255,0.08);
