@@ -62,373 +62,190 @@
   color: #fff;
 }
 
-/* ---------------- Mobile Essential Toolbar (UPDATED) ---------------- */
-@media (max-width: 768px) {
-  .mobile-toolbar-container {
-    position: fixed;
-    bottom: 0; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 13px;
-    box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
-    border-radius: 24px 24px 0 0;
-    overflow: hidden;
-    width: fit-content;
-    min-width: 320px;
-    max-width: 95vw;
-  }
-
-  .mobile-essential-toolbar {
-    border-bottom: none;
-    padding: 12px 16px 16px 16px;
-  }
-
-  /* Essential Row - Content Fitted */
-  .mobile-essential {
-    width: fit-content;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 16px;
-    gap: 12px;
-    border-radius: 20px;
-    background: rgba(15,15,15,0.8);
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    box-shadow: 
-      0 8px 32px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  /* Essential Buttons - Modern Glass */
-  .mobile-essential button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    font-size: 16px;
-    color: #f8f9fa;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .mobile-essential button::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .mobile-essential button:hover::before {
-    opacity: 1;
-  }
-
-  .mobile-essential button:hover {
-    background: rgba(255,255,255,0.12);
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  }
-
-  .mobile-essential button.active {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(0,123,255,0.4);
-  }
-
-  /* Save & Expand buttons - Premium styling */
-  .mobile-save-button {
-    background: linear-gradient(135deg, #28a745, #20c997) !important;
-    color: #fff !important;
-    padding: 0 20px !important;
-    border-radius: 12px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    min-width: 60px !important;
-    box-shadow: 0 4px 16px rgba(40,167,69,0.3) !important;
-  }
-
-  .mobile-save-button:hover {
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: 0 8px 24px rgba(40,167,69,0.4) !important;
-  }
-
-  .mobile-expand-button {
-    background: rgba(255,255,255,0.08) !important;
-    color: #f8f9fa !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-  }
-
-  .mobile-expand-button.active {
-    background: rgba(255,255,255,0.15) !important;
-    transform: translateY(-1px) !important;
-  }
+/* ---------------- Mobile Essential Toolbar ---------------- */
+.mobile-toolbar-container {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1000;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 13px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
 }
 
-/* ---------------- Advanced Tools Card (REDESIGNED) ---------------- */
-@media (max-width: 768px) {
-  .mobile-advanced-card {
-    border-top: 1px solid rgba(255,255,255,0.15);
-    max-height: 60vh;
-    overflow-y: auto;
-    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 20px 16px;
-    border-radius: 24px 24px 0 0;
-    background: rgba(20,20,20,0.9);
-    backdrop-filter: blur(24px) saturate(200%);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
-  }
-
-  @keyframes slideUp {
-    from { 
-      transform: translateY(100%); 
-      opacity: 0;
-      backdrop-filter: blur(0px);
-    }
-    to { 
-      transform: translateY(0); 
-      opacity: 1;
-      backdrop-filter: blur(24px);
-    }
-  }
-
-  .advanced-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    background: rgba(30,30,30,0.8);
-    border-radius: 16px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .advanced-card-header h3 {
-    font-size: 16px;
-    margin: 0;
-    color: #f8f9fa;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
-  .close-advanced {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #dc3545, #c82333);
-    color: #fff;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .close-advanced:hover { 
-    background: linear-gradient(135deg, #c82333, #a71e2a);
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(220,53,69,0.4);
-  }
-
-  /* Advanced Grid - Document takes first row */
-  .advanced-tools-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  /* Document section spans full width as first item */
-  .tool-group:first-child {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, rgba(40,40,40,0.8), rgba(30,30,30,0.6));
-    border-radius: 16px;
-    padding: 20px;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  }
-
-  /* After document section, use 2-column grid for remaining items */
-  .tool-group:not(:first-child) {
-    background: rgba(35,35,35,0.7);
-    border-radius: 12px;
-    padding: 16px;
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  /* Create 2-column layout for non-document items */
-  .tool-group:nth-child(n+2) {
-    display: inline-block;
-    width: calc(50% - 8px);
-    vertical-align: top;
-  }
-
-  .tool-group:nth-child(odd):not(:first-child) {
-    margin-right: 16px;
-  }
-
-  .tool-group label {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    display: block;
-    color: #e9ecef;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* Inputs & Selects - Modern glass styling */
-  .mobile-input,
-  .mobile-select,
-  .color-input {
-    width: 100%;
-    height: 44px;
-    border: none;
-    border-radius: 12px;
-    font-size: 14px;
-    padding: 0 12px;
-    margin-bottom: 8px;
-    background: rgba(255,255,255,0.06);
-    color: #f8f9fa;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .mobile-input:focus,
-  .mobile-select:focus {
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
-  }
-
-  .mobile-select { 
-    cursor: pointer; 
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f8f9fa' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
-  }
-
-  .color-input { 
-    padding: 4px; 
-    cursor: pointer; 
-    height: 44px;
-  }
-
-  /* Button Rows - Enhanced */
-  .button-row { 
-    display: flex; 
-    gap: 8px; 
-    margin-bottom: 8px;
-  }
-
-  .tool-button {
-    flex: 1;
-    height: 44px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    font-size: 14px;
-    font-weight: 600;
-    color: #f8f9fa;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .tool-button:hover { 
-    background: rgba(255,255,255,0.12); 
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-
-  .tool-button.active { 
-    background: linear-gradient(135deg, #007bff, #0056b3); 
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
-  }
+.mobile-essential-toolbar {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* ---------------- Ultra Compact Mode (ENHANCED) ---------------- */
+/* Essential Row */
+.mobile-essential {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  gap: 8px;
+  border-radius: 12px;
+  background: rgba(40,40,40,0.55);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* Essential Buttons */
+.mobile-essential button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  font-size: 14px;
+  color: #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-essential button:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.mobile-essential button.active {
+  background: #007bff;
+  color: #fff;
+}
+
+/* Save & Expand buttons */
+.mobile-save-button {
+  background: #28a745 !important;
+  color: #fff !important;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mobile-expand-button {
+  background: rgba(255,255,255,0.12) !important;
+  color: #e9ecef !important;
+}
+
+.mobile-expand-button.active {
+  background: rgba(255,255,255,0.25) !important;
+}
+
+/* ---------------- Advanced Tools Card ---------------- */
+.mobile-advanced-card {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  max-height: 50vh;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease-out;
+  padding: 12px;
+  border-radius: 12px 12px 0 0;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.advanced-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: rgba(40,40,40,0.65);
+  border-radius: 8px;
+}
+
+.advanced-card-header h3 {
+  font-size: 12px;
+  margin: 0;
+  color: #ccc;
+  font-weight: 600;
+}
+
+.close-advanced {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #dc3545;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.close-advanced:hover { background: #c82333; }
+
+/* ---------------- Advanced Grid ---------------- */
+.advanced-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tool-group {
+  background: rgba(40,40,40,0.55);
+  border-radius: 10px;
+  padding: 10px;
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+}
+
+.tool-group label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+  color: #bbb;
+}
+
+/* Inputs & Selects */
+.mobile-input,
+.mobile-select,
+.color-input {
+  width: 100%;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 6px;
+  margin-bottom: 4px;
+  background: rgba(255,255,255,0.08);
+  color: #e9ecef;
+}
+
+.mobile-select { cursor: pointer; }
+.color-input { padding: 0; cursor: pointer; }
+
+/* Button Rows */
+.button-row { display: flex; gap: 6px; }
+
+.tool-button {
+  flex: 1;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  font-size: 12px;
+  font-weight: 500;
+  color: #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tool-button:hover { background: rgba(255,255,255,0.18); }
+.tool-button.active { background: #007bff; color: #fff; }
+
+/* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
-  .mobile-toolbar-container {
-    min-width: 280px;
-  }
-  
-  .mobile-essential { 
-    gap: 8px; 
-    padding: 8px 12px; 
-  }
-  
-  .mobile-essential button { 
-    width: 36px; 
-    height: 36px; 
-    font-size: 14px; 
-  }
-  
-  .mobile-save-button {
-    min-width: 50px !important;
-    padding: 0 12px !important;
-    font-size: 12px !important;
-  }
-  
-  .mobile-input, 
-  .mobile-select, 
-  .tool-button { 
-    height: 28px; 
-    font-size: 11px; 
-  }
-  
-  .color-input { 
-    height: 28px; 
-  }
-
-  .advanced-tools-grid {
-    gap: 8px;
-  }
-
-  .tool-group:first-child {
-    padding: 8px;
-  }
-
-  .tool-group:not(:first-child) {
-    padding: 8px;
-    min-width: 100px;
-  }
-
-  /* Stack tool groups vertically on very small screens */
-  .advanced-tools-row {
-    flex-direction: column;
-  }
+  .mobile-essential { gap: 4px; padding: 4px; }
+  .mobile-essential button { width: 28px; height: 28px; font-size: 12px; }
+  .mobile-input, .mobile-select, .tool-button { height: 28px; font-size: 11px; }
+  .color-input { height: 28px; }
 }

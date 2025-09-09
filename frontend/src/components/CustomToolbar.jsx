@@ -195,7 +195,7 @@ const CustomToolbar = ({
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
               <button className="ql-new-page" type="button" title="Add Page">📄</button>
-              <button className="ql-page-break" type="button" title="Page Break">📑</button>
+              <button className="ql-page-break" type="button" title="Page Break">📏</button>
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
@@ -335,12 +335,12 @@ const CustomToolbar = ({
             <div className="advanced-tools-grid">
               {/* Document Settings */}
               <div className="tool-group">
-                <label>Document</label>
+                <label>📄</label>
                 <input
                   type="text"
                   value={documentName}
                   onChange={(e) => setDocumentName(e.target.value)}
-                  placeholder="Document Name"
+                  placeholder="📄"
                   className="mobile-input"
                 />
                 <select
@@ -348,58 +348,58 @@ const CustomToolbar = ({
                   onChange={(e) => setPageWidth(Number(e.target.value))}
                   className="mobile-select"
                 >
-                  <option value={612}>Letter</option>
-                  <option value={595}>A4</option>
-                  <option value={816}>Wide</option>
-                  <option value={1056}>Legal</option>
+                  <option value={612}>📋</option>
+                  <option value={595}>🅰4</option>
+                  <option value={816}>📏</option>
+                  <option value={1056}>⚖️</option>
                 </select>
                 <select
                   value={outputFormat}
                   onChange={(e) => setOutputFormat(e.target.value)}
                   className="mobile-select"
                 >
-                  <option value="pdf">PDF</option>
-                  <option value="docx">Word</option>
+                  <option value="pdf">📕</option>
+                  <option value="docx">📘</option>
                 </select>
               </div>
 
               {/* Text Formatting */}
               <div className="tool-group">
-                <label>Format</label>
+                <label>🔤</label>
                 <select 
                   onChange={handleFontChange} 
                   value={activeFormats.font || ''}
                   className="mobile-select"
                 >
-                  <option value="">Sans Serif</option>
-                  <option value="serif">Serif</option>
-                  <option value="monospace">Monospace</option>
+                  <option value="">Aa</option>
+                  <option value="serif">𝐀𝐚</option>
+                  <option value="monospace">𝙰𝚊</option>
                 </select>
                 <select 
                   onChange={handleSizeChange} 
                   value={activeFormats.size || ''}
                   className="mobile-select"
                 >
-                  <option value="small">Small</option>
-                  <option value="">Normal</option>
-                  <option value="large">Large</option>
-                  <option value="huge">Huge</option>
+                  <option value="small">ᵃ</option>
+                  <option value="">A</option>
+                  <option value="large">𝐀</option>
+                  <option value="huge">𝗔</option>
                 </select>
                 <select 
                   onChange={handleHeaderChange} 
                   value={activeFormats.header || ''}
                   className="mobile-select"
                 >
-                  <option value="">Normal</option>
-                  <option value="1">Heading 1</option>
-                  <option value="2">Heading 2</option>
-                  <option value="3">Heading 3</option>
+                  <option value="">¶</option>
+                  <option value="1">H₁</option>
+                  <option value="2">H₂</option>
+                  <option value="3">H₃</option>
                 </select>
               </div>
 
               {/* Style Options */}
               <div className="tool-group">
-                <label>Style</label>
+                <label>🎨</label>
                 <div className="button-row">
                   <button 
                     className={`tool-button ${activeFormats.strike ? 'active' : ''}`}
@@ -421,10 +421,10 @@ const CustomToolbar = ({
                   value={activeFormats.align || ''}
                   className="mobile-select"
                 >
-                  <option value="">Left Align</option>
-                  <option value="center">Center</option>
-                  <option value="right">Right Align</option>
-                  <option value="justify">Justify</option>
+                  <option value="">⬅</option>
+                  <option value="center">↔</option>
+                  <option value="right">➡</option>
+                  <option value="justify">⫴</option>
                 </select>
                 <input
                   type="color"
@@ -437,7 +437,7 @@ const CustomToolbar = ({
 
               {/* Lists */}
               <div className="tool-group">
-                <label>Lists</label>
+                <label>📋</label>
                 <div className="button-row">
                   <button 
                     className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`}
