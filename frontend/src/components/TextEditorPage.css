@@ -362,22 +362,37 @@
     padding: 10px 0;
   }
   
-  /* Mobile responsiveness - full width text area on mobile only */
+  /* Mobile responsiveness - remove containers on mobile only */
   @media (max-width: 768px) {
     .editor-wrapper {
       background-color: transparent !important;
       padding: 0 !important;
       box-shadow: none !important;
+      border-radius: 0 !important;
+      width: 100% !important;
+    }
+    
+    .editor-container {
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      width: 100% !important;
     }
     
     .editor-container .ql-container {
       border: none !important;
+      background: none !important;
+      width: 100% !important;
     }
     
     .editor-container .ql-editor {
       max-width: none !important;
+      width: 100% !important;
       padding: 20px !important;
       box-shadow: none !important;
       margin: 0 !important;
+      border: none !important;
+      background: #ffffff !important;
+      box-sizing: border-box !important;
     }
   }
