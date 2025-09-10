@@ -1,13 +1,12 @@
-/* ---------------- Theme Base ---------------- */
+/* ---------------- Dark Theme Base ---------------- */
 :root {
-  --light-bg: #797171; /* Gray background for desktop toolbar */
-  --dark-bg: #212529; /* Dark background for mobile toolbar */
-  --text-color: #ffffff; /* White text for light areas */
-  --text-color-light: #f8f9fa; /* Light text for dark areas */
-  --accent-color: #0d6efd; /* Vibrant blue for active states */
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  --save-color: #28a745; /* Flat green for Save */
-  --show-color: #0d6efd; /* Flat blue for Show */
+  --light-bg: #2d3748; /* Dark background */
+  --text-color: #e2e8f0; /* Light text for contrast */
+  --accent-color: #4299e1; /* Vibrant blue for active states */
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Dark shadow */
+  --save-color: #48bb78; /* Green for Save */
+  --show-color: #4299e1; /* Blue for Show */
+  --close-color: #f56565; /* Red for Close */
 }
 
 /* Hide/Show per device */
@@ -39,7 +38,7 @@
   min-width: 32px;
   border-radius: 6px;
   border: none;
-  background: #f8f9fa;
+  background: #4a5568;
   font-size: 14px;
   color: var(--text-color);
   cursor: pointer;
@@ -49,7 +48,7 @@
 
 .ql-toolbar button:hover,
 .ql-toolbar select:hover {
-  background: #e9ecef;
+  background: #718096;
 }
 
 .ql-toolbar button.ql-active,
@@ -58,7 +57,7 @@
   color: #fff;
 }
 
-/* ---------------- Mobile Essential Toolbar ---------------- */
+/* ---------------- Mobile Toolbar Container ---------------- */
 .mobile-toolbar-container {
   position: fixed;
   bottom: 0;
@@ -67,37 +66,43 @@
   z-index: 1000;
   margin-bottom: 15px;
   font-size: 14px;
-  background: var(--dark-bg); /* Unified dark background */
-  border-radius: 10px 10px 0 0;
-  padding: 10px;
-  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Increased space between essential and advanced sections */
 }
 
+/* ---------------- Mobile Essential Toolbar ---------------- */
 .mobile-essential-toolbar {
-  margin-bottom: 20px; /* Increased gap between essential and advanced */
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 8px 12px; /* Reduced padding */
+  box-shadow: var(--shadow);
+  width: fit-content;
+  display: flex;
+  justify-content: center; /* Center the essential row */
+  margin: 0 auto; /* Ensure toolbar is centered */
 }
 
 .mobile-essential {
-  width: fit-content;
-  max-width: 100%; /* Prevent overflow */
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px; /* Tight gap */
-  background: var(--dark-bg); /* Unified dark background */
+  gap: 4px; /* Reduced gap for smaller size */
+  width: fit-content;
+  margin: 0 auto; /* Explicitly center the essential buttons */
 }
 
-/* Essential Buttons */
+/* Essential Buttons - Increased size */
 .mobile-essential button {
-  width: 80px; /* Further increased size */
-  height: 64px; /* Further increased size */
+  width: 50px; /* Increased size */
+  height: 45px; /* Increased size */
   border: none;
-  border-radius: 12px;
-  background: none; /* No background around tools */
-  font-size: 22px; /* Larger symbols */
+  border-radius: 8px;
+  background: none;
+  font-size: 20px; /* Increased font size */
   font-weight: 600;
-  color: var(--text-color-light);
+  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -106,7 +111,7 @@
 }
 
 .mobile-essential button:hover {
-  background: #495057; /* Slightly lighter dark for hover */
+  background: #4a5568;
   transform: translateY(-1px);
 }
 
@@ -115,51 +120,63 @@
   color: #fff;
 }
 
-/* Save & Show buttons */
+/* Save & Show buttons - Increased size */
 .mobile-save-button {
   background: var(--save-color);
   color: #fff;
-  border-radius: 12px;
-  padding: 0 12px;
+  border-radius: 8px;
+  width: 50px; /* Increased size */
+  height: 45px; /* Increased size */
+  padding: 0;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobile-save-button:hover {
-  background: #218838;
+  background: #38a169;
   transform: scale(1.03);
 }
 
 .mobile-save-button:disabled {
-  background: #6c757d;
+  background: #718096;
   cursor: not-allowed;
 }
 
 .modern-show-button {
   background: var(--show-color);
   color: #fff;
-  border-radius: 12px;
-  width: 80px;
-  height: 64px;
+  border-radius: 8px;
+  width: 50px; /* Increased size */
+  height: 45px; /* Increased size */
   padding: 0;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modern-show-button:hover {
-  background: #0a58ca;
+  background: #3182ce;
   transform: scale(1.03);
 }
 
 .modern-show-button.active {
-  background: #0941a3;
+  background: #2b6cb0;
 }
 
 /* ---------------- Advanced Tools Section ---------------- */
 .mobile-advanced-section {
-  padding: 10px;
-  background: var(--dark-bg); /* Unified dark background */
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 12px; /* Reduced padding */
+  box-shadow: var(--shadow);
+  width: fit-content;
   max-height: 50vh;
   overflow-y: auto;
   animation: slideUp 0.25s ease-out;
+  margin-top: 20px; /* Additional gap when visible */
 }
 
 @keyframes slideUp {
@@ -171,7 +188,7 @@
 .advanced-tools-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px; /* Reduced gap */
+  gap: 6px; /* Reduced gap */
   justify-content: center;
 }
 
@@ -179,17 +196,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 80px;
+  min-width: 60px; /* Increased size */
 }
 
 .tool-button {
-  width: 80px; /* Further increased size */
-  height: 64px; /* Further increased size */
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
   border: none;
-  border-radius: 12px;
-  background: none; /* No background around tools */
-  font-size: 18px;
-  color: var(--text-color-light); /* Light text for dark background */
+  border-radius: 8px;
+  background: none;
+  font-size: 16px; /* Increased font size */
+  color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -198,7 +215,7 @@
 }
 
 .tool-button:hover {
-  background: #495057; /* Slightly lighter dark for hover */
+  background: #4a5568;
 }
 
 .tool-button.active {
@@ -207,25 +224,25 @@
 }
 
 .tool-label {
-  font-size: 6px; /* Smaller label */
-  color: var(--text-color-light); /* Light text for dark background */
-  margin-top: 2px;
+  font-size: 8px; /* Slightly larger label */
+  color: var(--text-color);
+  margin-top: 3px;
   text-align: center;
 }
 
 .tool-divider {
   width: 1px;
-  height: 64px; /* Match increased tool size */
-  background: #6c757d; /* Light gray divider for contrast */
+  height: 60px; /* Increased height */
+  background: #718096;
   border: none;
-  margin: 0 4px; /* Adjusted to match reduced gap */
+  margin: 0 6px; /* Reduced margin */
 }
 
 .color-input {
-  width: 80px; /* Further increased size */
-  height: 64px; /* Further increased size */
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 0;
   cursor: pointer;
   background: none;
@@ -233,34 +250,52 @@
 
 /* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
+  .mobile-toolbar-container {
+    gap: 8px;
+  }
+  
+  .mobile-essential-toolbar,
+  .mobile-advanced-section {
+    padding: 6px;
+    border-radius: 10px;
+  }
+  
   .mobile-essential {
     gap: 3px;
-    padding: 8px;
   }
+  
   .mobile-essential button {
-    width: 68px;
-    height: 54px;
-    font-size: 20px;
+    width: 45px;
+    height: 40px;
+    font-size: 18px;
   }
-  .tool-item {
-    min-width: 68px;
-  }
-  .tool-button,
-  .color-input {
-    width: 68px;
-    height: 54px;
-  }
-  .tool-label {
-    font-size: 5px;
-  }
-  .tool-divider {
-    height: 54px;
-    margin: 0 3px;
-  }
+  
   .mobile-save-button,
   .modern-show-button {
-    width: 68px;
-    height: 54px;
-    padding: 0;
+    width: 45px;
+    height: 40px;
+  }
+  
+  .tool-item {
+    min-width: 50px;
+  }
+  
+  .tool-button,
+  .color-input {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .tool-label {
+    font-size: 7px;
+  }
+  
+  .tool-divider {
+    height: 50px;
+    margin: 0 4px;
+  }
+  
+  .advanced-tools-row {
+    gap: 4px;
   }
 }
