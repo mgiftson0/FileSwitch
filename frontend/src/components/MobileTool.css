@@ -246,7 +246,7 @@
 }
 
 .tool-label {
-  font-size: 8px; /* Smaller than tool */
+  font-size: 8px; 
   color: var(--text-color);
   margin-top: 2px;
   text-align: center;
