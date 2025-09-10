@@ -297,40 +297,40 @@ const CustomToolbar = ({
         {/* Essential Tools Row */}
         <div className="mobile-essential-toolbar">
           <div className="mobile-essential">
-            <button className="mobile-undo" type="button" title="Undo">Undo</button>
-            <button className="mobile-redo" type="button" title="Redo">Redo</button>
+            <button className="mobile-undo" type="button" title="Undo">↶</button>
+            <button className="mobile-redo" type="button" title="Redo">↷</button>
             <button 
               className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
               type="button" 
               title="Bold"
               onClick={handleBoldClick}
-            >Bold</button>
+            >B</button>
             <button 
               className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
               type="button" 
               title="Italic"
               onClick={handleItalicClick}
-            >Italic</button>
+            >I</button>
             <button 
               className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
               type="button" 
               title="Underline"
               onClick={handleUnderlineClick}
-            >Underline</button>
+            >U</button>
             <button 
               className="mobile-save-button"
               onClick={onDownload}
               disabled={isDownloading}
               title="Save Document"
             >
-              {isDownloading ? '⏳' : <Save size={20} />}
+              {isDownloading ? '⏳' : <Save size={24} />}
             </button>
             <button 
               className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
               onClick={() => setShowAdvancedTools(!showAdvancedTools)}
               title="Show Advanced Tools"
             >
-              More
+              ▲
             </button>
           </div>
         </div>
@@ -361,7 +361,7 @@ const CustomToolbar = ({
                     quillInstance.history.undo(); 
                   }}
                 >
-                  <Undo2 size={16} />
+                  <Undo2 size={20} />
                 </button>
                 <span className="tool-label">Undo</span>
               </div>
@@ -376,7 +376,7 @@ const CustomToolbar = ({
                     quillInstance.history.redo(); 
                   }}
                 >
-                  <Redo2 size={16} />
+                  <Redo2 size={20} />
                 </button>
                 <span className="tool-label">Redo</span>
               </div>
@@ -388,7 +388,7 @@ const CustomToolbar = ({
                   title="Bold"
                   onClick={handleBoldClick}
                 >
-                  <Bold size={16} />
+                  <Bold size={20} />
                 </button>
                 <span className="tool-label">Bold</span>
               </div>
@@ -399,7 +399,7 @@ const CustomToolbar = ({
                   title="Italic"
                   onClick={handleItalicClick}
                 >
-                  <Italic size={16} />
+                  <Italic size={20} />
                 </button>
                 <span className="tool-label">Italic</span>
               </div>
@@ -410,7 +410,7 @@ const CustomToolbar = ({
                   title="Underline"
                   onClick={handleUnderlineClick}
                 >
-                  <Underline size={16} />
+                  <Underline size={20} />
                 </button>
                 <span className="tool-label">Underline</span>
               </div>
@@ -422,7 +422,7 @@ const CustomToolbar = ({
                   title="Align Left"
                   onClick={() => quillInstance.format('align', false)}
                 >
-                  <AlignLeft size={16} />
+                  <AlignLeft size={20} />
                 </button>
                 <span className="tool-label">Left</span>
               </div>
@@ -433,7 +433,7 @@ const CustomToolbar = ({
                   title="Align Center"
                   onClick={() => quillInstance.format('align', 'center')}
                 >
-                  <AlignCenter size={16} />
+                  <AlignCenter size={20} />
                 </button>
                 <span className="tool-label">Center</span>
               </div>
@@ -444,7 +444,7 @@ const CustomToolbar = ({
                   title="Align Right"
                   onClick={() => quillInstance.format('align', 'right')}
                 >
-                  <AlignRight size={16} />
+                  <AlignRight size={20} />
                 </button>
                 <span className="tool-label">Right</span>
               </div>
@@ -455,7 +455,7 @@ const CustomToolbar = ({
                   title="Align Justify"
                   onClick={() => quillInstance.format('align', 'justify')}
                 >
-                  <AlignJustify size={16} />
+                  <AlignJustify size={20} />
                 </button>
                 <span className="tool-label">Justify</span>
               </div>
@@ -467,7 +467,7 @@ const CustomToolbar = ({
                   title="Header"
                   onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
                 >
-                  <Rows3 size={16} />
+                  <Rows3 size={20} />
                 </button>
                 <span className="tool-label">Header</span>
               </div>
@@ -478,7 +478,7 @@ const CustomToolbar = ({
                   title="Strike Through"
                   onClick={handleStrikeClick}
                 >
-                  <Strikethrough size={16} />
+                  <Strikethrough size={20} />
                 </button>
                 <span className="tool-label">Strike</span>
               </div>
@@ -489,7 +489,7 @@ const CustomToolbar = ({
                   title="Quote"
                   onClick={handleQuoteClick}
                 >
-                  <Quote size={16} />
+                  <Quote size={20} />
                 </button>
                 <span className="tool-label">Quote</span>
               </div>
@@ -501,7 +501,7 @@ const CustomToolbar = ({
                   title="Bullet List"
                   onClick={handleListClick('bullet')}
                 >
-                  <List size={16} />
+                  <List size={20} />
                 </button>
                 <span className="tool-label">Bullet</span>
               </div>
@@ -512,7 +512,7 @@ const CustomToolbar = ({
                   title="Numbered List"
                   onClick={handleListClick('ordered')}
                 >
-                  <ListOrdered size={16} />
+                  <ListOrdered size={20} />
                 </button>
                 <span className="tool-label">Numbered</span>
               </div>
@@ -525,7 +525,7 @@ const CustomToolbar = ({
                   onClick={onDownload}
                   disabled={isDownloading}
                 >
-                  <Save size={16} />
+                  <Save size={20} />
                 </button>
                 <span className="tool-label">Save</span>
               </div>
@@ -537,7 +537,7 @@ const CustomToolbar = ({
                   title="Show Advanced Tools"
                   onClick={() => setShowAdvancedTools(true)}
                 >
-                  <ChevronUp size={16} />
+                  <ChevronUp size={20} />
                 </button>
                 <span className="tool-label">Show</span>
               </div>
@@ -548,7 +548,7 @@ const CustomToolbar = ({
                   title="Hide Advanced Tools"
                   onClick={() => setShowAdvancedTools(false)}
                 >
-                  <ChevronDown size={16} />
+                  <ChevronDown size={20} />
                 </button>
                 <span className="tool-label">Hide</span>
               </div>
