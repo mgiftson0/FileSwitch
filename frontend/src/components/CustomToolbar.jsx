@@ -323,12 +323,12 @@ const CustomToolbar = ({
               disabled={isDownloading}
               title="Save Document"
             >
-              {isDownloading ? '⏳' : <Save size={24} />}
+              {isDownloading ? '⏳' : <Save size={28} />}
             </button>
             <button 
               className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
               onClick={() => setShowAdvancedTools(!showAdvancedTools)}
-              title="Show Advanced Tools"
+              title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
             >
               ▲
             </button>
@@ -338,17 +338,6 @@ const CustomToolbar = ({
         {/* Advanced Tools Section - Expandable */}
         {showAdvancedTools && (
           <div className="mobile-advanced-section">
-            <div className="advanced-tools-header">
-              <h3>Advanced Tools</h3>
-              <button 
-                className="modern-close-button"
-                onClick={() => setShowAdvancedTools(false)}
-                title="Close"
-              >
-                ✕
-              </button>
-            </div>
-            
             <div className="advanced-tools-row">
               <div className="tool-item">
                 <button 
@@ -361,7 +350,7 @@ const CustomToolbar = ({
                     quillInstance.history.undo(); 
                   }}
                 >
-                  <Undo2 size={20} />
+                  <Undo2 size={24} />
                 </button>
                 <span className="tool-label">Undo</span>
               </div>
@@ -376,7 +365,7 @@ const CustomToolbar = ({
                     quillInstance.history.redo(); 
                   }}
                 >
-                  <Redo2 size={20} />
+                  <Redo2 size={24} />
                 </button>
                 <span className="tool-label">Redo</span>
               </div>
@@ -388,7 +377,7 @@ const CustomToolbar = ({
                   title="Bold"
                   onClick={handleBoldClick}
                 >
-                  <Bold size={20} />
+                  <Bold size={24} />
                 </button>
                 <span className="tool-label">Bold</span>
               </div>
@@ -399,7 +388,7 @@ const CustomToolbar = ({
                   title="Italic"
                   onClick={handleItalicClick}
                 >
-                  <Italic size={20} />
+                  <Italic size={24} />
                 </button>
                 <span className="tool-label">Italic</span>
               </div>
@@ -410,7 +399,7 @@ const CustomToolbar = ({
                   title="Underline"
                   onClick={handleUnderlineClick}
                 >
-                  <Underline size={20} />
+                  <Underline size={24} />
                 </button>
                 <span className="tool-label">Underline</span>
               </div>
@@ -422,7 +411,7 @@ const CustomToolbar = ({
                   title="Align Left"
                   onClick={() => quillInstance.format('align', false)}
                 >
-                  <AlignLeft size={20} />
+                  <AlignLeft size={24} />
                 </button>
                 <span className="tool-label">Left</span>
               </div>
@@ -433,7 +422,7 @@ const CustomToolbar = ({
                   title="Align Center"
                   onClick={() => quillInstance.format('align', 'center')}
                 >
-                  <AlignCenter size={20} />
+                  <AlignCenter size={24} />
                 </button>
                 <span className="tool-label">Center</span>
               </div>
@@ -444,7 +433,7 @@ const CustomToolbar = ({
                   title="Align Right"
                   onClick={() => quillInstance.format('align', 'right')}
                 >
-                  <AlignRight size={20} />
+                  <AlignRight size={24} />
                 </button>
                 <span className="tool-label">Right</span>
               </div>
@@ -455,7 +444,7 @@ const CustomToolbar = ({
                   title="Align Justify"
                   onClick={() => quillInstance.format('align', 'justify')}
                 >
-                  <AlignJustify size={20} />
+                  <AlignJustify size={24} />
                 </button>
                 <span className="tool-label">Justify</span>
               </div>
@@ -467,7 +456,7 @@ const CustomToolbar = ({
                   title="Header"
                   onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
                 >
-                  <Rows3 size={20} />
+                  <Rows3 size={24} />
                 </button>
                 <span className="tool-label">Header</span>
               </div>
@@ -478,7 +467,7 @@ const CustomToolbar = ({
                   title="Strike Through"
                   onClick={handleStrikeClick}
                 >
-                  <Strikethrough size={20} />
+                  <Strikethrough size={24} />
                 </button>
                 <span className="tool-label">Strike</span>
               </div>
@@ -489,7 +478,7 @@ const CustomToolbar = ({
                   title="Quote"
                   onClick={handleQuoteClick}
                 >
-                  <Quote size={20} />
+                  <Quote size={24} />
                 </button>
                 <span className="tool-label">Quote</span>
               </div>
@@ -501,7 +490,7 @@ const CustomToolbar = ({
                   title="Bullet List"
                   onClick={handleListClick('bullet')}
                 >
-                  <List size={20} />
+                  <List size={24} />
                 </button>
                 <span className="tool-label">Bullet</span>
               </div>
@@ -512,7 +501,7 @@ const CustomToolbar = ({
                   title="Numbered List"
                   onClick={handleListClick('ordered')}
                 >
-                  <ListOrdered size={20} />
+                  <ListOrdered size={24} />
                 </button>
                 <span className="tool-label">Numbered</span>
               </div>
@@ -525,7 +514,7 @@ const CustomToolbar = ({
                   onClick={onDownload}
                   disabled={isDownloading}
                 >
-                  <Save size={20} />
+                  <Save size={24} />
                 </button>
                 <span className="tool-label">Save</span>
               </div>
@@ -537,7 +526,7 @@ const CustomToolbar = ({
                   title="Show Advanced Tools"
                   onClick={() => setShowAdvancedTools(true)}
                 >
-                  <ChevronUp size={20} />
+                  <ChevronUp size={24} />
                 </button>
                 <span className="tool-label">Show</span>
               </div>
@@ -548,7 +537,7 @@ const CustomToolbar = ({
                   title="Hide Advanced Tools"
                   onClick={() => setShowAdvancedTools(false)}
                 >
-                  <ChevronDown size={20} />
+                  <ChevronDown size={24} />
                 </button>
                 <span className="tool-label">Hide</span>
               </div>
