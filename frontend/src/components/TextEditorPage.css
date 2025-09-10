@@ -361,3 +361,23 @@
     font-size: 12px;
     padding: 10px 0;
   }
+  
+  /* Mobile responsiveness - full width text area on mobile only */
+  @media (max-width: 768px) {
+    .editor-wrapper {
+      background-color: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+    
+    .editor-container .ql-container {
+      border: none !important;
+    }
+    
+    .editor-container .ql-editor {
+      max-width: none !important;
+      padding: 20px !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+  }
