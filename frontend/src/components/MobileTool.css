@@ -1,12 +1,13 @@
-/* ---------------- Dark Theme Base ---------------- */
+/* ---------------- Light Theme Base ---------------- */
 :root {
-  --light-bg: #2d3748; /* Dark background */
-  --text-color: #e2e8f0; /* Light text for contrast */
-  --accent-color: #4299e1; /* Vibrant blue for active states */
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Dark shadow */
-  --save-color: #48bb78; /* Green for Save */
-  --show-color: #4299e1; /* Blue for Show */
-  --close-color: #f56565; /* Red for Close */
+  --light-bg: #797171; /* Gray background for toolbar */
+  --text-color: #ffffff; /* White text for contrast */
+  --text-color-light: #f8f9fa; /* Light text for dark advanced section */
+  --accent-color: #0d6efd; /* Vibrant blue for active states */
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  --save-color: #28a745; /* Flat green for Save */
+  --show-color: #0d6efd; /* Flat blue for Show */
+  --dark-bg-advanced: #343a40; /* Solid dark background for advanced section */
 }
 
 /* Hide/Show per device */
@@ -38,7 +39,7 @@
   min-width: 32px;
   border-radius: 6px;
   border: none;
-  background: #4a5568;
+  background: #f8f9fa;
   font-size: 14px;
   color: var(--text-color);
   cursor: pointer;
@@ -48,7 +49,7 @@
 
 .ql-toolbar button:hover,
 .ql-toolbar select:hover {
-  background: #718096;
+  background: #e9ecef;
 }
 
 .ql-toolbar button.ql-active,
@@ -57,7 +58,7 @@
   color: #fff;
 }
 
-/* ---------------- Mobile Toolbar Container ---------------- */
+/* ---------------- Mobile Essential Toolbar ---------------- */
 .mobile-toolbar-container {
   position: fixed;
   bottom: 0;
@@ -66,36 +67,34 @@
   z-index: 1000;
   margin-bottom: 15px;
   font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px; /* Reduced space between essential and advanced sections */
+  background: var(--light-bg);
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+  box-shadow: var(--shadow);
 }
 
-/* ---------------- Mobile Essential Toolbar ---------------- */
 .mobile-essential-toolbar {
-  background: var(--light-bg);
-  border-radius: 12px;
-  padding: 8px 12px; /* Reduced padding */
-  box-shadow: var(--shadow);
-  width: fit-content;
+  margin-bottom: 16px; /* Increased gap between essential and advanced */
 }
 
 .mobile-essential {
+  width: fit-content;
+  max-width: 100%; /* Prevent overflow */
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px; /* Reduced gap for smaller size */
+  gap: 4px; /* Tight gap */
 }
 
-/* Essential Buttons - Increased size */
+/* Essential Buttons */
 .mobile-essential button {
-  width: 50px; /* Increased size */
-  height: 45px; /* Increased size */
+  width: 70px; /* Further increased size */
+  height: 56px; /* Further increased size */
   border: none;
-  border-radius: 8px;
-  background: none;
-  font-size: 20px; /* Increased font size */
+  border-radius: 10px;
+  background: none; /* No background */
+  font-size: 20px; /* Larger symbols */
   font-weight: 600;
   color: var(--text-color);
   cursor: pointer;
@@ -106,7 +105,7 @@
 }
 
 .mobile-essential button:hover {
-  background: #4a5568;
+  background: #e9ecef;
   transform: translateY(-1px);
 }
 
@@ -115,59 +114,48 @@
   color: #fff;
 }
 
-/* Save & Show buttons - Increased size */
+/* Save & Show buttons */
 .mobile-save-button {
   background: var(--save-color);
   color: #fff;
-  border-radius: 8px;
-  width: 50px; /* Increased size */
-  height: 45px; /* Increased size */
-  padding: 0;
+  border-radius: 10px;
+  padding: 0 12px;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .mobile-save-button:hover {
-  background: #38a169;
+  background: #218838;
   transform: scale(1.03);
 }
 
 .mobile-save-button:disabled {
-  background: #718096;
+  background: #6c757d;
   cursor: not-allowed;
 }
 
 .modern-show-button {
   background: var(--show-color);
   color: #fff;
-  border-radius: 8px;
-  width: 50px; /* Increased size */
-  height: 45px; /* Increased size */
+  border-radius: 10px;
+  width: 70px;
+  height: 56px;
   padding: 0;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .modern-show-button:hover {
-  background: #3182ce;
+  background: #0a58ca;
   transform: scale(1.03);
 }
 
 .modern-show-button.active {
-  background: #2b6cb0;
+  background: #0941a3;
 }
 
 /* ---------------- Advanced Tools Section ---------------- */
 .mobile-advanced-section {
-  background: var(--light-bg);
-  border-radius: 12px;
-  padding: 12px; /* Reduced padding */
-  box-shadow: var(--shadow);
-  width: fit-content;
+  padding: 10px;
+  background: var(--dark-bg-advanced); /* Dark background */
   max-height: 50vh;
   overflow-y: auto;
   animation: slideUp 0.25s ease-out;
@@ -182,7 +170,7 @@
 .advanced-tools-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px; /* Reduced gap */
+  gap: 4px; /* Tight gap */
   justify-content: center;
 }
 
@@ -190,17 +178,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 60px; /* Increased size */
+  min-width: 56px;
 }
 
 .tool-button {
-  width: 60px; /* Increased size */
-  height: 60px; /* Increased size */
+  width: 56px; /* Further increased size */
+  height: 56px; /* Further increased size */
   border: none;
-  border-radius: 8px;
-  background: none;
-  font-size: 16px; /* Increased font size */
-  color: var(--text-color);
+  border-radius: 10px;
+  background: none; /* No background */
+  font-size: 16px;
+  color: var(--text-color-light); /* Light text for dark background */
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -209,7 +197,7 @@
 }
 
 .tool-button:hover {
-  background: #4a5568;
+  background: #495057; /* Slightly lighter dark for hover */
 }
 
 .tool-button.active {
@@ -218,25 +206,25 @@
 }
 
 .tool-label {
-  font-size: 8px; /* Slightly larger label */
-  color: var(--text-color);
-  margin-top: 3px;
+  font-size: 6px; /* Smaller label */
+  color: var(--text-color-light); /* Light text for dark background */
+  margin-top: 2px;
   text-align: center;
 }
 
 .tool-divider {
   width: 1px;
-  height: 60px; /* Increased height */
-  background: #718096;
+  height: 56px; /* Match increased tool size */
+  background: #6c757d; /* Light gray divider for contrast */
   border: none;
-  margin: 0 6px; /* Reduced margin */
+  margin: 0 6px;
 }
 
 .color-input {
-  width: 60px; /* Increased size */
-  height: 60px; /* Increased size */
+  width: 56px; /* Further increased size */
+  height: 56px; /* Further increased size */
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 0;
   cursor: pointer;
   background: none;
@@ -244,52 +232,35 @@
 
 /* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
-  .mobile-toolbar-container {
-    gap: 8px;
-  }
-  
-  .mobile-essential-toolbar,
-  .mobile-advanced-section {
-    padding: 6px;
-    border-radius: 10px;
-  }
-  
   .mobile-essential {
     gap: 3px;
+    padding: 8px;
   }
-  
   .mobile-essential button {
-    width: 45px;
-    height: 40px;
+    width: 60px;
+    height: 48px;
     font-size: 18px;
   }
-  
-  .mobile-save-button,
-  .modern-show-button {
-    width: 45px;
-    height: 40px;
-  }
-  
   .tool-item {
-    min-width: 50px;
+    min-width: 48px;
   }
-  
   .tool-button,
   .color-input {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
-  
   .tool-label {
-    font-size: 7px;
+    font-size: 5px;
   }
-  
   .tool-divider {
-    height: 50px;
-    margin: 0 4px;
+    height: 48px;
+    margin: 0 5px;
   }
-  
-  .advanced-tools-row {
-    gap: 4px;
+  .mobile-save-button,
+  .mod
+  ern-show-button {
+    width: 60px;
+    height: 48px;
+    padding: 0;
   }
 }
