@@ -1,0 +1,228 @@
+.control-panel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    background: linear-gradient(to bottom, #2d3748, #1a202c);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .control-panel::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .right-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .back-button {
+    font-size: 16px;
+    padding: 6px;
+    border: none;
+    border-radius: 6px;
+    background: #1a202c;
+    color: #edf2f7;
+    cursor: pointer;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .back-button:hover {
+    background: #2b6cb0;
+    transform: scale(1.05);
+  }
+  
+  .back-button:active {
+    transform: scale(1);
+  }
+  
+  .control-panel label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #edf2f7;
+    white-space: nowrap;
+  }
+  
+  .document-name-input {
+    font-size: 12px;
+    padding: 6px 8px;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    background: #1a202c;
+    color: #edf2f7;
+    min-width: 120px;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  .document-name-input:focus {
+    outline: none;
+    border-color: #2b6cb0;
+    box-shadow: 0 0 0 2px rgba(43, 108, 176, 0.2);
+  }
+  
+  .page-width-select,
+  .format-select {
+    font-size: 12px;
+    padding: 6px 8px;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    background: #1a202c;
+    color: #edf2f7;
+    min-width: 100px;
+  }
+  
+  .page-width-select:focus,
+  .format-select:focus {
+    outline: none;
+    border-color: #2b6cb0;
+    box-shadow: 0 0 0 2px rgba(43, 108, 176, 0.2);
+  }
+  
+  .download-button {
+    font-size: 12px;
+    padding: 6px;
+    border: none;
+    border-radius: 6px;
+    background: #2b6cb0;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .download-button:hover {
+    background: #2c5282;
+    transform: scale(1.05);
+  }
+  
+  .download-button:active {
+    transform: scale(1);
+  }
+  
+  .download-button:disabled {
+    background: #4a5568;
+    cursor: not-allowed;
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .control-panel {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.3rem;
+      border-radius: 0;
+      border-bottom: 2px solid #4a5568; /* Divider */
+      margin-bottom: 0.5rem; /* Gap */
+      background: rgba(26, 32, 44, 0.7); /* Glass effect */
+      backdrop-filter: blur(8px); /* Glass blur */
+      box-shadow: none; /* Remove shadow */
+    }
+  
+    .right-controls {
+      margin-left: auto; /* Align to right */
+    }
+  
+    .back-button {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+      padding: 5px;
+      box-shadow: none;
+    }
+  
+    .document-name-input {
+      font-size: 10px;
+      padding: 5px 6px;
+      min-width: 70px;
+    }
+  
+    .page-width-select,
+    .format-select {
+      font-size: 10px;
+      padding: 5px 6px;
+      min-width: 60px;
+    }
+  
+    .download-button {
+      width: 28px;
+      height: 28px;
+      padding: 5px;
+      box-shadow: none;
+    }
+  
+    .control-panel label {
+      display: none; /* Hide labels except for Width and Format */
+    }
+  
+    .control-group:has(#page-width),
+    .control-group:has(#output-format) {
+      .control-panel label {
+        display: inline; /* Show Width and Format labels */
+      }
+    }
+  }
+  
+  /* Ultra-compact adjustments */
+  @media (max-width: 480px) {
+    .control-panel {
+      gap: 0.3rem;
+      padding: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+  
+    .back-button {
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      padding: 4px;
+    }
+  
+    .document-name-input {
+      font-size: 9px;
+      padding: 4px 5px;
+      min-width: 60px;
+    }
+  
+    .page-width-select,
+    .format-select {
+      font-size: 9px;
+      padding: 4px 5px;
+      min-width: 50px;
+    }
+  
+    .download-button {
+      width: 24px;
+      height: 24px;
+      padding: 4px;
+    }
+  }

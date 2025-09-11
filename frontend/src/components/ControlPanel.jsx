@@ -1,71 +1,80 @@
-import { useNavigate } from 'react-router-dom';
+import { Save } from 'lucide-react';
+import '../styles/ControlPanel.css';
 
-const ControlPanel = ({ 
-  pageWidth, 
-  setPageWidth, 
-  pageWidthOptions, 
-  fileName, 
-  setFileName, 
-  fileFormat, 
-  setFileFormat, 
-  fileFormatOptions, 
-  onDownload 
+const ControlPanel = ({
+  documentName,
+  setDocumentName,
+  pageWidth,
+  setPageWidth,
+  outputFormat,
+  setOutputFormat,
+  handleDownload,
+  isDownloading,
+  handleBack,
 }) => {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1); // Go back to previous page
-  };
+  const pageWidthOptions = [
+    { value: 612, label: '8.5"' },
+    { value: 595, label: 'A4' },
+    { value: 816, label: '10.5"' },
+    { value: 1056, label: '13.5"' },
+  ];
 
   return (
     <div className="control-panel">
+      <button className="back-button" onClick={handleBack} title="Go Back">
+        ←
+      </button>
+
       <div className="control-group">
-        <button onClick={handleBack} className="back-button" title="Go back">
-          ←
-        </button>
-        <label>Document Name:</label>
-        <input
-          type="text"
-          value={fileName}
-          onChange={(e) => setFileName(e.target.value)}
-          placeholder="Enter document name"
-          className="document-name-input"
-        />
-      </div>
-      
-      <div className="control-group">
-        <label>Page Width:</label>
-        <select 
-          value={pageWidth} 
-          onChange={(e) => setPageWidth(parseInt(e.target.value))}
+        <label htmlFor="page-width">Width:</label>
+        <select
+          id="page-width"
+          value={pageWidth}
+          onChange={(e) => setPageWidth(Number(e.target.value))}
           className="page-width-select"
         >
-          {pageWidthOptions.map(option => (
+          {pageWidthOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </select>
       </div>
-      
-      <div className="control-group">
-        <label>Format:</label>
-        <select 
-          value={fileFormat} 
-          onChange={(e) => setFileFormat(e.target.value)}
-          className="format-select"
+
+      <div className="right-controls">
+        <div className="control-group">
+          <input
+            id="document-name"
+            type="text"
+            value={documentName}
+            onChange={(e) => setDocumentName(e.target.value)}
+            className="document-name-input"
+            placeholder="Document Name"
+          />
+        </div>
+
+        <div className="control-group">
+          <label htmlFor="output-format">Format:</label>
+          <select
+            id="output-format"
+            value={outputFormat}
+            onChange={(e) => setOutputFormat(e.target.value)}
+            className="format-select"
+          >
+            <option value="pdf">PDF</option>
+            <option value="docx">DOCX</option>
+          </select>
+        </div>
+
+        <button
+          className="download-button"
+          onClick={handleDownload}
+          disabled={isDownloading}
+          title={isDownloading ? 'Converting...' : `Download ${outputFormat.toUpperCase()}`}
         >
-          {fileFormatOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          <Save size={16} />
+        </button>
       </div>
-      
-      <button onClick={onDownload} className="download-button">
-        📥 Download
-      </button>
     </div>
   );
 };

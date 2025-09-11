@@ -1,6 +1,7 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Quill from 'quill';
+
 import { useRef, useEffect, useCallback, useMemo } from 'react';
 
 // Suppress findDOMNode warning from ReactQuill

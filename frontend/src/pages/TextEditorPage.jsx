@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CustomToolbar from '../components/CustomToolbar';
 import EditorContainer from '../components/EditorContainer';
+import ControlPanel from '../components/ControlPanel';
 import Footer from '../components/Footer';
 import '../styles/TextEditorPage.css';
 
@@ -221,71 +222,21 @@ ${html}
     window.history.back();
   };
 
-  const pageWidthOptions = [
-    { value: 612, label: 'Letter (8.5")' },
-    { value: 595, label: 'A4' },
-    { value: 816, label: 'Wide (10.5")' },
-    { value: 1056, label: 'Legal (13.5")' }
-  ];
-
   return (
     <div className="text-editor-page">
-      <div className="control-panel">
-        <button className="back-button" onClick={handleBack} title="Go Back">
-          ←
-        </button>
+      <ControlPanel
+        documentName={documentName}
+        setDocumentName={setDocumentName}
+        pageWidth={pageWidth}
+        setPageWidth={setPageWidth}
+        outputFormat={outputFormat}
+        setOutputFormat={setOutputFormat}
+        handleDownload={handleDownload}
+        isDownloading={isDownloading}
+        handleBack={handleBack}
+      />
 
-        <div className="control-group">
-          <label htmlFor="document-name">Document Name:</label>
-          <input
-            id="document-name"
-            type="text"
-            value={documentName}
-            onChange={(e) => setDocumentName(e.target.value)}
-            className="document-name-input"
-            placeholder="Enter document name"
-          />
-        </div>
-
-        <div className="control-group">
-          <label htmlFor="page-width">Page Width:</label>
-          <select
-            id="page-width"
-            value={pageWidth}
-            onChange={(e) => setPageWidth(Number(e.target.value))}
-            className="page-width-select"
-          >
-            {pageWidthOptions.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="control-group">
-          <label htmlFor="output-format">Save As:</label>
-          <select
-            id="output-format"
-            value={outputFormat}
-            onChange={(e) => setOutputFormat(e.target.value)}
-            className="format-select"
-          >
-            <option value="pdf">PDF Document</option>
-            <option value="docx">Word Document</option>
-          </select>
-        </div>
-
-        <button 
-          className="download-button"
-          onClick={handleDownload}
-          disabled={isDownloading}
-        >
-          {isDownloading ? 'Converting...' : `Download ${outputFormat.toUpperCase()}`}
-        </button>
-      </div>
-
-      <CustomToolbar 
+      <CustomToolbar
         quillInstance={quillInstance}
         documentName={documentName}
         setDocumentName={setDocumentName}
