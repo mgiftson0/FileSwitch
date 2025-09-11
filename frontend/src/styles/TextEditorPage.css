@@ -139,7 +139,7 @@
     border: none !important;
     background: #ffffff !important;
     box-sizing: border-box !important;
-    min-height: calc(100vh - 44px - 60px - 0.5rem) !important; /* Control panel (~44px) + mobile toolbar (~60px) + divider gap (0.5rem) */
+    min-height: calc(100vh - 44px - 60px - 1rem) !important; /* Control panel (~44px) + mobile toolbar (~60px) + gap (1rem) */
   }
   
   .footer {
@@ -151,6 +151,6 @@
 @media (max-width: 480px) {
   .editor-container .ql-editor {
     padding: 0.25rem !important;
-    min-height: calc(100vh - 40px - 50px - 0.5rem) !important; /* Control panel (~40px) + mobile toolbar (~50px) + divider gap (0.5rem) */
+    min-height: calc(100vh - 40px - 50px - 1rem) !important; /* Control panel (~40px) + mobile toolbar (~50px) + gap (1rem) */
   }
 }

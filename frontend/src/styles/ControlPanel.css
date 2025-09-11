@@ -3,9 +3,18 @@
     align-items: center;
     gap: 1rem;
     padding: 0.5rem;
-    background: linear-gradient(to bottom, #2d3748, #1a202c);
+    background: rgba(17, 17, 17, 0.6); /* Glass dark */
+    background-image: linear-gradient(
+      135deg,
+      rgba(26, 32, 44, 0.85),
+      rgba(45, 55, 72, 0.75)
+    ); /* Dark gradient */
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                0 2px 8px rgba(0, 0, 0, 0.6); /* Inset + outer depth */
     white-space: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
@@ -33,7 +42,7 @@
     padding: 6px;
     border: none;
     border-radius: 6px;
-    background: #1a202c;
+    background: rgba(30, 41, 59, 0.9);
     color: #edf2f7;
     cursor: pointer;
     font-family: 'Inter', system-ui, sans-serif;
@@ -44,7 +53,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
   
   .back-button:hover {
@@ -66,9 +75,9 @@
   .document-name-input {
     font-size: 12px;
     padding: 6px 8px;
-    border: 1px solid #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 6px;
-    background: #1a202c;
+    background: rgba(30, 41, 59, 0.85);
     color: #edf2f7;
     min-width: 120px;
     font-family: 'Inter', system-ui, sans-serif;
@@ -76,17 +85,17 @@
   
   .document-name-input:focus {
     outline: none;
-    border-color: #2b6cb0;
-    box-shadow: 0 0 0 2px rgba(43, 108, 176, 0.2);
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.4);
   }
   
   .page-width-select,
   .format-select {
     font-size: 12px;
     padding: 6px 8px;
-    border: 1px solid #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 6px;
-    background: #1a202c;
+    background: rgba(30, 41, 59, 0.85);
     color: #edf2f7;
     min-width: 100px;
   }
@@ -94,8 +103,8 @@
   .page-width-select:focus,
   .format-select:focus {
     outline: none;
-    border-color: #2b6cb0;
-    box-shadow: 0 0 0 2px rgba(43, 108, 176, 0.2);
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.4);
   }
   
   .download-button {
@@ -114,7 +123,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
   
   .download-button:hover {
@@ -141,15 +150,22 @@
       gap: 0.5rem;
       padding: 0.3rem;
       border-radius: 0;
-      border-bottom: 2px solid #4a5568; /* Divider */
-      margin-bottom: 0.5rem; /* Gap */
-      background: rgba(26, 32, 44, 0.7); /* Glass effect */
-      backdrop-filter: blur(8px); /* Glass blur */
-      box-shadow: none; /* Remove shadow */
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 1rem;
+      background: rgba(15, 15, 15, 0.75);
+      background-image: linear-gradient(
+        135deg,
+        rgba(17, 24, 39, 0.9),
+        rgba(31, 41, 55, 0.75)
+      );
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05),
+                  inset 0 -1px 3px rgba(0, 0, 0, 0.5);
     }
   
     .right-controls {
-      margin-left: auto; /* Align to right */
+      margin-left: auto;
     }
   
     .back-button {
@@ -181,14 +197,7 @@
     }
   
     .control-panel label {
-      display: none; /* Hide labels except for Width and Format */
-    }
-  
-    .control-group:has(#page-width),
-    .control-group:has(#output-format) {
-      .control-panel label {
-        display: inline; /* Show Width and Format labels */
-      }
+      display: none;
     }
   }
   
@@ -197,7 +206,7 @@
     .control-panel {
       gap: 0.3rem;
       padding: 0.25rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
   
     .back-button {
@@ -226,3 +235,4 @@
       padding: 4px;
     }
   }
+  
