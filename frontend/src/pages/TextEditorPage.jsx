@@ -295,10 +295,8 @@ ${html}
         setOutputFormat={setOutputFormat}
         onDownload={handleDownload}
         isDownloading={isDownloading}
-        // onBack={handleBack} 
-       />
+      />
 
-       
       <EditorContainer
         text={text}
         setText={setText}

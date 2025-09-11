@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../styles/MobileTool.css';
+import '../styles/CustomToolbar.css';
 import { 
   Undo2, 
   Redo2, 
