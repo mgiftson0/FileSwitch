@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import '../components/MobileTool.css';
+import '../styles/MobileTool.css';
 import { 
   Undo2, 
   Redo2, 
@@ -17,8 +17,7 @@ import {
   ListOrdered, 
   Save, 
   ChevronUp, 
-  ChevronDown, 
-  Palette 
+  ChevronDown,  
 } from 'lucide-react';
 
 const CustomToolbar = ({ 

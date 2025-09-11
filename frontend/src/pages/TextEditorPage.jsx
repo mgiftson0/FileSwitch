@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CustomToolbar from '../components/CustomToolbar';
 import EditorContainer from '../components/EditorContainer';
 import Footer from '../components/Footer';
-import '../components/TextEditorPage.css';
+import '../styles/TextEditorPage.css';
 
 const TextEditorPage = () => {
   const [text, setText] = useState('');
