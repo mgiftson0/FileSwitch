@@ -133,7 +133,7 @@ const CustomToolbar = ({
         const redoButton = document.querySelector('.ql-redo');
         
         if (undoButton) undoButton.removeEventListener('click', handleUndoClick);
-        if (redoButton) undoButton.removeEventListener('click', handleRedoClick);
+        if (redoButton) redoButton.removeEventListener('click', handleRedoClick);
 
         // Clean up mobile essential toolbar listeners
         const mobileButtons = document.querySelectorAll('.mobile-essential button');
@@ -220,8 +220,7 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
-              <button className="ql-new-page" type="button" title="Add Page">📄</button>
-              <button className="ql-page-break" type="button" title="Page Break">📏</button>
+              {/* <button className="ql-new-page" type="button" title="Add Page">📄</button> */}
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
