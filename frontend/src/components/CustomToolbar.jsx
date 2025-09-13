@@ -18,6 +18,14 @@ import {
   ListOrdered, 
   Save, 
   Diff,  
+  ArrowLeft,
+  ArrowRight,
+  Link,
+  Image,
+  Video,
+  Code,
+  Eraser,
+  FilePlus
 } from 'lucide-react';
 
 const CustomToolbar = ({ 
@@ -132,7 +140,7 @@ const CustomToolbar = ({
         const redoButton = document.querySelector('.ql-redo');
         
         if (undoButton) undoButton.removeEventListener('click', handleUndoClick);
-        if (redoButton) undoButton.removeEventListener('click', handleRedoClick);
+        if (redoButton) redoButton.removeEventListener('click', handleRedoClick);
 
         // Clean up mobile essential toolbar listeners
         const mobileButtons = document.querySelectorAll('.mobile-essential button');
@@ -162,10 +170,11 @@ const CustomToolbar = ({
     }
   };
 
-  const handleAlignChange = (e) => {
+  const handleAlignChange = (value) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (quillInstance) {
-      const align = e.target.value;
-      quillInstance.format('align', align || false);
+      quillInstance.format('align', value || false);
     }
   };
 
@@ -210,6 +219,124 @@ const CustomToolbar = ({
     }
   };
 
+  const handleSubscriptClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      quillInstance.format('script', 'sub');
+    }
+  };
+
+  const handleSuperscriptClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      quillInstance.format('script', 'super');
+    }
+  };
+
+  const handleBackgroundChange = (e) => {
+    if (quillInstance) {
+      const background = e.target.value;
+      quillInstance.format('background', background || false);
+    }
+  };
+
+  const handleIndentDecrease = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      quillInstance.format('indent', '-1');
+    }
+  };
+
+  const handleIndentIncrease = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      quillInstance.format('indent', '+1');
+    }
+  };
+
+  const handleDirectionClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const current = quillInstance.getFormat().direction;
+      quillInstance.format('direction', current === 'rtl' ? false : 'rtl');
+    }
+  };
+
+  const handleLinkClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const url = prompt('Enter link URL:');
+      if (url) {
+        quillInstance.format('link', url);
+      }
+    }
+  };
+
+  const handleImageClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const url = prompt('Enter image URL:');
+      if (url) {
+        const range = quillInstance.getSelection() || { index: 0 };
+        quillInstance.insertEmbed(range.index, 'image', url);
+      }
+    }
+  };
+
+  const handleVideoClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const url = prompt('Enter video URL:');
+      if (url) {
+        const range = quillInstance.getSelection() || { index: 0 };
+        quillInstance.insertEmbed(range.index, 'video', url);
+      }
+    }
+  };
+
+  const handleCodeBlockClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const isCode = quillInstance.getFormat()['code-block'];
+      quillInstance.format('code-block', !isCode);
+    }
+  };
+
+  const handleCleanClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const range = quillInstance.getSelection();
+      if (range) {
+        quillInstance.removeFormat(range.index, range.length);
+      }
+    }
+  };
+
+  const handleNewPageClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quillInstance) {
+      const range = quillInstance.getSelection();
+      if (range) {
+        quillInstance.insertEmbed(range.index, 'page-break', true);
+        quillInstance.setSelection(range.index + 1);
+        quillInstance.insertText(range.index + 1, '\n\n\n');
+        quillInstance.setSelection(range.index + 4);
+        quillInstance.focus();
+      }
+    }
+  };
+
   return (
     <>
       {/* Desktop Toolbar - Hidden on Mobile */}
@@ -219,6 +346,7 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
+              {/* <button className="ql-new-page" type="button" title="Add Page">📄</button> */}
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
@@ -285,6 +413,41 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-clean" type="button" title="Clear Formatting">🧹</button>
             </span>
+            {/* <span className="ql-formats">
+              <input
+                type="number"
+                className="ql-page-width"
+                title="Page Width (px)"
+                value={pageWidth}
+                onChange={(e) => setPageWidth(Number(e.target.value))}
+                min="400"
+                max="1200"
+                style={{ width: '80px', padding: '4px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: 'none', fontSize: '12px' }}
+              />
+            </span>
+            <span className="ql-formats">
+              <select
+                className="ql-output-format"
+                title="Output Format"
+                value={outputFormat}
+                onChange={(e) => setOutputFormat(e.target.value)}
+              >
+                <option value="html">HTML</option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+              </select>
+            </span>
+            <span className="ql-formats">
+              <button
+                className="ql-save"
+                type="button"
+                title="Save Document"
+                onClick={onDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? '⏳' : '💾'}
+              </button>
+            </span> */}
           </div>
         </div>
       </div>
@@ -348,7 +511,7 @@ const CustomToolbar = ({
               >
                 <Diff size={28} />
               </button>
-              <span className="tool-label">{showAdvancedTools ? "Hide" : "More"}</span>
+              <span className="tool-label">{showAdvancedTools ? "Hide" : "Show"}</span>
             </div>
           </div>
         </div>
@@ -390,6 +553,64 @@ const CustomToolbar = ({
               <hr className="tool-divider" />
               <div className="tool-item">
                 <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="New Page"
+                  onClick={handleNewPageClick}
+                >
+                  <FilePlus size={24} />
+                </button>
+                <span className="tool-label">New Page</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <select 
+                  className="tool-select" 
+                  onChange={handleFontChange} 
+                  value={activeFormats.font || ''} 
+                  title="Font Family"
+                >
+                  <option value="">Sans Serif</option>
+                  <option value="serif">Serif</option>
+                  <option value="monospace">Monospace</option>
+                </select>
+                <span className="tool-label">Font</span>
+              </div>
+              <div className="tool-item">
+                <select 
+                  className="tool-select" 
+                  onChange={handleSizeChange} 
+                  value={activeFormats.size || ''} 
+                  title="Font Size"
+                >
+                  <option value="small">Small</option>
+                  <option value="">Normal</option>
+                  <option value="large">Large</option>
+                  <option value="huge">Huge</option>
+                </select>
+                <span className="tool-label">Size</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <select 
+                  className="tool-select" 
+                  onChange={handleHeaderChange} 
+                  value={activeFormats.header || ''} 
+                  title="Heading Level"
+                >
+                  <option value="">Normal</option>
+                  <option value="1">H1</option>
+                  <option value="2">H2</option>
+                  <option value="3">H3</option>
+                  <option value="4">H4</option>
+                  <option value="5">H5</option>
+                  <option value="6">H6</option>
+                </select>
+                <span className="tool-label">Header</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
                   className={`tool-button ${activeFormats.bold ? 'active' : ''}`} 
                   type="button" 
                   title="Bold"
@@ -421,65 +642,9 @@ const CustomToolbar = ({
                 </button>
                 <span className="tool-label">Underline</span>
               </div>
-              <hr className="tool-divider" />
               <div className="tool-item">
                 <button 
-                  className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
-                  type="button" 
-                  title="Align Left"
-                  onClick={() => quillInstance.format('align', false)}
-                >
-                  <AlignLeft size={24} />
-                </button>
-                <span className="tool-label">Left</span>
-              </div>
-              <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
-                  type="button" 
-                  title="Align Center"
-                  onClick={() => quillInstance.format('align', 'center')}
-                >
-                  <AlignCenter size={24} />
-                </button>
-                <span className="tool-label">Center</span>
-              </div>
-              <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
-                  type="button" 
-                  title="Align Right"
-                  onClick={() => quillInstance.format('align', 'right')}
-                >
-                  <AlignRight size={24} />
-                </button>
-                <span className="tool-label">Right</span>
-              </div>
-              <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
-                  type="button" 
-                  title="Align Justify"
-                  onClick={() => quillInstance.format('align', 'justify')}
-                >
-                  <AlignJustify size={24} />
-                </button>
-                <span className="tool-label">Justify</span>
-              </div>
-              <hr className="tool-divider" />
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Header"
-                  onClick={() => quillInstance.format('header', activeFormats.header ? false : '1')}
-                >
-                  <Rows3 size={24} />
-                </button>
-                <span className="tool-label">Header</span>
-              </div>
-              <div className="tool-item">
-                <button 
+                  className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
                   type="button" 
                   title="Strike Through"
                   onClick={handleStrikeClick}
@@ -488,18 +653,62 @@ const CustomToolbar = ({
                 </button>
                 <span className="tool-label">Strike</span>
               </div>
+              <hr className="tool-divider" />
               <div className="tool-item">
                 <button 
-                  className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
+                  className={`tool-button ${activeFormats.script === 'sub' ? 'active' : ''}`} 
                   type="button" 
-                  title="Quote"
-                  onClick={handleQuoteClick}
+                  title="Subscript"
+                  onClick={handleSubscriptClick}
                 >
-                  <Quote size={24} />
+                  X₂
                 </button>
-                <span className="tool-label">Quote</span>
+                <span className="tool-label">Sub</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.script === 'super' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Superscript"
+                  onClick={handleSuperscriptClick}
+                >
+                  X²
+                </button>
+                <span className="tool-label">Sup</span>
               </div>
               <hr className="tool-divider" />
+              <div className="tool-item">
+                <input
+                  type="color"
+                  onChange={handleColorChange}
+                  value={activeFormats.color || '#000000'}
+                  className="color-input"
+                  title="Text Color"
+                />
+                <span className="tool-label">Color</span>
+              </div>
+              <div className="tool-item">
+                <input
+                  type="color"
+                  onChange={handleBackgroundChange}
+                  value={activeFormats.background || '#ffffff'}
+                  className="color-input"
+                  title="Background Color"
+                />
+                <span className="tool-label">BG</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Numbered List"
+                  onClick={handleListClick('ordered')}
+                >
+                  <ListOrdered size={24} />
+                </button>
+                <span className="tool-label">Numbered</span>
+              </div>
               <div className="tool-item">
                 <button 
                   className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`} 
@@ -513,14 +722,177 @@ const CustomToolbar = ({
               </div>
               <div className="tool-item">
                 <button 
-                  className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
+                  className="tool-button" 
                   type="button" 
-                  title="Numbered List"
-                  onClick={handleListClick('ordered')}
+                  title="Decrease Indent"
+                  onClick={handleIndentDecrease}
                 >
-                  <ListOrdered size={24} />
+                  <ArrowLeft size={24} />
                 </button>
-                <span className="tool-label">Numbered</span>
+                <span className="tool-label">Indent -</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Increase Indent"
+                  onClick={handleIndentIncrease}
+                >
+                  <ArrowRight size={24} />
+                </button>
+                <span className="tool-label">Indent +</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Left"
+                  onClick={handleAlignChange('')}
+                >
+                  <AlignLeft size={24} />
+                </button>
+                <span className="tool-label">Left</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Center"
+                  onClick={handleAlignChange('center')}
+                >
+                  <AlignCenter size={24} />
+                </button>
+                <span className="tool-label">Center</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Right"
+                  onClick={handleAlignChange('right')}
+                >
+                  <AlignRight size={24} />
+                </button>
+                <span className="tool-label">Right</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Align Justify"
+                  onClick={handleAlignChange('justify')}
+                >
+                  <AlignJustify size={24} />
+                </button>
+                <span className="tool-label">Justify</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.direction === 'rtl' ? 'active' : ''}`} 
+                  type="button" 
+                  title="Text Direction"
+                  onClick={handleDirectionClick}
+                >
+                  ↔
+                </button>
+                <span className="tool-label">Dir</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Insert Link"
+                  onClick={handleLinkClick}
+                >
+                  <Link size={24} />
+                </button>
+                <span className="tool-label">Link</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Insert Image"
+                  onClick={handleImageClick}
+                >
+                  <Image size={24} />
+                </button>
+                <span className="tool-label">Image</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Insert Video"
+                  onClick={handleVideoClick}
+                >
+                  <Video size={24} />
+                </button>
+                <span className="tool-label">Video</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
+                  type="button" 
+                  title="Quote"
+                  onClick={handleQuoteClick}
+                >
+                  <Quote size={24} />
+                </button>
+                <span className="tool-label">Quote</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className={`tool-button ${activeFormats['code-block'] ? 'active' : ''}`} 
+                  type="button" 
+                  title="Code Block"
+                  onClick={handleCodeBlockClick}
+                >
+                  <Code size={24} />
+                </button>
+                <span className="tool-label">Code</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Clear Formatting"
+                  onClick={handleCleanClick}
+                >
+                  <Eraser size={24} />
+                </button>
+                <span className="tool-label">Clean</span>
+              </div>
+              <hr className="tool-divider" />
+              <div className="tool-item">
+                <input
+                  type="number"
+                  className="tool-input"
+                  title="Page Width (px)"
+                  value={pageWidth}
+                  onChange={(e) => setPageWidth(Number(e.target.value))}
+                  min="400"
+                  max="1200"
+                />
+                <span className="tool-label">Width</span>
+              </div>
+              <div className="tool-item">
+                <select 
+                  className="tool-select" 
+                  title="Output Format"
+                  value={outputFormat}
+                  onChange={(e) => setOutputFormat(e.target.value)}
+                >
+                  <option value="html">HTML</option>
+                  <option value="pdf">PDF</option>
+                  <option value="docx">DOCX</option>
+                </select>
+                <span className="tool-label">Format</span>
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
@@ -536,16 +908,27 @@ const CustomToolbar = ({
                 <span className="tool-label">Save</span>
               </div>
               <hr className="tool-divider" />
-              <hr className="tool-divider" />
               <div className="tool-item">
-                <input
-                  type="color"
-                  onChange={handleColorChange}
-                  value={activeFormats.color || '#000000'}
-                  className="color-input"
-                  title="Text Color"
-                />
-                <span className="tool-label">Color</span>
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Show Advanced Tools"
+                  onClick={() => setShowAdvancedTools(true)}
+                >
+                  <Diff size={24} />
+                </button>
+                <span className="tool-label">Show</span>
+              </div>
+              <div className="tool-item">
+                <button 
+                  className="tool-button" 
+                  type="button" 
+                  title="Hide Advanced Tools"
+                  onClick={() => setShowAdvancedTools(false)}
+                >
+                  <Diff size={24} />
+                </button>
+                <span className="tool-label">Hide</span>
               </div>
             </div>
           </div>
