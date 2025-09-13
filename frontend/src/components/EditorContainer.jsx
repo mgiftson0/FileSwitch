@@ -1,7 +1,6 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Quill from 'quill';
-
 import { useRef, useEffect, useCallback, useMemo } from 'react';
 
 // Suppress findDOMNode warning from ReactQuill
@@ -152,7 +151,7 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
           onChange={setText}
           modules={modules}
           formats={formats}
-          placeholder="Start writing your document..."
+          placeholder=""
           style={{
             background: 'transparent'
           }}
