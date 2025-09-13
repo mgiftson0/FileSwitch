@@ -17,8 +17,7 @@ import {
   List, 
   ListOrdered, 
   Save, 
-  ChevronUp, 
-  ChevronDown,  
+  Diff,  
 } from 'lucide-react';
 
 const CustomToolbar = ({ 
@@ -133,7 +132,7 @@ const CustomToolbar = ({
         const redoButton = document.querySelector('.ql-redo');
         
         if (undoButton) undoButton.removeEventListener('click', handleUndoClick);
-        if (redoButton) redoButton.removeEventListener('click', handleRedoClick);
+        if (redoButton) undoButton.removeEventListener('click', handleRedoClick);
 
         // Clean up mobile essential toolbar listeners
         const mobileButtons = document.querySelectorAll('.mobile-essential button');
@@ -220,7 +219,7 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
-              {/* <button className="ql-new-page" type="button" title="Add Page">📄</button> */}
+              <button className="ql-new-page" type="button" title="Add Page">📄</button>
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
@@ -287,6 +286,41 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-clean" type="button" title="Clear Formatting">🧹</button>
             </span>
+            <span className="ql-formats">
+              <input
+                type="number"
+                className="ql-page-width"
+                title="Page Width (px)"
+                value={pageWidth}
+                onChange={(e) => setPageWidth(Number(e.target.value))}
+                min="400"
+                max="1200"
+                style={{ width: '80px', padding: '4px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: 'none', fontSize: '12px' }}
+              />
+            </span>
+            <span className="ql-formats">
+              <select
+                className="ql-output-format"
+                title="Output Format"
+                value={outputFormat}
+                onChange={(e) => setOutputFormat(e.target.value)}
+              >
+                <option value="html">HTML</option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+              </select>
+            </span>
+            <span className="ql-formats">
+              <button
+                className="ql-save"
+                type="button"
+                title="Save Document"
+                onClick={onDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? '⏳' : '💾'}
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -296,41 +330,62 @@ const CustomToolbar = ({
         {/* Essential Tools Row */}
         <div className="mobile-essential-toolbar">
           <div className="mobile-essential">
-            <button className="mobile-undo" type="button" title="Undo">↶</button>
-            <button className="mobile-redo" type="button" title="Redo">↷</button>
-            <button 
-              className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
-              type="button" 
-              title="Bold"
-              onClick={handleBoldClick}
-            >B</button>
-            <button 
-              className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
-              type="button" 
-              title="Italic"
-              onClick={handleItalicClick}
-            >I</button>
-            <button 
-              className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
-              type="button" 
-              title="Underline"
-              onClick={handleUnderlineClick}
-            >U</button>
-            <button 
-              className="mobile-save-button"
-              onClick={onDownload}
-              disabled={isDownloading}
-              title="Save Document"
-            >
-              {isDownloading ? '⏳' : <Save size={28} />}
-            </button>
-            <button 
-              className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
-              onClick={() => setShowAdvancedTools(!showAdvancedTools)}
-              title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
-            >
-              ▲
-            </button>
+            <div className="tool-item">
+              <button className="mobile-undo" type="button" title="Undo">↶</button>
+              <span className="tool-label">Undo</span>
+            </div>
+            <div className="tool-item">
+              <button className="mobile-redo" type="button" title="Redo">↷</button>
+              <span className="tool-label">Redo</span>
+            </div>
+            <div className="tool-item">
+              <button 
+                className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
+                type="button" 
+                title="Bold"
+                onClick={handleBoldClick}
+              >B</button>
+              <span className="tool-label">Bold</span>
+            </div>
+            <div className="tool-item">
+              <button 
+                className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
+                type="button" 
+                title="Italic"
+                onClick={handleItalicClick}
+              >I</button>
+              <span className="tool-label">Italic</span>
+            </div>
+            <div className="tool-item">
+              <button 
+                className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
+                type="button" 
+                title="Underline"
+                onClick={handleUnderlineClick}
+              >U</button>
+              <span className="tool-label">Underline</span>
+            </div>
+            <div className="tool-item">
+              <button 
+                className="mobile-save-button"
+                onClick={onDownload}
+                disabled={isDownloading}
+                title="Save Document"
+              >
+                {isDownloading ? '⏳' : <Save size={28} />}
+              </button>
+              <span className="tool-label">Save</span>
+            </div>
+            <div className="tool-item">
+              <button 
+                className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
+                onClick={() => setShowAdvancedTools(!showAdvancedTools)}
+                title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
+              >
+                <Diff size={28} />
+              </button>
+              <span className="tool-label">{showAdvancedTools ? "Hide" : "More"}</span>
+            </div>
           </div>
         </div>
 
@@ -461,7 +516,6 @@ const CustomToolbar = ({
               </div>
               <div className="tool-item">
                 <button 
-                  className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
                   type="button" 
                   title="Strike Through"
                   onClick={handleStrikeClick}
@@ -518,28 +572,6 @@ const CustomToolbar = ({
                 <span className="tool-label">Save</span>
               </div>
               <hr className="tool-divider" />
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Show Advanced Tools"
-                  onClick={() => setShowAdvancedTools(true)}
-                >
-                  <ChevronUp size={24} />
-                </button>
-                <span className="tool-label">Show</span>
-              </div>
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Hide Advanced Tools"
-                  onClick={() => setShowAdvancedTools(false)}
-                >
-                  <ChevronDown size={24} />
-                </button>
-                <span className="tool-label">Hide</span>
-              </div>
               <hr className="tool-divider" />
               <div className="tool-item">
                 <input
