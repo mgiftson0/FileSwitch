@@ -413,41 +413,6 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-clean" type="button" title="Clear Formatting">🧹</button>
             </span>
-            {/* <span className="ql-formats">
-              <input
-                type="number"
-                className="ql-page-width"
-                title="Page Width (px)"
-                value={pageWidth}
-                onChange={(e) => setPageWidth(Number(e.target.value))}
-                min="400"
-                max="1200"
-                style={{ width: '80px', padding: '4px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: 'none', fontSize: '12px' }}
-              />
-            </span>
-            <span className="ql-formats">
-              <select
-                className="ql-output-format"
-                title="Output Format"
-                value={outputFormat}
-                onChange={(e) => setOutputFormat(e.target.value)}
-              >
-                <option value="html">HTML</option>
-                <option value="pdf">PDF</option>
-                <option value="docx">DOCX</option>
-              </select>
-            </span>
-            <span className="ql-formats">
-              <button
-                className="ql-save"
-                type="button"
-                title="Save Document"
-                onClick={onDownload}
-                disabled={isDownloading}
-              >
-                {isDownloading ? '⏳' : '💾'}
-              </button>
-            </span> */}
           </div>
         </div>
       </div>
