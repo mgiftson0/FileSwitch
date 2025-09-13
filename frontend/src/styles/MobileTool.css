@@ -254,7 +254,7 @@
 /* ---------------- Ultra Compact Mode ---------------- */
 @media (max-width: 480px) {
   .mobile-toolbar-container {
-    gap: 8px;
+    gap: 6px;
   }
   
   .mobile-essential-toolbar,
@@ -264,7 +264,7 @@
   }
   
   .mobile-essential {
-    gap: 3px;
+    gap: 0px;
   }
   
   .mobile-essential button {
