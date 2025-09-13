@@ -219,7 +219,6 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
-              <button className="ql-new-page" type="button" title="Add Page">📄</button>
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
@@ -285,41 +284,6 @@ const CustomToolbar = ({
             </span>
             <span className="ql-formats">
               <button className="ql-clean" type="button" title="Clear Formatting">🧹</button>
-            </span>
-            <span className="ql-formats">
-              <input
-                type="number"
-                className="ql-page-width"
-                title="Page Width (px)"
-                value={pageWidth}
-                onChange={(e) => setPageWidth(Number(e.target.value))}
-                min="400"
-                max="1200"
-                style={{ width: '80px', padding: '4px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#e2e8f0', border: 'none', fontSize: '12px' }}
-              />
-            </span>
-            <span className="ql-formats">
-              <select
-                className="ql-output-format"
-                title="Output Format"
-                value={outputFormat}
-                onChange={(e) => setOutputFormat(e.target.value)}
-              >
-                <option value="html">HTML</option>
-                <option value="pdf">PDF</option>
-                <option value="docx">DOCX</option>
-              </select>
-            </span>
-            <span className="ql-formats">
-              <button
-                className="ql-save"
-                type="button"
-                title="Save Document"
-                onClick={onDownload}
-                disabled={isDownloading}
-              >
-                {isDownloading ? '⏳' : '💾'}
-              </button>
             </span>
           </div>
         </div>
