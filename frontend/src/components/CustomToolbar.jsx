@@ -552,18 +552,6 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="New Page"
-                  onClick={handleNewPageClick}
-                >
-                  <FilePlus size={24} />
-                </button>
-                <span className="tool-label">New Page</span>
-              </div>
-              <hr className="tool-divider" />
-              <div className="tool-item">
                 <select 
                   className="tool-select" 
                   onChange={handleFontChange} 
@@ -869,67 +857,6 @@ const CustomToolbar = ({
                 <span className="tool-label">Clean</span>
               </div>
               <hr className="tool-divider" />
-              <div className="tool-item">
-                <input
-                  type="number"
-                  className="tool-input"
-                  title="Page Width (px)"
-                  value={pageWidth}
-                  onChange={(e) => setPageWidth(Number(e.target.value))}
-                  min="400"
-                  max="1200"
-                />
-                <span className="tool-label">Width</span>
-              </div>
-              <div className="tool-item">
-                <select 
-                  className="tool-select" 
-                  title="Output Format"
-                  value={outputFormat}
-                  onChange={(e) => setOutputFormat(e.target.value)}
-                >
-                  <option value="html">HTML</option>
-                  <option value="pdf">PDF</option>
-                  <option value="docx">DOCX</option>
-                </select>
-                <span className="tool-label">Format</span>
-              </div>
-              <hr className="tool-divider" />
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Save Document"
-                  onClick={onDownload}
-                  disabled={isDownloading}
-                >
-                  <Save size={24} />
-                </button>
-                <span className="tool-label">Save</span>
-              </div>
-              <hr className="tool-divider" />
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Show Advanced Tools"
-                  onClick={() => setShowAdvancedTools(true)}
-                >
-                  <Diff size={24} />
-                </button>
-                <span className="tool-label">Show</span>
-              </div>
-              <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
-                  title="Hide Advanced Tools"
-                  onClick={() => setShowAdvancedTools(false)}
-                >
-                  <Diff size={24} />
-                </button>
-                <span className="tool-label">Hide</span>
-              </div>
             </div>
           </div>
         )}
