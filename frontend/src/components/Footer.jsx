@@ -89,7 +89,7 @@ const Footer = () => {
           <LinkedIn />
         </IconButton>
          */}
-        <IconButton 
+        {/* <IconButton 
           component="a" 
           href="/" 
           target="_blank" 
@@ -108,7 +108,7 @@ const Footer = () => {
           }}
         >
           <Instagram />
-        </IconButton>
+        </IconButton> */}
       </Box>
       
       <Box>
