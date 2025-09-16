@@ -151,6 +151,6 @@
 @media (max-width: 480px) {
   .editor-container .ql-editor {
     padding: 0.25rem !important;
-    min-height: calc(100vh - 40px - 50px - 1rem) !important; /* Control panel (~40px) + mobile toolbar (~50px) + gap (1rem) */
+    min-height: calc(100vh - 40px - 50px - 1rem) !important; 
   }
 }
