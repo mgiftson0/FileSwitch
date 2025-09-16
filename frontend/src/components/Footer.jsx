@@ -68,7 +68,7 @@ const Footer = () => {
           <Email />
         </IconButton>
         
-        <IconButton 
+        {/* <IconButton 
           component="a" 
           href="https://www.linkedin.com" 
           target="_blank" 
@@ -88,7 +88,7 @@ const Footer = () => {
         >
           <LinkedIn />
         </IconButton>
-        
+         */}
         <IconButton 
           component="a" 
           href="/" 
