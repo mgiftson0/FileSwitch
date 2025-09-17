@@ -208,7 +208,7 @@
     }
   }
   
-  /* Ultra-compact adjustments */
+  /* Ultra-compact adjustments  (mobile devices */
   @media (max-width: 480px) {
     .control-panel {
       gap: 0.3rem;
