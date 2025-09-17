@@ -1,5 +1,5 @@
 import { Box, Typography, IconButton } from '@mui/material';
-import { GitHub, Email, LinkedIn, } from '@mui/icons-material';
+import { GitHub, Email,  } from '@mui/icons-material';
 
 const Footer = () => {
   return (
@@ -68,27 +68,7 @@ const Footer = () => {
           <Email />
         </IconButton>
         
-        {/* <IconButton 
-          component="a" 
-          href="https://www.linkedin.com" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          sx={{
-            color: 'rgba(255, 255, 255, 0.7)',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            borderRadius: '12px',
-            padding: '12px',
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              color: '#ffffff',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              transform: 'translateY(-2px)'
-            }
-          }}
-        >
-          <LinkedIn />
-        </IconButton>
-         */}
+
 
       </Box>
       
