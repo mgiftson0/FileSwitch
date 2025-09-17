@@ -157,7 +157,7 @@
   height: 16px !important;
 }
 
-/* Ensure no changes on mobile */
+/* mobile */
 @media (max-width: 768px) {
   .toolbar-wrapper.desktop-only {
     display: none !important;
