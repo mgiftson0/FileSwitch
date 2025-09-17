@@ -288,7 +288,7 @@
   padding: 0;
 }
 
-/* ---------------- Ultra Compact Mode ---------------- */
+/* ---------------- Ultra Compact Mode  Mobile devices ---------------- */
 @media (max-width: 480px) {
   .mobile-toolbar-container {
     gap: 6px;
