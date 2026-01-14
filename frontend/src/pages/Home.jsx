@@ -1,5 +1,5 @@
-import Header from '../components/Header';
-import UploadForm from '../components/UploadForm';
+import Header from '../components/common/Header';
+import UploadForm from '../components/home/UploadForm';
 import { Box } from '@mui/material';
 
 const Home = () => {

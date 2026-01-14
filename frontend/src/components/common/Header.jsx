@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../styles/Header.css';
+import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Header = () => {
         <div className="logo-container">
           <h1 className="logo">fileSwitch</h1>
         </div>
-        
+
         <div className="header-actions">
           <button
             className={`text-editor-button ${isTextEditorActive ? 'active' : ''}`}
@@ -36,9 +36,9 @@ const Header = () => {
             title="Go to Text Editor"
           >
             <svg className="text-editor-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M3 5H21M3 12H21M3 19H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M7 5V19M17 5V19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              <path d="M11 5V19M13 5V19" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+              <path d="M3 5H21M3 12H21M3 19H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M7 5V19M17 5V19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M11 5V19M13 5V19" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
             </svg>
             <span className="button-text">Text Editor</span>
           </button>

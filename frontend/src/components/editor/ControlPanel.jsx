@@ -1,5 +1,5 @@
 import { Save } from 'lucide-react';
-import '../styles/ControlPanel.css';
+import './ControlPanel.css';
 
 const ControlPanel = ({
   documentName,

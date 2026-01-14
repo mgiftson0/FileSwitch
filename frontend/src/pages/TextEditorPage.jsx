@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import CustomToolbar from '../components/CustomToolbar';
-import EditorContainer from '../components/EditorContainer';
-import ControlPanel from '../components/ControlPanel';
-import Footer from '../components/Footer';
-import '../styles/TextEditorPage.css';
+import CustomToolbar from '../components/editor/CustomToolbar';
+import EditorContainer from '../components/editor/EditorContainer';
+import ControlPanel from '../components/editor/ControlPanel';
+import Footer from '../components/common/Footer';
+import '../components/editor/TextEditorPage.css';
 
 const TextEditorPage = () => {
   const [text, setText] = useState('');
