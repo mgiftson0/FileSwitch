@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
+import logo from '../../assets/logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -20,13 +21,17 @@ const Header = () => {
     navigate('/edit-text');
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   const isTextEditorActive = location.pathname === '/edit-text';
 
   return (
     <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
       <div className="header-content">
-        <div className="logo-container">
-          <h1 className="logo">fileSwitch</h1>
+        <div className="logo-container" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+          <img src={logo} alt="FileSwitch Logo" className="logo-img" />
         </div>
 
         <div className="header-actions">
