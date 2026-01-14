@@ -8,26 +8,27 @@ const DownloadLinks = ({ downloadLinks }) => {
   }
 
   return (
-    <Box 
-      sx={{ 
-        width: '100%', 
-        maxWidth: '600px',
-        mt: 4
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '700px',
+        mt: 6
       }}
     >
-      <Typography 
-        variant="h6" 
-        sx={{ 
-          color: '#ffffff', 
-          textAlign: 'center', 
-          mb: 3,
-          fontWeight: 500
+      <Typography
+        variant="h5"
+        sx={{
+          color: 'var(--text-main)',
+          textAlign: 'center',
+          mb: 4,
+          fontWeight: 700,
+          fontFamily: 'Outfit, sans-serif'
         }}
       >
         Your files are ready!
       </Typography>
-      
-      <Grid container spacing={2} justifyContent="center">
+
+      <Grid container spacing={3} justifyContent="center">
         {downloadLinks.original && (
           <Grid item xs={12} sm={6}>
             <Button
@@ -39,20 +40,22 @@ const DownloadLinks = ({ downloadLinks }) => {
               startIcon={<DescriptionIcon />}
               endIcon={<DownloadIcon />}
               sx={{
-                color: '#ffffff',
-                borderColor: 'rgba(255, 255, 255, 0.3)',
+                color: 'var(--text-main)',
+                borderColor: 'var(--glass-border)',
                 backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '12px',
-                padding: '12px 16px',
+                borderRadius: '16px',
+                padding: '14px 24px',
                 textTransform: 'none',
-                fontWeight: 500,
+                fontWeight: 600,
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '1rem',
                 backdropFilter: 'blur(10px)',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                  borderColor: 'rgba(255, 255, 255, 0.5)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)'
                 }
               }}
             >
@@ -60,7 +63,7 @@ const DownloadLinks = ({ downloadLinks }) => {
             </Button>
           </Grid>
         )}
-        
+
         {downloadLinks.converted && (
           <Grid item xs={12} sm={6}>
             <Button
@@ -72,18 +75,20 @@ const DownloadLinks = ({ downloadLinks }) => {
               startIcon={<DescriptionIcon />}
               endIcon={<DownloadIcon />}
               sx={{
-                backgroundColor: '#64b5f6',
-                color: '#0a1625',
-                borderRadius: '12px',
-                padding: '12px 16px',
+                background: 'linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%)',
+                color: 'white',
+                borderRadius: '16px',
+                padding: '14px 24px',
                 textTransform: 'none',
                 fontWeight: 600,
-                boxShadow: '0 4px 16px rgba(100, 181, 246, 0.3)',
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: '1rem',
+                boxShadow: '0 8px 20px rgba(131, 56, 236, 0.25)',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 '&:hover': {
-                  backgroundColor: '#90caf9',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 6px 20px rgba(100, 181, 246, 0.4)'
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 12px 25px rgba(131, 56, 236, 0.35)',
+                  filter: 'brightness(1.1)'
                 }
               }}
             >

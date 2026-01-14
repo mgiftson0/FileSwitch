@@ -85,7 +85,7 @@ const EditorContainer = ({ text, setText, pageWidth, setQuillInstance }) => {
     }
   }), []);
 
-  // Memoize formats array - exclude undo/redo since they cause warnings
+  // Memoize formats array - include all formats needed for the toolbar
   const formats = useMemo(() => [
     'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike',
     'color', 'background', 'script', 'align', 'direction', 'indent',

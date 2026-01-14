@@ -7,22 +7,28 @@ const Home = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundColor: '#121212', 
-        color: 'rgba(255, 255, 255, 0.87)', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        pt: 2 // Padding top
+        position: 'relative',
+        zIndex: 1
       }}
     >
+      <div className="gradient-bg"></div>
+
       <Header />
+
       <Box
+        className="fade-in"
         sx={{
           width: '100%',
-          maxWidth: 'md', // Matches MUI's breakpoint (around 900px)
-          px: 2, // Horizontal padding
-          py: 4, // Vertical padding
-          flex: 1 // Takes remaining space
+          maxWidth: 'lg',
+          px: { xs: 2, md: 4 },
+          pt: { xs: 14, md: 18 },
+          pb: { xs: 4, md: 8 },
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center'
         }}
       >
         <UploadForm />

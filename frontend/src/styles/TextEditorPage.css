@@ -108,7 +108,7 @@
     min-height: 100vh !important;
     background-color: #ffffff !important;
   }
-  
+
   .editor-wrapper {
     background-color: transparent !important;
     padding: 0 !important;
@@ -116,20 +116,20 @@
     border-radius: 0 !important;
     width: 100% !important;
   }
-  
+
   .editor-container {
     background: none !important;
     border: none !important;
     box-shadow: none !important;
     width: 100% !important;
   }
-  
+
   .editor-container .ql-container {
     border: none !important;
     background: none !important;
     width: 100% !important;
   }
-  
+
   .editor-container .ql-editor {
     max-width: none !important;
     width: 100% !important;
@@ -139,9 +139,9 @@
     border: none !important;
     background: #ffffff !important;
     box-sizing: border-box !important;
-    min-height: calc(100vh - 44px - 60px - 1rem) !important; 
+    min-height: calc(100vh - 44px - 60px - 1rem) !important;
   }
-  
+
   .footer {
     display: none !important;
   }
@@ -151,6 +151,6 @@
 @media (max-width: 480px) {
   .editor-container .ql-editor {
     padding: 0.25rem !important;
-    min-height: calc(100vh - 40px - 50px - 1rem) !important; 
+    min-height: calc(100vh - 40px - 50px - 1rem) !important;
   }
 }

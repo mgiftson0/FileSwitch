@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
 import '../styles/MobileTool.css';
 import '../styles/CustomToolbar.css';
-import { 
-  Undo2, 
-  Redo2, 
-  Bold, 
-  Italic, 
-  Underline, 
-  AlignLeft, 
-  AlignCenter, 
-  AlignRight, 
-  AlignJustify, 
-  Rows3, 
-  Strikethrough, 
-  Quote, 
-  List, 
-  ListOrdered, 
-  Save, 
-  Diff,  
+import {
+  Undo2,
+  Redo2,
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Strikethrough,
+  Quote,
+  List,
+  ListOrdered,
+  Save,
+  Diff,
   ArrowLeft,
   ArrowRight,
   Link,
@@ -25,18 +24,17 @@ import {
   Video,
   Code,
   Eraser,
-  FilePlus
 } from 'lucide-react';
 
-const CustomToolbar = ({ 
-  quillInstance, 
-  documentName, 
-  setDocumentName, 
-  pageWidth, 
-  setPageWidth, 
-  outputFormat, 
-  setOutputFormat, 
-  onDownload, 
+const CustomToolbar = ({
+  quillInstance,
+  documentName,
+  setDocumentName,
+  pageWidth,
+  setPageWidth,
+  outputFormat,
+  setOutputFormat,
+  onDownload,
   isDownloading
 }) => {
   const [activeFormats, setActiveFormats] = useState({});
@@ -108,16 +106,176 @@ const CustomToolbar = ({
         // Desktop toolbar buttons
         const undoButton = document.querySelector('.ql-undo');
         const redoButton = document.querySelector('.ql-redo');
-        
+
         if (undoButton) {
           undoButton.removeAttribute('data-role');
           undoButton.addEventListener('click', handleUndoClick);
         }
-        
+
         if (redoButton) {
           redoButton.removeAttribute('data-role');
           redoButton.addEventListener('click', handleRedoClick);
         }
+
+        // Connect desktop toolbar handlers
+        const connectDesktopHandlers = () => {
+          // Font family
+          const fontSelect = document.querySelector('.ql-font');
+          if (fontSelect) {
+            fontSelect.onchange = (e) => {
+              const font = e.target.value;
+              quillInstance.format('font', font || false);
+            };
+          }
+
+          // Font size
+          const sizeSelect = document.querySelector('.ql-size');
+          if (sizeSelect) {
+            sizeSelect.onchange = (e) => {
+              const size = e.target.value;
+              quillInstance.format('size', size || false);
+            };
+          }
+
+          // Header
+          const headerSelect = document.querySelector('.ql-header');
+          if (headerSelect) {
+            headerSelect.onchange = (e) => {
+              const header = e.target.value;
+              quillInstance.format('header', header || false);
+            };
+          }
+
+          // Script (subscript/superscript)
+          const scriptButtons = document.querySelectorAll('.ql-script');
+          scriptButtons.forEach(button => {
+            button.onclick = (e) => {
+              const value = button.getAttribute('value');
+              quillInstance.format('script', value);
+            };
+          });
+
+          // Color
+          const colorSelect = document.querySelector('.ql-color');
+          if (colorSelect) {
+            colorSelect.onchange = (e) => {
+              const color = e.target.value;
+              quillInstance.format('color', color || false);
+            };
+          }
+
+          // Background
+          const backgroundSelect = document.querySelector('.ql-background');
+          if (backgroundSelect) {
+            backgroundSelect.onchange = (e) => {
+              const background = e.target.value;
+              quillInstance.format('background', background || false);
+            };
+          }
+
+          // Lists
+          const listButtons = document.querySelectorAll('.ql-list');
+          listButtons.forEach(button => {
+            button.onclick = (e) => {
+              const value = button.getAttribute('value');
+              const currentList = quillInstance.getFormat().list;
+              quillInstance.format('list', currentList === value ? false : value);
+            };
+          });
+
+          // Indent
+          const indentButtons = document.querySelectorAll('.ql-indent');
+          indentButtons.forEach(button => {
+            button.onclick = (e) => {
+              const value = button.getAttribute('value');
+              quillInstance.format('indent', value);
+            };
+          });
+
+          // Align
+          const alignSelect = document.querySelector('.ql-align');
+          if (alignSelect) {
+            alignSelect.onchange = (e) => {
+              const align = e.target.value;
+              quillInstance.format('align', align || false);
+            };
+          }
+
+          // Direction
+          const directionButton = document.querySelector('.ql-direction');
+          if (directionButton) {
+            directionButton.onclick = (e) => {
+              const current = quillInstance.getFormat().direction;
+              quillInstance.format('direction', current === 'rtl' ? false : 'rtl');
+            };
+          }
+
+          // Link
+          const linkButton = document.querySelector('.ql-link');
+          if (linkButton) {
+            linkButton.onclick = (e) => {
+              const url = prompt('Enter link URL:');
+              if (url) {
+                quillInstance.format('link', url);
+              }
+            };
+          }
+
+          // Image
+          const imageButton = document.querySelector('.ql-image');
+          if (imageButton) {
+            imageButton.onclick = (e) => {
+              const url = prompt('Enter image URL:');
+              if (url) {
+                const range = quillInstance.getSelection() || { index: 0 };
+                quillInstance.insertEmbed(range.index, 'image', url);
+              }
+            };
+          }
+
+          // Video
+          const videoButton = document.querySelector('.ql-video');
+          if (videoButton) {
+            videoButton.onclick = (e) => {
+              const url = prompt('Enter video URL:');
+              if (url) {
+                const range = quillInstance.getSelection() || { index: 0 };
+                quillInstance.insertEmbed(range.index, 'video', url);
+              }
+            };
+          }
+
+          // Blockquote
+          const blockquoteButton = document.querySelector('.ql-blockquote');
+          if (blockquoteButton) {
+            blockquoteButton.onclick = (e) => {
+              const isQuote = quillInstance.getFormat().blockquote;
+              quillInstance.format('blockquote', !isQuote);
+            };
+          }
+
+          // Code block
+          const codeBlockButton = document.querySelector('.ql-code-block');
+          if (codeBlockButton) {
+            codeBlockButton.onclick = (e) => {
+              const isCode = quillInstance.getFormat()['code-block'];
+              quillInstance.format('code-block', !isCode);
+            };
+          }
+
+          // Clean
+          const cleanButton = document.querySelector('.ql-clean');
+          if (cleanButton) {
+            cleanButton.onclick = (e) => {
+              const range = quillInstance.getSelection();
+              if (range) {
+                quillInstance.removeFormat(range.index, range.length);
+              }
+            };
+          }
+        };
+
+        connectDesktopHandlers();
 
         // Mobile essential toolbar buttons
         const mobileUndoBtn = document.querySelector('.mobile-essential .mobile-undo');
@@ -138,7 +296,7 @@ const CustomToolbar = ({
         // Clean up event listeners
         const undoButton = document.querySelector('.ql-undo');
         const redoButton = document.querySelector('.ql-redo');
-        
+
         if (undoButton) undoButton.removeEventListener('click', handleUndoClick);
         if (redoButton) redoButton.removeEventListener('click', handleRedoClick);
 
@@ -322,21 +480,6 @@ const CustomToolbar = ({
     }
   };
 
-  const handleNewPageClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (quillInstance) {
-      const range = quillInstance.getSelection();
-      if (range) {
-        quillInstance.insertEmbed(range.index, 'page-break', true);
-        quillInstance.setSelection(range.index + 1);
-        quillInstance.insertText(range.index + 1, '\n\n\n');
-        quillInstance.setSelection(range.index + 4);
-        quillInstance.focus();
-      }
-    }
-  };
-
   return (
     <>
       {/* Desktop Toolbar - Hidden on Mobile */}
@@ -346,7 +489,6 @@ const CustomToolbar = ({
             <span className="ql-formats">
               <button className="ql-undo custom-undo" type="button" title="Undo" data-custom="undo">↶</button>
               <button className="ql-redo custom-redo" type="button" title="Redo" data-custom="redo">↷</button>
-              {/* <button className="ql-new-page" type="button" title="Add Page">📄</button> */}
             </span>
             <span className="ql-formats">
               <select className="ql-font" title="Font Family" defaultValue="">
@@ -419,64 +561,72 @@ const CustomToolbar = ({
 
       {/* Mobile Toolbar - Bottom Fixed Position */}
       <div className="mobile-toolbar-container mobile-only">
-        {/* Essential Tools Row */}
-        <div className="mobile-essential-toolbar">
-          <div className="mobile-essential">
-            <div className="tool-item">
-              <button className="mobile-undo" type="button" title="Undo">↶</button>
-              <span className="tool-label">Undo</span>
+        <div className="mobile-toolbar-sections">
+          {/* Section 1: History & Formatting */}
+          <div className="mobile-essential-toolbar section-formatting">
+            <div className="mobile-essential">
+              <div className="tool-item">
+                <button className="mobile-undo" type="button" title="Undo">↶</button>
+                <span className="tool-label">Undo</span>
+              </div>
+              <div className="tool-item">
+                <button className="mobile-redo" type="button" title="Redo">↷</button>
+                <span className="tool-label">Redo</span>
+              </div>
+              <div className="tool-item">
+                <button
+                  className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`}
+                  type="button"
+                  title="Bold"
+                  onClick={handleBoldClick}
+                >B</button>
+                <span className="tool-label">Bold</span>
+              </div>
+              <div className="tool-item">
+                <button
+                  className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`}
+                  type="button"
+                  title="Italic"
+                  onClick={handleItalicClick}
+                >I</button>
+                <span className="tool-label">Italic</span>
+              </div>
+              <div className="tool-item">
+                <button
+                  className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`}
+                  type="button"
+                  title="Underline"
+                  onClick={handleUnderlineClick}
+                >U</button>
+                <span className="tool-label">Underline</span>
+              </div>
             </div>
-            <div className="tool-item">
-              <button className="mobile-redo" type="button" title="Redo">↷</button>
-              <span className="tool-label">Redo</span>
-            </div>
-            <div className="tool-item">
-              <button 
-                className={`mobile-bold ${activeFormats.bold ? 'active' : ''}`} 
-                type="button" 
-                title="Bold"
-                onClick={handleBoldClick}
-              >B</button>
-              <span className="tool-label">Bold</span>
-            </div>
-            <div className="tool-item">
-              <button 
-                className={`mobile-italic ${activeFormats.italic ? 'active' : ''}`} 
-                type="button" 
-                title="Italic"
-                onClick={handleItalicClick}
-              >I</button>
-              <span className="tool-label">Italic</span>
-            </div>
-            <div className="tool-item">
-              <button 
-                className={`mobile-underline ${activeFormats.underline ? 'active' : ''}`} 
-                type="button" 
-                title="Underline"
-                onClick={handleUnderlineClick}
-              >U</button>
-              <span className="tool-label">Underline</span>
-            </div>
-            <div className="tool-item">
-              <button 
-                className="mobile-save-button"
-                onClick={onDownload}
-                disabled={isDownloading}
-                title="Save Document"
-              >
-                {isDownloading ? '⏳' : <Save size={28} />}
-              </button>
-              <span className="tool-label">Save</span>
-            </div>
-            <div className="tool-item">
-              <button 
-                className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
-                onClick={() => setShowAdvancedTools(!showAdvancedTools)}
-                title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
-              >
-                <Diff size={28} />
-              </button>
-              <span className="tool-label">{showAdvancedTools ? "Hide" : "Show"}</span>
+          </div>
+
+          {/* Section 2: Utilities */}
+          <div className="mobile-essential-toolbar section-utilities">
+            <div className="mobile-essential">
+              <div className="tool-item">
+                <button
+                  className="mobile-save-button"
+                  onClick={onDownload}
+                  disabled={isDownloading}
+                  title="Save Document"
+                >
+                  {isDownloading ? '⏳' : <Save size={28} />}
+                </button>
+                <span className="tool-label">Save</span>
+              </div>
+              <div className="tool-item">
+                <button
+                  className={`modern-show-button ${showAdvancedTools ? 'active' : ''}`}
+                  onClick={() => setShowAdvancedTools(!showAdvancedTools)}
+                  title={showAdvancedTools ? "Hide Advanced Tools" : "Show Advanced Tools"}
+                >
+                  <Diff size={28} />
+                </button>
+                <span className="tool-label">{showAdvancedTools ? "Hide" : "Show"}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -486,14 +636,14 @@ const CustomToolbar = ({
           <div className="mobile-advanced-section">
             <div className="advanced-tools-row">
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Undo"
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    e.stopPropagation(); 
-                    quillInstance.history.undo(); 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    quillInstance.history.undo();
                   }}
                 >
                   <Undo2 size={24} />
@@ -501,14 +651,14 @@ const CustomToolbar = ({
                 <span className="tool-label">Undo</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Redo"
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    e.stopPropagation(); 
-                    quillInstance.history.redo(); 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    quillInstance.history.redo();
                   }}
                 >
                   <Redo2 size={24} />
@@ -517,10 +667,10 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <select 
-                  className="tool-select" 
-                  onChange={handleFontChange} 
-                  value={activeFormats.font || ''} 
+                <select
+                  className="tool-select"
+                  onChange={handleFontChange}
+                  value={activeFormats.font || ''}
                   title="Font Family"
                 >
                   <option value="">Sans Serif</option>
@@ -530,10 +680,10 @@ const CustomToolbar = ({
                 <span className="tool-label">Font</span>
               </div>
               <div className="tool-item">
-                <select 
-                  className="tool-select" 
-                  onChange={handleSizeChange} 
-                  value={activeFormats.size || ''} 
+                <select
+                  className="tool-select"
+                  onChange={handleSizeChange}
+                  value={activeFormats.size || ''}
                   title="Font Size"
                 >
                   <option value="small">Small</option>
@@ -545,10 +695,10 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <select 
-                  className="tool-select" 
-                  onChange={handleHeaderChange} 
-                  value={activeFormats.header || ''} 
+                <select
+                  className="tool-select"
+                  onChange={handleHeaderChange}
+                  value={activeFormats.header || ''}
                   title="Heading Level"
                 >
                   <option value="">Normal</option>
@@ -563,9 +713,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.bold ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.bold ? 'active' : ''}`}
+                  type="button"
                   title="Bold"
                   onClick={handleBoldClick}
                 >
@@ -574,9 +724,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Bold</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.italic ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.italic ? 'active' : ''}`}
+                  type="button"
                   title="Italic"
                   onClick={handleItalicClick}
                 >
@@ -585,9 +735,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Italic</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.underline ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.underline ? 'active' : ''}`}
+                  type="button"
                   title="Underline"
                   onClick={handleUnderlineClick}
                 >
@@ -596,9 +746,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Underline</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.strike ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.strike ? 'active' : ''}`}
+                  type="button"
                   title="Strike Through"
                   onClick={handleStrikeClick}
                 >
@@ -608,9 +758,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.script === 'sub' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.script === 'sub' ? 'active' : ''}`}
+                  type="button"
                   title="Subscript"
                   onClick={handleSubscriptClick}
                 >
@@ -619,9 +769,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Sub</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.script === 'super' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.script === 'super' ? 'active' : ''}`}
+                  type="button"
                   title="Superscript"
                   onClick={handleSuperscriptClick}
                 >
@@ -652,9 +802,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.list === 'ordered' ? 'active' : ''}`}
+                  type="button"
                   title="Numbered List"
                   onClick={handleListClick('ordered')}
                 >
@@ -663,9 +813,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Numbered</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.list === 'bullet' ? 'active' : ''}`}
+                  type="button"
                   title="Bullet List"
                   onClick={handleListClick('bullet')}
                 >
@@ -674,9 +824,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Bullet</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Decrease Indent"
                   onClick={handleIndentDecrease}
                 >
@@ -685,9 +835,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Indent -</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Increase Indent"
                   onClick={handleIndentIncrease}
                 >
@@ -697,9 +847,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.align === '' ? 'active' : ''}`}
+                  type="button"
                   title="Align Left"
                   onClick={handleAlignChange('')}
                 >
@@ -708,9 +858,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Left</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.align === 'center' ? 'active' : ''}`}
+                  type="button"
                   title="Align Center"
                   onClick={handleAlignChange('center')}
                 >
@@ -719,9 +869,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Center</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.align === 'right' ? 'active' : ''}`}
+                  type="button"
                   title="Align Right"
                   onClick={handleAlignChange('right')}
                 >
@@ -730,9 +880,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Right</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.align === 'justify' ? 'active' : ''}`}
+                  type="button"
                   title="Align Justify"
                   onClick={handleAlignChange('justify')}
                 >
@@ -742,9 +892,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.direction === 'rtl' ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.direction === 'rtl' ? 'active' : ''}`}
+                  type="button"
                   title="Text Direction"
                   onClick={handleDirectionClick}
                 >
@@ -754,9 +904,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Insert Link"
                   onClick={handleLinkClick}
                 >
@@ -765,9 +915,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Link</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Insert Image"
                   onClick={handleImageClick}
                 >
@@ -776,9 +926,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Image</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Insert Video"
                   onClick={handleVideoClick}
                 >
@@ -788,9 +938,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats.blockquote ? 'active' : ''}`}
+                  type="button"
                   title="Quote"
                   onClick={handleQuoteClick}
                 >
@@ -799,9 +949,9 @@ const CustomToolbar = ({
                 <span className="tool-label">Quote</span>
               </div>
               <div className="tool-item">
-                <button 
-                  className={`tool-button ${activeFormats['code-block'] ? 'active' : ''}`} 
-                  type="button" 
+                <button
+                  className={`tool-button ${activeFormats['code-block'] ? 'active' : ''}`}
+                  type="button"
                   title="Code Block"
                   onClick={handleCodeBlockClick}
                 >
@@ -811,9 +961,9 @@ const CustomToolbar = ({
               </div>
               <hr className="tool-divider" />
               <div className="tool-item">
-                <button 
-                  className="tool-button" 
-                  type="button" 
+                <button
+                  className="tool-button"
+                  type="button"
                   title="Clear Formatting"
                   onClick={handleCleanClick}
                 >

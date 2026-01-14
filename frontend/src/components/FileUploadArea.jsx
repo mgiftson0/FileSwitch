@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Typography,  } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DescriptionIcon from '@mui/icons-material/Description';
 
@@ -27,35 +27,22 @@ const FileUploadArea = ({ file, onFileChange }) => {
 
   return (
     <Box
+      className="glass-card"
       sx={{
-        border: `2px dashed ${dragOver ? '#90caf9' : '#64b5f6'}`,
-        borderRadius: '16px',
-        padding: { xs: '24px', sm: '32px' },
+        border: `2px dashed ${dragOver ? 'var(--primary)' : 'var(--glass-border)'}`,
+        padding: { xs: '32px', sm: '48px' },
         textAlign: 'center',
         width: '100%',
         maxWidth: '600px',
-        backgroundColor: dragOver ? 'rgba(100, 181, 246, 0.05)' : 'rgba(255, 255, 255, 0.02)',
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        backgroundColor: dragOver ? 'rgba(58, 134, 255, 0.05)' : 'var(--glass-bg)',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         cursor: 'pointer',
         position: 'relative',
-        overflow: 'hidden',
         '&:hover': {
-          borderColor: '#90caf9',
-          backgroundColor: 'rgba(100, 181, 246, 0.08)',
-          transform: 'translateY(-2px)',
-          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)'
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01))',
-          borderRadius: '16px'
+          borderColor: 'var(--primary)',
+          backgroundColor: 'rgba(58, 134, 255, 0.08)',
+          transform: 'translateY(-4px)',
+          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)'
         }
       }}
       onDragOver={handleDragOver}
@@ -77,26 +64,38 @@ const FileUploadArea = ({ file, onFileChange }) => {
           zIndex: 2
         }}
       />
-      
+
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         {file ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-            <DescriptionIcon sx={{ fontSize: 48, color: '#64b5f6' }} />
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: '#ffffff', 
-                fontWeight: 500,
-                wordBreak: 'break-word' 
+            <Box sx={{
+              width: 64,
+              height: 64,
+              borderRadius: '16px',
+              background: 'rgba(58, 134, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mb: 1
+            }}>
+              <DescriptionIcon sx={{ fontSize: 32, color: 'var(--primary)' }} />
+            </Box>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-main)',
+                fontWeight: 600,
+                fontFamily: 'Outfit, sans-serif',
+                wordBreak: 'break-word'
               }}
             >
               {file.name}
             </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontSize: '0.9rem'
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'var(--text-muted)',
+                fontSize: '0.95rem'
               }}
             >
               File selected • Click to change
@@ -104,36 +103,46 @@ const FileUploadArea = ({ file, onFileChange }) => {
           </Box>
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-            <CloudUploadIcon sx={{ fontSize: 64, color: '#64b5f6', opacity: 0.8 }} />
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: '#ffffff', 
-                fontWeight: 500,
-                fontSize: { xs: '1.1rem', sm: '1.25rem' }
+            <CloudUploadIcon sx={{ fontSize: 72, color: 'var(--primary)', opacity: 0.9, mb: 1 }} />
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-main)',
+                fontWeight: 600,
+                fontFamily: 'Outfit, sans-serif',
+                fontSize: { xs: '1.25rem', sm: '1.5rem' }
               }}
             >
               Drop your file here
             </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontSize: { xs: '0.9rem', sm: '1rem' }
+            <Typography
+              variant="body1"
+              sx={{
+                color: 'var(--text-muted)',
+                fontSize: { xs: '0.95rem', sm: '1.1rem' }
               }}
             >
               or click to browse
             </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: 'rgba(255, 255, 255, 0.5)',
-                fontSize: '0.8rem',
-                mt: 1
-              }}
-            >
-              Supports PDF and DOCX files
-            </Typography>
+            <Box sx={{
+              mt: 2,
+              px: 2,
+              py: 0.5,
+              borderRadius: '20px',
+              border: '1px solid var(--glass-border)',
+              backgroundColor: 'rgba(255,255,255,0.02)'
+            }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'var(--text-muted)',
+                  fontSize: '0.8rem',
+                  letterSpacing: '0.5px'
+                }}
+              >
+                PDF • DOCX
+              </Typography>
+            </Box>
           </Box>
         )}
       </Box>
